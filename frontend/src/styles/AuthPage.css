@@ -1,0 +1,685 @@
+/* ========================================
+  PÁGINA COMPLETA DE AUTENTICACIÓN
+  Todo en una sola ventana
+   ======================================== */
+
+/* Contenedor principal - Pantalla completa */
+.auth-page-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==================== FONDO DE MACHU PICCHU ==================== */
+.auth-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/ImagenLogin/loginImage.png');
+  background-size: cover;
+  background-position: contain center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Capa oscura para mejorar lectura */
+.auth-background::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.114) 0%,
+      rgba(0, 0, 0, 0.205) 45%,
+      rgba(0, 0, 0, 0.114) 100%);
+  z-index: 2;
+}
+
+/* ==================== PANTALLA DE BIENVENIDA ==================== */
+.welcome-screen {
+  position: relative;
+  z-index: 10;
+  width: min(92%, 980px);
+  text-align: center;
+  padding: 2rem;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: all;
+}
+
+/* Cuando se oculta la bienvenida */
+.welcome-screen.hide {
+  opacity: 0;
+  transform: scale(3);
+  pointer-events: none;
+}
+
+/* Título de bienvenida */
+.welcome-title {
+  color: #ffffff;
+  font-size: 30px;
+  margin: 0 0 10px 0;
+  font-weight: bolder;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-shadow: 0 5px 20px rgb(226, 6, 6);
+  letter-spacing: 1.5px;
+  animation: fadeInUp 3s ease-out;
+}
+
+/* Subtítulo */
+.welcome-subtitle {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0 auto 2.3rem auto;
+  /*margin: -1rem;
+  margin-bottom: 40px;*/
+  opacity: 0.95;
+  text-shadow: 2px 2px 10px rgb(11, 73, 77);
+  letter-spacing: 0.9px;
+  animation: fadeInUp 3.5s ease-out;
+}
+
+/* Animación de aparición de las letras*/
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Botón "Comenzar" */
+.btn-comenzar {
+  background: linear-gradient(135deg, #354cc077 10%, #823ba85f 50%, #a52a8a66 80%);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.983);
+  padding: 0.9rem 2.1rem;
+  margin: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  box-shadow:
+    0 10px 28px rgba(120, 0, 0, 0.264),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: fadeInUp 3s ease-out;
+}
+
+/* Efecto hover del botón */
+.btn-comenzar:hover {
+  background: linear-gradient(135deg, #354cc0ad 10%, #823ba8ad 50%, #a52a8aa3 80%);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow:
+    1px 4px 10px rgb(120, 0, 0),
+    1px 2px 15px rgb(255, 255, 255);
+}
+
+/* ==================== ANIMACIÓN LETRA POR LETRA ==================== */
+.welcome-title span,
+.welcome-subtitle span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(12px);
+  animation: letterFadeUp 0.3s ease forwards;
+}
+
+@keyframes letterFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*=======================================================================================================================================================*/
+
+/* ==================== CONTENEDOR DE FORMULARIOS ==================== */
+.auth-forms-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(90%, 900px);
+  max-width: 900px;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 5;
+  opacity: 0;
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+/* Cuando se muestran los formularios */
+.auth-forms-container.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: all;
+  z-index: 15;
+}
+
+/* Caja principal del login/register */
+.auth-box-slider {
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 24px;
+  box-shadow:
+    0 22px 60px rgba(212, 212, 212, 0.546),
+    0 0 0 1px rgba(255, 255, 255, 0.65);
+}
+
+/* Botón X para cerrar los formularios */
+.btn-close-auth {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.btn-close-auth:hover {
+  background: rgba(217, 16, 35, 0.12);
+  color: #D91023;
+  transform: rotate(90deg);
+}
+
+/* ==================== PANELES DE FORMULARIO ==================== */
+.form-panel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 34px 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.6s ease-in-out;
+  background:
+    radial-gradient(circle at 15% 85%, rgba(130, 126, 0, 0.055), transparent 34%),
+    radial-gradient(circle at 95% 10%, rgba(16, 217, 190, 0.106), transparent 32%),
+    linear-gradient(135deg, rgba(234, 208, 208, 0.322), rgba(240, 208, 242, 0.257));
+}
+
+/* Posiciones iniciales */
+.register-panel {
+  left: 0;
+  opacity: 0;
+  z-index: 1;
+}
+
+.login-panel {
+  left: 0;
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Cuando REGISTER está activo */
+.auth-box-slider.register-active .register-panel {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+}
+
+.auth-box-slider.register-active .login-panel {
+  opacity: 0;
+  z-index: 1;
+}
+
+/* Cuando LOGIN está activo */
+.auth-box-slider.login-active .login-panel {
+  transform: translateX(0);
+  opacity: 1;
+  z-index: 5;
+}
+
+.auth-box-slider.login-active .register-panel {
+  opacity: 0;
+  z-index: 1;
+}
+
+/* ==================== FORMULARIO ==================== */
+.auth-form {
+  width: 100%;
+  max-width: 350px;
+}
+
+.login-panel .auth-form {
+  max-width: 350px;
+}
+
+.register-panel .auth-form {
+  max-width: 355px;
+  transform: translateY(4px);
+}
+
+/* Logo del formulario de inicio de sesión */
+.login-logo {
+  display: block;
+  width: 130px;
+  height: auto;
+  margin: 0 auto 12px auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+}
+
+.login-panel .auth-form {
+  transform: translateY(-1px);
+}
+
+.form-title {
+  font-size: 34px;
+  font-weight: 900;
+  color: #c30303;
+  margin: 0 0 8px 0;
+  text-align: center;
+  letter-spacing: -0.4px;
+}
+
+.register-panel .form-title {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0 0 26px 0;
+  text-align: center;
+}
+
+.register-panel .form-subtitle {
+  margin-bottom: 22px;
+}
+
+/* ==================== INPUTS CON ÍCONOS ==================== */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 13px;
+}
+
+.login-panel .input-group {
+  margin-bottom: 16px;
+}
+
+.register-panel .input-group {
+  margin-bottom: 12px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  width: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4b5563;
+  font-size: 17px;
+  opacity: 0.85;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+/* Inputs del login y registro con el mismo estilo */
+.input-group input {
+  width: 100%;
+  height: 50px;
+  margin: 0;
+  padding: 0 16px 0 56px;
+  border: 1.6px solid #dfe4ea;
+  border-left: 5px solid #D91023;
+  border-radius: 14px;
+  background: #fffdf8;
+  color: #2f2f2f;
+  font-size: 15px;
+  font-family: inherit;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.75),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s ease;
+}
+
+.input-group input::placeholder {
+  color: #5f6368;
+  opacity: 0.85;
+}
+
+.input-group input:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(90, 70, 50, 0.42);
+  border-left-color: #D91023;
+}
+
+/* Focus de los inputs del login y registro */
+.input-group input:focus {
+  outline: none;
+  background: #ffffff;
+  border-color: #2a8f98;
+  border-left-color: #2a8f98;
+  box-shadow:
+    0 0 0 0px rgba(16, 217, 53, 0.727),
+    0 0px 0.5px rgba(2, 17, 223, 0.601);
+}
+
+.input-group input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.input-group input[type="date"] {
+  color: #5f6368;
+}
+
+/* Ajuste de altura para que el registro mantenga su orden */
+.register-panel .input-group input {
+  height: 47px;
+}
+
+/*===========================================================================================================*/
+
+/* Botón principal */
+.btn-submit {
+  display: block;
+  min-width: 210px;
+  height: 48px;
+  margin: 18px auto 0 auto;
+  padding: 0;
+  background: linear-gradient(135deg, #b11271 20%, #106f8e 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  box-shadow:
+    0 10px 22px rgba(130, 0, 17, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0px 0px 5px rgba(69, 0, 130, 0.913),
+    0 0 0 0px rgba(177, 18, 39, 0.11);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.register-panel .btn-submit {
+  width: 58%;
+  min-width: 190px;
+  height: 45px;
+  margin-top: 16px;
+}
+
+/* ==================== PANEL OVERLAY ==================== */
+.overlay-panel-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.65s ease-in-out;
+  z-index: 100;
+}
+
+/* Cuando REGISTER está activo */
+.auth-box-slider.register-active .overlay-panel-container {
+  transform: translateX(-100%);
+}
+
+/* =======================Contenido del overlay======================================== */
+.overlay-content {
+  /*background: linear-gradient(135deg, #D91023 0%, #C41E3A 100%);*/
+  position: relative;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  display: flex;
+  color: #ffffff;
+  transform: translateX(0);
+  transition: transform 0.65s ease-in-out;
+}
+
+.auth-box-slider.register-active .overlay-content {
+  transform: translateX(50%);
+}
+
+/* ==================== VIDEO OVERLAY ==================== */
+.overlay-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Contenido del overlay */
+.overlay-overlay {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* Capa oscura sobre el video */
+.overlay-dark {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg,
+      rgba(0, 40, 55, 0.363),
+      rgba(0, 0, 0, 0.35));
+  z-index: 2;
+}
+
+/*ASEGURAR COLOR DE TEXTO EN OVERLAY*/
+.overlay-side h2,
+.overlay-side p {
+  color: #ffffff;
+}
+
+/* Lados del overlay */
+.overlay-side {
+  width: 50%;
+  height: 100%;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ffffff;
+}
+
+.overlay-side h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-side p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0.95;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 12px 40px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(6px);
+}
+
+.btn-ghost:hover {
+  background: #ffffff;
+  color: #d91023;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+/* ==================== MENSAJES TOAST ==================== */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-weight: 600;
+  z-index: 9999;
+  animation: slideIn 0.3s ease-out;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast-error {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  color: #c62828;
+  border-left: 4px solid #d32f2f;
+}
+
+.toast-success {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+  border-left: 4px solid #4caf50;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 900px) {
+  .auth-forms-container {
+    width: min(94%, 520px);
+  }
+
+  .auth-box-slider {
+    min-height: auto;
+    display: block;
+    padding: 2rem 0;
+  }
+
+  .form-panel {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 560px;
+    padding: 3.5rem 2rem 2rem;
+    transform: none !important;
+  }
+
+  .login-panel,
+  .register-panel {
+    left: auto;
+  }
+
+  .auth-box-slider.login-active .login-panel {
+    display: flex;
+    opacity: 1;
+  }
+
+  .auth-box-slider.login-active .register-panel {
+    display: none;
+  }
+
+  .auth-box-slider.register-active .register-panel {
+    display: flex;
+    opacity: 1;
+  }
+
+  .auth-box-slider.register-active .login-panel {
+    display: none;
+  }
+
+  .overlay-panel-container {
+    display: none;
+  }
+
+  .btn-close-auth {
+    top: 14px;
+    right: 14px;
+  }
+}
+
+@media (max-width: 520px) {
+  .auth-forms-container {
+    width: 94%;
+  }
+
+  .form-panel {
+    padding: 3.5rem 1.25rem 1.5rem;
+  }
+
+  .auth-form {
+    max-width: 100%;
+  }
+
+  .form-title {
+    font-size: 1.9rem;
+  }
+
+  .input-group input,
+  .btn-submit {
+    height: 52px;
+  }
+}

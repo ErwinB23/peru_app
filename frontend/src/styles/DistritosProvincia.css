@@ -1,0 +1,574 @@
+.distritos-showcase-page {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #111827;
+}
+
+.distritos-state {
+    min-height: calc(100vh - 92px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 40px 24px;
+    text-align: center;
+    color: #111827;
+    background:
+        radial-gradient(circle at 8% 18%, rgba(217, 16, 35, 0.08), transparent 28%),
+        radial-gradient(circle at 92% 78%, rgba(16, 111, 142, 0.12), transparent 34%),
+        linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+}
+
+.distritos-loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(15, 23, 42, 0.15);
+    border-top-color: #D91023;
+    border-radius: 50%;
+    animation: distritosSpin 0.9s linear infinite;
+}
+
+@keyframes distritosSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.distritos-state span {
+    font-size: 52px;
+}
+
+.distritos-state h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 30px;
+    font-weight: 950;
+}
+
+.distritos-state p {
+    margin: 0;
+    max-width: 560px;
+    color: #64748b;
+    font-size: 15px;
+    font-weight: 750;
+    line-height: 1.6;
+}
+
+.distritos-state button {
+    height: 46px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.distritos-showcase {
+    position: relative;
+    min-height: calc(100vh - 92px);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    overflow: hidden;
+    transition: background-image 0.55s ease;
+    overscroll-behavior: contain;
+}
+
+.distritos-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 80% 20%, rgba(255, 209, 102, 0.12), transparent 26%),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.60) 0%, transparent 62%),
+        linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, transparent 48%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.distritos-showcase-content {
+    position: relative;
+    z-index: 2;
+    min-height: calc(100vh - 92px);
+    display: grid;
+    grid-template-columns: 48% 52%;
+    gap: 20px;
+    align-items: center;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 42px 54px 34px;
+}
+
+.distritos-left {
+    max-width: 580px;
+    padding-top: 4px;
+}
+
+.distritos-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+}
+
+.distritos-back {
+    height: 38px;
+    padding: 0 18px;
+    border: 1.6px solid rgba(255, 255, 255, 0.58);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.distritos-back:hover {
+    background: #ffffff;
+    color: #D91023;
+    transform: translateX(-4px);
+}
+
+.distritos-admin-btn {
+    height: 38px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #D91023;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.20);
+    transition: all 0.25s ease;
+}
+
+.distritos-admin-btn:hover {
+    transform: translateY(-2px);
+    background: #ffd166;
+    color: #111827;
+}
+
+.distritos-location {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.distritos-location span {
+    width: 34px;
+    height: 4px;
+    border-radius: 999px;
+    background: #ffffff;
+}
+
+.distritos-location p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 18px;
+    font-weight: 850;
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.34);
+}
+
+.distritos-left h1 {
+    margin: 0 0 20px;
+    color: #ffffff;
+    font-size: clamp(54px, 6.5vw, 86px);
+    line-height: 0.98;
+    font-weight: 1000;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    text-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
+    max-width: 680px;
+}
+
+.distritos-description {
+    max-width: 570px;
+    margin: 0 0 24px;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 15px;
+    line-height: 1.42;
+    font-weight: 650;
+    text-shadow: 0 6px 18px rgba(0, 0, 0, 0.52);
+}
+
+.distritos-main-actions {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.distrito-action-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ffd166;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 1000;
+    box-shadow: 0 14px 28px rgba(255, 209, 102, 0.24);
+}
+
+.btn-primary-distrito {
+    height: 42px;
+    padding: 0 28px;
+    border-radius: 999px;
+    border: 1.7px solid rgba(255, 255, 255, 0.78);
+    background: rgba(0, 0, 0, 0.16);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    backdrop-filter: blur(7px);
+    transition: all 0.25s ease;
+}
+
+.btn-primary-distrito:hover {
+    background: #ffffff;
+    color: #111827;
+    transform: translateY(-2px);
+}
+
+.distritos-details,
+.distritos-extra-details {
+    display: grid;
+    gap: 10px;
+    max-width: 570px;
+}
+
+.distritos-details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: 10px;
+}
+
+.distritos-extra-details {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.distritos-details div,
+.distritos-extra-details div {
+    padding: 11px 13px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+}
+
+.distritos-details span,
+.distritos-extra-details span {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 10px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.distritos-details strong,
+.distritos-extra-details strong {
+    display: block;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 950;
+    line-height: 1.25;
+}
+
+.distritos-right {
+    min-width: 0;
+    align-self: end;
+    padding-bottom: 20px;
+    transform: translateY(50px);
+}
+
+.distritos-cards-track {
+    display: flex;
+    align-items: stretch;
+    gap: 26px;
+    overflow-x: auto;
+    padding: 14px 4px 20px;
+    scrollbar-width: none;
+    will-change: transform;
+}
+
+.distritos-cards-track::-webkit-scrollbar {
+    display: none;
+}
+
+.distrito-preview-card {
+    position: relative;
+    flex: 0 0 218px;
+    height: 284px;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+    background:
+        radial-gradient(circle at 80% 18%, rgba(255, 209, 102, 0.16), transparent 30%),
+        linear-gradient(135deg, #9f1025 0%, #106f8e 100%);
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.38);
+    transition: all 0.32s ease;
+}
+
+.distrito-preview-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 28px 58px rgba(0, 0, 0, 0.44);
+}
+
+.distrito-preview-bg {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.78));
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    transform: scale(1.02);
+    transition:
+        transform 0.65s ease,
+        filter 0.65s ease,
+        opacity 0.65s ease;
+    will-change: transform, opacity;
+}
+
+.distrito-preview-card:hover .distrito-preview-bg {
+    transform: scale(1.08);
+    filter: brightness(1.05);
+}
+
+.distrito-preview-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 18px 16px 18px;
+    color: #ffffff;
+    z-index: 2;
+    max-width: 100%;
+}
+
+.distrito-preview-content span {
+    display: block;
+    width: 32px;
+    height: 4px;
+    border-radius: 999px;
+    background: #ffffff;
+    margin-bottom: 10px;
+}
+
+.distrito-preview-content small {
+    display: block;
+    margin-bottom: 5px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 12px;
+    font-weight: 850;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.distrito-preview-content strong {
+    display: -webkit-box;
+    color: #ffffff;
+    font-size: clamp(16px, 1.25vw, 22px);
+    line-height: 1.02;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: -0.4px;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.distrito-preview-content p {
+    margin: 7px 0 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 12px;
+    font-weight: 750;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.distritos-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 2px;
+}
+
+.distritos-controls button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.6px solid rgba(255, 255, 255, 0.58);
+    background: rgba(0, 0, 0, 0.16);
+    color: #ffffff;
+    font-size: 34px;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.25s ease;
+}
+
+.distritos-controls button:hover {
+    background: #ffffff;
+    color: #D91023;
+    transform: translateY(-3px);
+}
+
+.distritos-progress {
+    flex: 1;
+    max-width: 440px;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    overflow: hidden;
+}
+
+.distritos-progress span {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: #ffd166;
+    transition: width 0.35s ease;
+}
+
+.distritos-controls strong {
+    min-width: 34px;
+    color: #ffffff;
+    font-size: 31px;
+    font-weight: 1000;
+    text-align: right;
+}
+
+.distritos-cards-track.cards-next {
+    animation: distritosTrackNext 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.distritos-cards-track.cards-prev {
+    animation: distritosTrackPrev 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes distritosTrackNext {
+    from {
+        opacity: 0.92;
+        transform: translateX(244px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes distritosTrackPrev {
+    from {
+        opacity: 0.92;
+        transform: translateX(-244px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 1180px) {
+    .distritos-showcase {
+        overflow-y: auto;
+    }
+
+    .distritos-showcase-content {
+        grid-template-columns: 1fr;
+        align-items: start;
+        padding: 42px 30px 54px;
+    }
+
+    .distritos-left {
+        max-width: 760px;
+    }
+
+    .distritos-right {
+        align-self: auto;
+        padding-bottom: 0;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 760px) {
+    .distritos-showcase-content {
+        padding: 34px 20px;
+    }
+
+    .distritos-left h1 {
+        font-size: 48px;
+    }
+
+    .distritos-details,
+    .distritos-extra-details {
+        grid-template-columns: 1fr;
+    }
+
+    .distrito-preview-card {
+        flex-basis: 190px;
+        height: 270px;
+    }
+
+    .distritos-controls {
+        gap: 10px;
+    }
+
+    .distritos-controls button {
+        width: 46px;
+        height: 46px;
+    }
+}
+
+@media (max-width: 480px) {
+    .distritos-main-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-primary-distrito {
+        width: 100%;
+    }
+
+    .distritos-location p {
+        font-size: 15px;
+    }
+
+    .distritos-left h1 {
+        font-size: 40px;
+    }
+}

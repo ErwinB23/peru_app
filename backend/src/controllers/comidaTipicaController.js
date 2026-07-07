@@ -1,0 +1,119 @@
+import * as comidaTipicaModel from "../models/comidaTipicaModel.js";
+
+export const getComidasByDepartamentoId = async (req, res) => {
+    try {
+        const departamentoId = Number(req.params.departamentoId);
+
+        if (!Number.isInteger(departamentoId) || departamentoId <= 0) {
+            return res.status(400).json({ error: "ID de departamento inválido" });
+        }
+
+        const comidas =
+            await comidaTipicaModel.getComidasByDepartamentoId(departamentoId);
+
+        res.json(comidas);
+    } catch (error) {
+        console.error("Error en getComidasByDepartamentoId:", error);
+        res.status(500).json({ error: "Error al obtener comidas típicas" });
+    }
+};
+
+export const getComidaById = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({ error: "ID de comida típica inválido" });
+        }
+
+        const comida = await comidaTipicaModel.getComidaById(id);
+
+        if (!comida) {
+            return res.status(404).json({ error: "Comida típica no encontrada" });
+        }
+
+        res.json(comida);
+    } catch (error) {
+        console.error("Error en getComidaById:", error);
+        res.status(500).json({ error: "Error al obtener comida típica" });
+    }
+};
+
+export const createComidaTipica = async (req, res) => {
+    try {
+        const imagen = req.file
+            ? `/uploads/comidas-tipicas/${req.file.filename}`
+            : req.body.imagen || null;
+
+        const nuevaComida = await comidaTipicaModel.createComidaTipica({
+            ...req.body,
+            departamento_id: Number(req.body.departamento_id),
+            imagen,
+        });
+
+        res.status(201).json({
+            message: "Comida típica creada exitosamente",
+            comida: nuevaComida,
+        });
+    } catch (error) {
+        console.error("Error en createComidaTipica:", error);
+        res.status(500).json({ error: "Error al crear comida típica" });
+    }
+};
+
+export const updateComidaTipica = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({ error: "ID de comida típica inválido" });
+        }
+
+        const comidaActual = await comidaTipicaModel.getComidaById(id);
+
+        if (!comidaActual) {
+            return res.status(404).json({ error: "Comida típica no encontrada" });
+        }
+
+        const imagen = req.file
+            ? `/uploads/comidas-tipicas/${req.file.filename}`
+            : req.body.imagen || comidaActual.imagen || null;
+
+        const comidaActualizada = await comidaTipicaModel.updateComidaTipica(id, {
+            ...req.body,
+            imagen,
+        });
+
+        res.json({
+            message: "Comida típica actualizada exitosamente",
+            comida: comidaActualizada,
+        });
+    } catch (error) {
+        console.error("Error en updateComidaTipica:", error);
+        res.status(500).json({ error: "Error al actualizar comida típica" });
+    }
+};
+
+export const deleteComidaTipica = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+
+        if (!Number.isInteger(id) || id <= 0) {
+            return res.status(400).json({ error: "ID de comida típica inválido" });
+        }
+
+        const comidaEliminada = await comidaTipicaModel.deleteComidaTipica(id);
+
+        if (!comidaEliminada) {
+            return res.status(404).json({ error: "Comida típica no encontrada" });
+        }
+
+        res.json({
+            message: "Comida típica eliminada exitosamente",
+            comida: comidaEliminada,
+        });
+    } catch (error) {
+        console.error("Error en deleteComidaTipica:", error);
+        res.status(500).json({ error: "Error al eliminar comida típica" });
+    }
+};

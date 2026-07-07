@@ -1,0 +1,356 @@
+/* ========================================
+   CONFIGURACIÓN - Cambio de idioma
+   ======================================== */
+
+.config-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 8% 18%, rgba(217, 16, 35, 0.08), transparent 28%),
+        radial-gradient(circle at 92% 78%, rgba(16, 111, 142, 0.12), transparent 34%),
+        linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #111827;
+}
+
+.config-main {
+    min-height: calc(100vh - 92px);
+}
+
+/* ==================== HERO ==================== */
+.config-hero {
+    position: relative;
+    padding: 58px 30px 115px;
+    background:
+        radial-gradient(circle at 16% 20%, rgba(255, 255, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 86% 68%, rgba(255, 209, 102, 0.15), transparent 34%),
+        linear-gradient(135deg, #D91023 0%, #9f1025 50%, #106f8e 100%);
+    overflow: hidden;
+}
+
+.config-hero::before {
+    content: '';
+    position: absolute;
+    right: -90px;
+    top: -90px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.11);
+}
+
+.config-hero::after {
+    content: '';
+    position: absolute;
+    left: -120px;
+    bottom: -130px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: rgba(255, 209, 102, 0.12);
+}
+
+.config-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1180px;
+    margin: 0 auto;
+    color: #ffffff;
+}
+
+.config-back-btn {
+    height: 44px;
+    padding: 0 22px;
+    margin-bottom: 28px;
+    border: 1.8px solid rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.13);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: all 0.28s ease;
+}
+
+.config-back-btn:hover {
+    background: #ffffff;
+    color: #D91023;
+    transform: translateX(-4px);
+}
+
+.config-hero h1 {
+    margin: 0 0 16px;
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -1.4px;
+    text-shadow: 0 8px 26px rgba(0, 0, 0, 0.24);
+}
+
+.config-hero p {
+    margin: 0;
+    max-width: 680px;
+    color: rgba(255, 255, 255, 0.90);
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+/* ==================== PANEL ==================== */
+.config-panel {
+    position: relative;
+    z-index: 3;
+    max-width: 1180px;
+    margin: -70px auto 0;
+    padding: 0 30px 80px;
+}
+
+.config-message {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+    border-left: 5px solid #22c55e;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+.config-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 30px;
+    padding: 34px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 22px 55px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.config-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.config-card-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 14px;
+    margin-bottom: 14px;
+    border-radius: 999px;
+    background: rgba(217, 16, 35, 0.09);
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.config-card h2 {
+    margin: 0 0 10px;
+    color: #111827;
+    font-size: 32px;
+    font-weight: 950;
+    letter-spacing: -0.7px;
+}
+
+.config-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 650;
+}
+
+/* ==================== IDIOMAS ==================== */
+.language-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 26px;
+}
+
+.language-card {
+    position: relative;
+    min-height: 128px;
+    padding: 22px;
+    border: 2px solid #e2e8f0;
+    border-radius: 26px;
+    background:
+        linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.28s ease;
+}
+
+.language-card:hover {
+    border-color: rgba(16, 111, 142, 0.45);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(15, 23, 42, 0.10);
+}
+
+.language-card.active {
+    border-color: #D91023;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(217, 16, 35, 0.12), transparent 34%),
+        linear-gradient(135deg, #ffffff 0%, #fff7f8 100%);
+    box-shadow: 0 18px 42px rgba(217, 16, 35, 0.13);
+}
+
+.language-code {
+    width: 64px;
+    height: 64px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 950;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.language-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.language-info strong {
+    color: #111827;
+    font-size: 20px;
+    font-weight: 950;
+}
+
+.language-info small {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.language-check {
+    margin-left: auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #D91023;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 950;
+    box-shadow: 0 10px 22px rgba(217, 16, 35, 0.20);
+}
+
+.language-card:not(.active) .language-check {
+    background: #e2e8f0;
+    box-shadow: none;
+}
+
+/* ==================== PREVIEW ==================== */
+.config-preview {
+    margin-top: 28px;
+    padding: 22px;
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 90% 18%, rgba(16, 111, 142, 0.10), transparent 32%),
+        #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.config-preview span {
+    display: block;
+    margin-bottom: 8px;
+    color: #106f8e;
+    font-size: 13px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.config-preview p {
+    color: #334155;
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.config-note {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255, 209, 102, 0.18);
+    color: #92400e;
+    border: 1px solid rgba(255, 209, 102, 0.35);
+    font-size: 13px;
+    line-height: 1.6;
+    font-weight: 800;
+}
+
+.config-save-btn {
+    width: 100%;
+    height: 54px;
+    margin-top: 26px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    cursor: pointer;
+    box-shadow: 0 16px 32px rgba(217, 16, 35, 0.22);
+    transition: all 0.28s ease;
+}
+
+.config-save-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 42px rgba(217, 16, 35, 0.30);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 850px) {
+    .language-options {
+        grid-template-columns: 1fr;
+    }
+
+    .config-card {
+        padding: 28px 24px;
+    }
+}
+
+@media (max-width: 520px) {
+    .config-hero {
+        padding: 42px 20px 95px;
+    }
+
+    .config-panel {
+        padding: 0 18px 60px;
+    }
+
+    .config-hero h1 {
+        font-size: 36px;
+    }
+
+    .language-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .language-check {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+    }
+}

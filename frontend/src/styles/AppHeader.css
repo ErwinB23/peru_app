@@ -1,0 +1,216 @@
+/* ==================== HEADER ROJO ==================== */
+.home-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background:
+        linear-gradient(135deg, rgba(217, 16, 35, 0.96) 0%, rgba(196, 30, 58, 0.96) 45%, rgba(144, 12, 32, 0.96) 100%);
+    padding: 10px 0;
+    box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.22),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(10px);
+}
+
+/* Línea decorativa inferior */
+.home-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ffffff, #ffd166, #ffffff);
+    opacity: 0.85;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 34px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+/* Logo + texto */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 280px;
+}
+
+.logo-bandera {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.72));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.logo-bandera:hover {
+    transform: translateY(-2px) scale(1.03);
+}
+
+.logo-bandera img {
+    height: 58px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.header-text {
+    color: white;
+}
+
+.header-greeting {
+    font-size: 14px;
+    margin: 0 0 3px 0;
+    opacity: 0.92;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 900;
+    margin: 0;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
+}
+
+/* Navegación superior */
+.header-nav {
+    margin-left: auto;
+    margin-right: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        0 8px 20px rgba(0, 0, 0, 0.10);
+}
+
+.header-nav button {
+    position: relative;
+    color: white;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 999px;
+    transition: all 0.28s ease;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.header-nav button:hover {
+    background: rgba(255, 255, 255, 0.20);
+    transform: translateY(-1px);
+}
+
+.header-nav button::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 6px;
+    height: 2px;
+    border-radius: 999px;
+    background: #ffffff;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.28s ease;
+}
+
+.header-nav button:hover::after {
+    transform: scaleX(1);
+}
+
+.header-nav button:active {
+    transform: scale(0.96);
+}
+
+/* Avatar de usuario */
+.user-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background:
+        linear-gradient(135deg, #ffffff 0%, #fff4f4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 900;
+    color: #D91023;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 3px solid rgba(255, 255, 255, 0.55);
+}
+
+.user-avatar:active {
+    transform: scale(0.96);
+}
+
+.user-avatar:hover {
+    transform: translateY(-2px) scale(1.08);
+    box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.30),
+        0 0 0 5px rgba(255, 255, 255, 0.16);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .header-content {
+        padding: 0 18px;
+        gap: 14px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 280px;
+        cursor: pointer;
+    }
+
+    .logo-bandera {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+    }
+
+    .logo-bandera img {
+        height: 46px;
+    }
+
+    .header-greeting {
+        font-size: 12px;
+    }
+
+    .header-title {
+        font-size: 15px;
+    }
+
+    .header-nav {
+        display: none;
+    }
+}

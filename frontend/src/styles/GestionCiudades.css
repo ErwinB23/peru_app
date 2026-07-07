@@ -1,0 +1,581 @@
+.gestion-ciudades-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 8% 18%, rgba(217, 16, 35, 0.08), transparent 28%),
+        radial-gradient(circle at 92% 78%, rgba(16, 111, 142, 0.12), transparent 34%),
+        linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #111827;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.gestion-ciudades-main {
+    width: min(100%, 1340px);
+    margin: 0 auto;
+    padding: 54px 46px 90px;
+}
+
+.gestion-ciudades-state {
+    min-height: calc(100vh - 92px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+}
+
+.gestion-ciudades-loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(15, 23, 42, 0.15);
+    border-top-color: #D91023;
+    border-radius: 50%;
+    animation: gestionCiudadesSpin 0.9s linear infinite;
+}
+
+@keyframes gestionCiudadesSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.gestion-ciudades-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 28px;
+    margin-bottom: 34px;
+    padding: 38px;
+    border-radius: 34px;
+    background:
+        radial-gradient(circle at 92% 12%, rgba(255, 209, 102, 0.22), transparent 28%),
+        linear-gradient(135deg, #111827 0%, #9f1025 48%, #106f8e 100%);
+    color: #ffffff;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+}
+
+.gestion-ciudades-back {
+    height: 38px;
+    padding: 0 18px;
+    margin-bottom: 28px;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.gestion-ciudades-hero span {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: #ffd166;
+    font-size: 13px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.gestion-ciudades-hero h1 {
+    margin: 0 0 12px;
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 0.95;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: -1.8px;
+}
+
+.gestion-ciudades-hero p {
+    max-width: 760px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 16px;
+    line-height: 1.65;
+    font-weight: 650;
+}
+
+.gestion-ciudades-create-btn {
+    flex: 0 0 auto;
+    height: 48px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #D91023;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+}
+
+.gestion-ciudades-error {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border-radius: 18px;
+    background: rgba(217, 16, 35, 0.10);
+    color: #D91023;
+    font-size: 14px;
+    font-weight: 850;
+}
+
+.gestion-ciudades-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 22px;
+    margin-bottom: 28px;
+    padding: 22px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.06);
+}
+
+.gestion-ciudades-filter-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.gestion-ciudades-toolbar label {
+    display: grid;
+    gap: 8px;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.gestion-ciudades-toolbar select {
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    border-radius: 14px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.gestion-ciudades-toolbar strong {
+    flex: 0 0 auto;
+    color: #D91023;
+    font-size: 15px;
+    font-weight: 1000;
+}
+
+.gestion-ciudades-empty {
+    padding: 42px;
+    border-radius: 30px;
+    background: #ffffff;
+    border: 1px dashed rgba(15, 23, 42, 0.20);
+    text-align: center;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
+}
+
+.gestion-ciudades-empty h2 {
+    margin: 0 0 10px;
+    font-size: 28px;
+    font-weight: 1000;
+}
+
+.gestion-ciudades-empty p {
+    margin: 0 0 22px;
+    color: #64748b;
+    font-weight: 650;
+}
+
+.gestion-ciudades-empty button {
+    height: 44px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.gestion-ciudades-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.gestion-ciudad-card {
+    border-radius: 30px;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+}
+
+.gestion-ciudad-image {
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 22px;
+    background:
+        radial-gradient(circle at 84% 16%, rgba(255, 209, 102, 0.18), transparent 32%),
+        linear-gradient(135deg, #9f1025 0%, #106f8e 100%);
+    background-size: cover;
+    background-position: center top;
+    color: #ffffff;
+}
+
+.gestion-ciudad-image span {
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 12px;
+    font-weight: 850;
+}
+
+.gestion-ciudad-image h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 1000;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.gestion-ciudad-body {
+    padding: 22px;
+}
+
+.gestion-ciudad-body p {
+    margin: 0 0 18px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.55;
+    font-weight: 650;
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.gestion-ciudad-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.gestion-ciudad-info div {
+    padding: 12px;
+    border-radius: 15px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.gestion-ciudad-info span {
+    display: block;
+    margin-bottom: 5px;
+    color: #D91023;
+    font-size: 10px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.gestion-ciudad-info strong {
+    display: block;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.25;
+}
+
+.gestion-ciudad-actions {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.gestion-ciudad-actions button {
+    height: 40px;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.gestion-ciudad-content {
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+}
+
+.gestion-ciudad-view {
+    background: rgba(16, 111, 142, 0.10);
+    color: #106f8e;
+}
+
+.gestion-ciudad-edit {
+    background: rgba(255, 209, 102, 0.22);
+    color: #8a5a00;
+}
+
+.gestion-ciudad-delete {
+    background: rgba(217, 16, 35, 0.10);
+    color: #D91023;
+}
+
+.gestion-ciudades-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 28px;
+    background: rgba(15, 23, 42, 0.68);
+    backdrop-filter: blur(8px);
+}
+
+.gestion-ciudades-modal {
+    width: min(100%, 940px);
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32);
+}
+
+.gestion-ciudades-modal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.gestion-ciudades-modal-header span {
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.gestion-ciudades-modal-header h2 {
+    margin: 6px 0 0;
+    color: #111827;
+    font-size: 30px;
+    font-weight: 1000;
+}
+
+.gestion-ciudades-modal-header button {
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #111827;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.gestion-ciudades-form {
+    display: grid;
+    gap: 18px;
+}
+
+.gestion-ciudades-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.gestion-ciudades-form label {
+    display: grid;
+    gap: 8px;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gestion-ciudades-form input,
+.gestion-ciudades-form select,
+.gestion-ciudades-form textarea {
+    width: 100%;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    border-radius: 15px;
+    padding: 13px 14px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.gestion-ciudades-form textarea {
+    resize: vertical;
+}
+
+.gestion-ciudades-preview {
+    min-height: 220px;
+    border-radius: 22px;
+    background-size: cover;
+    background-position: center top;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.gestion-ciudades-preview span {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #111827;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+}
+
+.gestion-ciudades-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.gestion-ciudades-modal-actions button {
+    height: 44px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 950;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gestion-ciudades-cancel {
+    background: #f1f5f9;
+    color: #111827;
+}
+
+.gestion-ciudades-save {
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+}
+
+.gestion-ciudades-save:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.gestion-ciudades-delete-modal {
+    width: min(100%, 460px);
+    padding: 34px;
+    border-radius: 28px;
+    background: #ffffff;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32);
+}
+
+.gestion-ciudades-delete-modal span {
+    font-size: 48px;
+}
+
+.gestion-ciudades-delete-modal h2 {
+    margin: 12px 0 10px;
+    color: #111827;
+    font-size: 28px;
+    font-weight: 1000;
+}
+
+.gestion-ciudades-delete-modal p {
+    margin: 0;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 650;
+}
+
+.gestion-ciudades-delete-modal div {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+}
+
+.gestion-ciudades-delete-modal button {
+    height: 42px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.gestion-ciudades-delete-modal button:first-child {
+    background: #f1f5f9;
+    color: #111827;
+}
+
+.gestion-ciudades-delete-modal button:last-child {
+    background: #D91023;
+    color: #ffffff;
+}
+
+@media (max-width: 1100px) {
+    .gestion-ciudades-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gestion-ciudades-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .gestion-ciudades-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gestion-ciudades-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 720px) {
+    .gestion-ciudades-main {
+        padding: 34px 20px 70px;
+    }
+
+    .gestion-ciudades-grid,
+    .gestion-ciudades-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gestion-ciudad-actions {
+        grid-template-columns: 1fr;
+    }
+}
