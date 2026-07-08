@@ -177,6 +177,19 @@
         0 0 0 5px rgba(255, 255, 255, 0.16);
 }
 
+.header-nav button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.header-nav button svg {
+    flex-shrink: 0;
+}
+
+
+
 /* Responsive */
 @media (max-width: 900px) {
     .header-content {

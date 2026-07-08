@@ -1093,6 +1093,22 @@ html {
 }
 
 
+/*ESTILOS DE LOS ICONOS*/
+.card-icon,
+.stat-icon,
+.carousel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon svg,
+.stat-icon svg,
+.carousel-btn svg {
+  display: block;
+}
+
+
 
 
 

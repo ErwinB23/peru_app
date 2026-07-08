@@ -8,6 +8,14 @@ import ayacuchoImg from '../assets/ImagenHome/Ayacucho.png';
 import cuscoImg from '../assets/ImagenHome/Cusco.png';
 import limaImg from '../assets/ImagenHome/Lima.png';
 import pascoImg from '../assets/ImagenHome/Pasco.png';
+import {
+  MapPinned,
+  Mountain,
+  Landmark,
+  Building2,
+  ChevronUp,
+  ChevronDown
+} from 'lucide-react';
 
 
 
@@ -246,11 +254,11 @@ const Home = () => {
             {/* Controles */}
             <div className="carousel-controls">
               <button className="carousel-btn up" onClick={handlePrev} aria-label="Anterior">
-                ↑
+                <ChevronUp size={24} strokeWidth={2.8} />
               </button>
 
               <button className="carousel-btn down" onClick={handleNext} aria-label="Siguiente">
-                ↓
+                <ChevronDown size={24} strokeWidth={2.8} />
               </button>
             </div>
 
@@ -284,7 +292,7 @@ const Home = () => {
         <div className="explore-cards">
           <div className="explore-card card-departamentos">
             <div className="card-top">
-              <div className="card-icon">🗺️</div>
+              <div className="card-icon"> <MapPinned size={34} strokeWidth={2.2} /></div>
               <span className="card-number">01</span>
             </div>
 
@@ -301,7 +309,7 @@ const Home = () => {
 
           <div className="explore-card card-provincias">
             <div className="card-top">
-              <div className="card-icon">🏞️</div>
+              <div className="card-icon"> <Mountain size={34} strokeWidth={2.2} /> </div>
               <span className="card-number">02</span>
             </div>
 
@@ -322,7 +330,7 @@ const Home = () => {
 
           <div className="explore-card card-distritos">
             <div className="card-top">
-              <div className="card-icon">🏘️</div>
+              <div className="card-icon"> <Landmark size={34} strokeWidth={2.2} /> </div>
               <span className="card-number">03</span>
             </div>
 
@@ -343,7 +351,7 @@ const Home = () => {
 
           <div className="explore-card card-ciudades">
             <div className="card-top">
-              <div className="card-icon">🏙️</div>
+              <div className="card-icon"> <Building2 size={34} strokeWidth={2.2} /> </div>
               <span className="card-number">04</span>
             </div>
 
@@ -380,28 +388,28 @@ const Home = () => {
 
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-icon">🗺️</div>
+              <div className="stat-icon"> <MapPinned size={34} strokeWidth={2.2} /> </div>
               <div className="stat-number">25</div>
               <div className="stat-label">Departamentos</div>
               <p>Información general, capital, región natural y atractivos principales.</p>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">🏞️</div>
+              <div className="stat-icon"> <Mountain size={34} strokeWidth={2.2} /> </div>
               <div className="stat-number">196</div>
               <div className="stat-label">Provincias</div>
               <p>Datos organizados por departamento, festividades y economía local.</p>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">🏘️</div>
+              <div className="stat-icon"> <Landmark size={34} strokeWidth={2.2} /> </div>
               <div className="stat-number">1874</div>
               <div className="stat-label">Distritos</div>
               <p>Información distrital sobre tipo de zona, desarrollo y contenido turístico local.</p>
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon">🏙️</div>
+              <div className="stat-icon"> <Building2 size={34} strokeWidth={2.2} /> </div>
               <div className="stat-number">100+</div>
               <div className="stat-label">Ciudades</div>
               <p>Ciudades turísticas, históricas y comerciales del territorio peruano.</p>
