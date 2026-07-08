@@ -1,0 +1,1819 @@
+openapi: 3.0.3
+info:
+  title: PERU APP API REST
+  version: 1.0.0
+  description: |
+    Contrato de API REST para PERU APP, plataforma web turístico-educativa
+    basada en Spec-Driven Development. Este contrato documenta los endpoints
+    principales utilizados por el frontend React para comunicarse con el backend
+    Node.js y Express, conectado a una base de datos SQL Server.
+
+    La API permite autenticar usuarios, gestionar roles, consultar información
+    territorial del Perú y administrar contenidos turísticos y gastronómicos.
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor local de desarrollo
+
+tags:
+  - name: Auth
+    description: Registro, inicio y cierre lógico de sesión.
+  - name: Users
+    description: Gestión de usuarios del sistema.
+  - name: Departamentos
+    description: Consulta y administración de departamentos.
+  - name: Provincias
+    description: Consulta y administración de provincias.
+  - name: Distritos
+    description: Consulta y administración de distritos.
+  - name: Ciudades
+    description: Consulta y administración de ciudades.
+  - name: LugaresTuristicos
+    description: Consulta y administración de lugares turísticos por departamento.
+  - name: ComidasTipicas
+    description: Consulta y administración de comidas típicas por departamento.
+  - name: LugaresTuristicosProvincias
+    description: Lugares turísticos asociados a provincias.
+  - name: ComidasTipicasProvincias
+    description: Comidas típicas asociadas a provincias.
+  - name: LugaresTuristicosDistritos
+    description: Lugares turísticos asociados a distritos.
+  - name: ComidasTipicasDistritos
+    description: Comidas típicas asociadas a distritos.
+  - name: LugaresTuristicosCiudades
+    description: Lugares turísticos asociados a ciudades.
+  - name: ComidasTipicasCiudades
+    description: Comidas típicas asociadas a ciudades.
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Registrar usuario
+      description: Registra un nuevo usuario con rol usuario.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Usuario registrado correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthMessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: El correo ya existe.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Iniciar sesión
+      description: Valida credenciales y devuelve token JWT con datos del usuario.
+      operationId: loginUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Inicio de sesión exitoso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Listar usuarios
+      description: Devuelve los usuarios registrados. Requiere rol administrador.
+      operationId: getUsers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de usuarios.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /departamentos:
+    get:
+      tags:
+        - Departamentos
+      summary: Listar departamentos
+      description: Devuelve los departamentos registrados.
+      operationId: getDepartamentos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de departamentos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Departamento'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags:
+        - Departamentos
+      summary: Crear departamento
+      description: Crea un departamento. Requiere rol administrador.
+      operationId: createDepartamento
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepartamentoInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoJsonInput'
+      responses:
+        '201':
+          description: Departamento creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /departamentos/{id}:
+    get:
+      tags:
+        - Departamentos
+      summary: Obtener departamento por ID
+      operationId: getDepartamentoById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle del departamento.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - Departamentos
+      summary: Actualizar departamento
+      operationId: updateDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DepartamentoInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DepartamentoJsonInput'
+      responses:
+        '200':
+          description: Departamento actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartamentoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Departamentos
+      summary: Eliminar departamento
+      operationId: deleteDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Departamento eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /provincias:
+    get:
+      tags:
+        - Provincias
+      summary: Listar provincias
+      operationId: getProvincias
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de provincias.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Provincia'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags:
+        - Provincias
+      summary: Crear provincia
+      operationId: createProvincia
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProvinciaInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvinciaJsonInput'
+      responses:
+        '201':
+          description: Provincia creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvinciaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /provincias/departamento/{departamentoId}:
+    get:
+      tags:
+        - Provincias
+      summary: Listar provincias por departamento
+      operationId: getProvinciasByDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DepartamentoIdParam'
+      responses:
+        '200':
+          description: Provincias del departamento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Provincia'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /provincias/{id}:
+    get:
+      tags:
+        - Provincias
+      summary: Obtener provincia por ID
+      operationId: getProvinciaById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle de provincia.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvinciaResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - Provincias
+      summary: Actualizar provincia
+      operationId: updateProvincia
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProvinciaInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProvinciaJsonInput'
+      responses:
+        '200':
+          description: Provincia actualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvinciaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Provincias
+      summary: Eliminar provincia
+      operationId: deleteProvincia
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Provincia eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /distritos:
+    get:
+      tags:
+        - Distritos
+      summary: Listar distritos
+      operationId: getDistritos
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de distritos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Distrito'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags:
+        - Distritos
+      summary: Crear distrito
+      operationId: createDistrito
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DistritoInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistritoJsonInput'
+      responses:
+        '201':
+          description: Distrito creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistritoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /distritos/provincia/{provinciaId}:
+    get:
+      tags:
+        - Distritos
+      summary: Listar distritos por provincia
+      operationId: getDistritosByProvincia
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ProvinciaIdParam'
+      responses:
+        '200':
+          description: Distritos de la provincia.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Distrito'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /distritos/{id}:
+    get:
+      tags:
+        - Distritos
+      summary: Obtener distrito por ID
+      operationId: getDistritoById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle de distrito.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistritoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - Distritos
+      summary: Actualizar distrito
+      operationId: updateDistrito
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DistritoInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DistritoJsonInput'
+      responses:
+        '200':
+          description: Distrito actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistritoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Distritos
+      summary: Eliminar distrito
+      operationId: deleteDistrito
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Distrito eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /ciudades:
+    get:
+      tags:
+        - Ciudades
+      summary: Listar ciudades
+      operationId: getCiudades
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de ciudades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ciudad'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    post:
+      tags:
+        - Ciudades
+      summary: Crear ciudad
+      operationId: createCiudad
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CiudadInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CiudadJsonInput'
+      responses:
+        '201':
+          description: Ciudad creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CiudadResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /ciudades/departamento/{departamentoId}:
+    get:
+      tags:
+        - Ciudades
+      summary: Listar ciudades por departamento
+      operationId: getCiudadesByDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DepartamentoIdParam'
+      responses:
+        '200':
+          description: Ciudades del departamento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ciudad'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /ciudades/{id}:
+    get:
+      tags:
+        - Ciudades
+      summary: Obtener ciudad por ID
+      operationId: getCiudadById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle de ciudad.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CiudadResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - Ciudades
+      summary: Actualizar ciudad
+      operationId: updateCiudad
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CiudadInput'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CiudadJsonInput'
+      responses:
+        '200':
+          description: Ciudad actualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CiudadResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - Ciudades
+      summary: Eliminar ciudad
+      operationId: deleteCiudad
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Ciudad eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos:
+    post:
+      tags:
+        - LugaresTuristicos
+      summary: Crear lugar turístico por departamento
+      operationId: createLugarTuristico
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LugarTuristicoInput'
+      responses:
+        '201':
+          description: Lugar turístico creado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LugarTuristicoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos/departamento/{departamentoId}:
+    get:
+      tags:
+        - LugaresTuristicos
+      summary: Listar lugares turísticos por departamento
+      operationId: getLugaresByDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DepartamentoIdParam'
+      responses:
+        '200':
+          description: Lugares turísticos del departamento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LugarTuristico'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos/{id}:
+    get:
+      tags:
+        - LugaresTuristicos
+      summary: Obtener lugar turístico por ID
+      operationId: getLugarTuristicoById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle completo del lugar turístico.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LugarTuristicoResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - LugaresTuristicos
+      summary: Actualizar lugar turístico
+      operationId: updateLugarTuristico
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LugarTuristicoInput'
+      responses:
+        '200':
+          description: Lugar turístico actualizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LugarTuristicoResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - LugaresTuristicos
+      summary: Eliminar lugar turístico
+      operationId: deleteLugarTuristico
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Lugar turístico eliminado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas:
+    post:
+      tags:
+        - ComidasTipicas
+      summary: Crear comida típica por departamento
+      operationId: createComidaTipica
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ComidaTipicaInput'
+      responses:
+        '201':
+          description: Comida típica creada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComidaTipicaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas/departamento/{departamentoId}:
+    get:
+      tags:
+        - ComidasTipicas
+      summary: Listar comidas típicas por departamento
+      operationId: getComidasByDepartamento
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DepartamentoIdParam'
+      responses:
+        '200':
+          description: Comidas típicas del departamento.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComidaTipica'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas/{id}:
+    get:
+      tags:
+        - ComidasTipicas
+      summary: Obtener comida típica por ID
+      operationId: getComidaTipicaById
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Detalle de comida típica.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComidaTipicaResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    put:
+      tags:
+        - ComidasTipicas
+      summary: Actualizar comida típica
+      operationId: updateComidaTipica
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ComidaTipicaInput'
+      responses:
+        '200':
+          description: Comida típica actualizada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComidaTipicaResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+    delete:
+      tags:
+        - ComidasTipicas
+      summary: Eliminar comida típica
+      operationId: deleteComidaTipica
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdParam'
+      responses:
+        '200':
+          description: Comida típica eliminada.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos-provincias/provincia/{provinciaId}:
+    get:
+      tags:
+        - LugaresTuristicosProvincias
+      summary: Listar lugares turísticos por provincia
+      operationId: getLugaresProvincia
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ProvinciaIdParam'
+      responses:
+        '200':
+          description: Lugares turísticos asociados a provincia.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoTuristicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas-provincias/provincia/{provinciaId}:
+    get:
+      tags:
+        - ComidasTipicasProvincias
+      summary: Listar comidas típicas por provincia
+      operationId: getComidasProvincia
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ProvinciaIdParam'
+      responses:
+        '200':
+          description: Comidas típicas asociadas a provincia.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoGastronomicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos-distritos/distrito/{distritoId}:
+    get:
+      tags:
+        - LugaresTuristicosDistritos
+      summary: Listar lugares turísticos por distrito
+      operationId: getLugaresDistrito
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DistritoIdParam'
+      responses:
+        '200':
+          description: Lugares turísticos asociados a distrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoTuristicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas-distritos/distrito/{distritoId}:
+    get:
+      tags:
+        - ComidasTipicasDistritos
+      summary: Listar comidas típicas por distrito
+      operationId: getComidasDistrito
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/DistritoIdParam'
+      responses:
+        '200':
+          description: Comidas típicas asociadas a distrito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoGastronomicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /lugares-turisticos-ciudades/ciudad/{ciudadId}:
+    get:
+      tags:
+        - LugaresTuristicosCiudades
+      summary: Listar lugares turísticos por ciudad
+      operationId: getLugaresCiudad
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CiudadIdParam'
+      responses:
+        '200':
+          description: Lugares turísticos asociados a ciudad.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoTuristicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+  /comidas-tipicas-ciudades/ciudad/{ciudadId}:
+    get:
+      tags:
+        - ComidasTipicasCiudades
+      summary: Listar comidas típicas por ciudad
+      operationId: getComidasCiudad
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CiudadIdParam'
+      responses:
+        '200':
+          description: Comidas típicas asociadas a ciudad.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContenidoGastronomicoSimple'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/ServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      description: Identificador numérico del registro.
+      schema:
+        type: integer
+        example: 1
+    DepartamentoIdParam:
+      name: departamentoId
+      in: path
+      required: true
+      description: Identificador del departamento.
+      schema:
+        type: integer
+        example: 1
+    ProvinciaIdParam:
+      name: provinciaId
+      in: path
+      required: true
+      description: Identificador de la provincia.
+      schema:
+        type: integer
+        example: 1
+    DistritoIdParam:
+      name: distritoId
+      in: path
+      required: true
+      description: Identificador del distrito.
+      schema:
+        type: integer
+        example: 1
+    CiudadIdParam:
+      name: ciudadId
+      in: path
+      required: true
+      description: Identificador de la ciudad.
+      schema:
+        type: integer
+        example: 1
+
+  responses:
+    BadRequest:
+      description: Solicitud inválida o datos incompletos.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Token ausente, inválido o credenciales incorrectas.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: El usuario no tiene permisos suficientes.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Registro no encontrado.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ServerError:
+      description: Error interno del servidor.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Error al procesar la solicitud
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Operación realizada correctamente
+
+    AuthMessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Usuario registrado exitosamente
+        user:
+          $ref: '#/components/schemas/User'
+
+    RegisterRequest:
+      type: object
+      required:
+        - nombres
+        - apellidos
+        - fecha_nacimiento
+        - email
+        - password
+      properties:
+        nombres:
+          type: string
+          example: Erwin Brayam
+        apellidos:
+          type: string
+          example: Inca Pauccara
+        fecha_nacimiento:
+          type: string
+          format: date
+          example: 2002-05-15
+        email:
+          type: string
+          format: email
+          example: usuario@correo.com
+        password:
+          type: string
+          format: password
+          example: '123456'
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: usuario@correo.com
+        password:
+          type: string
+          format: password
+          example: '123456'
+
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Inicio de sesión exitoso
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombres:
+          type: string
+          example: Erwin Brayam
+        apellidos:
+          type: string
+          example: Inca Pauccara
+        fecha_nacimiento:
+          type: string
+          format: date
+          example: 2002-05-15
+        email:
+          type: string
+          format: email
+          example: usuario@correo.com
+        rol:
+          type: string
+          enum:
+            - usuario
+            - admin
+          example: usuario
+        fecha_creacion:
+          type: string
+          format: date-time
+          example: 2026-01-10T10:30:00Z
+
+    Departamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: Ayacucho
+        capital:
+          type: string
+          example: Huamanga
+        region:
+          type: string
+          example: Sierra
+        descripcion:
+          type: string
+          example: Departamento con gran riqueza histórica, cultural y turística.
+        imagen:
+          type: string
+          example: /uploads/departamentos/ayacucho.jpg
+        introduccion:
+          type: string
+          example: Ayacucho destaca por su historia, arquitectura colonial y tradiciones culturales.
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    DepartamentoJsonInput:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+        capital:
+          type: string
+        region:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        introduccion:
+          type: string
+
+    DepartamentoInput:
+      type: object
+      required:
+        - nombre
+      properties:
+        nombre:
+          type: string
+        capital:
+          type: string
+        region:
+          type: string
+        descripcion:
+          type: string
+        introduccion:
+          type: string
+        imagen:
+          type: string
+          format: binary
+
+    DepartamentoResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Departamento procesado exitosamente
+        departamento:
+          $ref: '#/components/schemas/Departamento'
+
+    Provincia:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        departamento_id:
+          type: integer
+          example: 1
+        departamento_nombre:
+          type: string
+          example: Ayacucho
+        nombre:
+          type: string
+          example: Huamanga
+        capital:
+          type: string
+          example: Ayacucho
+        descripcion:
+          type: string
+        poblacion:
+          type: string
+        festividad:
+          type: string
+        actividad_economica:
+          type: string
+        imagen:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    ProvinciaJsonInput:
+      type: object
+      required:
+        - departamento_id
+        - nombre
+      properties:
+        departamento_id:
+          type: integer
+        nombre:
+          type: string
+        capital:
+          type: string
+        descripcion:
+          type: string
+        poblacion:
+          type: string
+        festividad:
+          type: string
+        actividad_economica:
+          type: string
+        imagen:
+          type: string
+
+    ProvinciaInput:
+      allOf:
+        - $ref: '#/components/schemas/ProvinciaJsonInput'
+        - type: object
+          properties:
+            imagen:
+              type: string
+              format: binary
+
+    ProvinciaResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        provincia:
+          $ref: '#/components/schemas/Provincia'
+
+    Distrito:
+      type: object
+      properties:
+        id:
+          type: integer
+        provincia_id:
+          type: integer
+        provincia_nombre:
+          type: string
+        nombre:
+          type: string
+        tipo_zona:
+          type: string
+        nivel_desarrollo:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    DistritoJsonInput:
+      type: object
+      required:
+        - provincia_id
+        - nombre
+      properties:
+        provincia_id:
+          type: integer
+        nombre:
+          type: string
+        tipo_zona:
+          type: string
+        nivel_desarrollo:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+
+    DistritoInput:
+      allOf:
+        - $ref: '#/components/schemas/DistritoJsonInput'
+        - type: object
+          properties:
+            imagen:
+              type: string
+              format: binary
+
+    DistritoResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        distrito:
+          $ref: '#/components/schemas/Distrito'
+
+    Ciudad:
+      type: object
+      properties:
+        id:
+          type: integer
+        departamento_id:
+          type: integer
+        departamento_nombre:
+          type: string
+        nombre:
+          type: string
+        actividad_principal:
+          type: string
+        atractivo_turistico:
+          type: string
+        clima:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    CiudadJsonInput:
+      type: object
+      required:
+        - departamento_id
+        - nombre
+      properties:
+        departamento_id:
+          type: integer
+        nombre:
+          type: string
+        actividad_principal:
+          type: string
+        atractivo_turistico:
+          type: string
+        clima:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+
+    CiudadInput:
+      allOf:
+        - $ref: '#/components/schemas/CiudadJsonInput'
+        - type: object
+          properties:
+            imagen:
+              type: string
+              format: binary
+
+    CiudadResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        ciudad:
+          $ref: '#/components/schemas/Ciudad'
+
+    LugarTuristico:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        departamento_id:
+          type: integer
+          example: 4
+        departamento_nombre:
+          type: string
+          example: Ica
+        nombre:
+          type: string
+          example: Reserva Nacional de Paracas
+        descripcion:
+          type: string
+        imagen:
+          type: string
+          example: /uploads/lugares-turisticos/paracas.jpg
+        ubicacion_referencial:
+          type: string
+          example: Paracas, Pisco, Ica, Perú
+        acerca:
+          type: string
+        recomendaciones_antes:
+          type: string
+        recomendaciones_durante:
+          type: string
+        clima:
+          type: string
+          example: Desértico costero
+        altura:
+          type: string
+          example: 0 a 50 m s. n. m. aprox.
+        provincia:
+          type: string
+          example: Pisco
+        distrito:
+          type: string
+          example: Paracas
+        origen_nombre:
+          type: string
+          example: Ayacucho
+        origen_busqueda:
+          type: string
+          example: Ayacucho, Perú
+        destino_nombre:
+          type: string
+          example: Reserva Nacional de Paracas
+        destino_busqueda:
+          type: string
+          example: Reserva Nacional de Paracas, Paracas, Pisco, Ica, Perú
+        imagen_2:
+          type: string
+        imagen_3:
+          type: string
+        imagen_4:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    LugarTuristicoInput:
+      type: object
+      required:
+        - departamento_id
+        - nombre
+      properties:
+        departamento_id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        ubicacion_referencial:
+          type: string
+        acerca:
+          type: string
+        recomendaciones_antes:
+          type: string
+        recomendaciones_durante:
+          type: string
+        clima:
+          type: string
+        altura:
+          type: string
+        provincia:
+          type: string
+        distrito:
+          type: string
+        origen_nombre:
+          type: string
+        origen_busqueda:
+          type: string
+        destino_nombre:
+          type: string
+        destino_busqueda:
+          type: string
+        imagen:
+          type: string
+          format: binary
+        imagen_2:
+          type: string
+          format: binary
+        imagen_3:
+          type: string
+          format: binary
+        imagen_4:
+          type: string
+          format: binary
+
+    LugarTuristicoResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        lugar:
+          $ref: '#/components/schemas/LugarTuristico'
+
+    ComidaTipica:
+      type: object
+      properties:
+        id:
+          type: integer
+        departamento_id:
+          type: integer
+        departamento_nombre:
+          type: string
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        origen_descripcion:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    ComidaTipicaInput:
+      type: object
+      required:
+        - departamento_id
+        - nombre
+      properties:
+        departamento_id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        origen_descripcion:
+          type: string
+        imagen:
+          type: string
+          format: binary
+
+    ComidaTipicaResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        comida:
+          $ref: '#/components/schemas/ComidaTipica'
+
+    ContenidoTuristicoSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        ubicacion_referencial:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
+
+    ContenidoGastronomicoSimple:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        imagen:
+          type: string
+        origen_descripcion:
+          type: string
+        fecha_creacion:
+          type: string
+          format: date-time
