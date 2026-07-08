@@ -23,7 +23,12 @@ router.post(
     "/",
     verifyToken,
     isAdmin,
-    uploadLugarTuristicoImage.single("imagen"),
+    uploadLugarTuristicoImage.fields([
+        { name: "imagen", maxCount: 1 },
+        { name: "imagen_2", maxCount: 1 },
+        { name: "imagen_3", maxCount: 1 },
+        { name: "imagen_4", maxCount: 1 },
+    ]),
     createLugarTuristico,
 );
 
@@ -31,7 +36,12 @@ router.put(
     "/:id",
     verifyToken,
     isAdmin,
-    uploadLugarTuristicoImage.single("imagen"),
+    uploadLugarTuristicoImage.fields([
+        { name: "imagen", maxCount: 1 },
+        { name: "imagen_2", maxCount: 1 },
+        { name: "imagen_3", maxCount: 1 },
+        { name: "imagen_4", maxCount: 1 },
+    ]),
     updateLugarTuristico,
 );
 

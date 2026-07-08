@@ -1,0 +1,452 @@
+.detalle-lugar-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 8% 18%, rgba(217, 16, 35, 0.08), transparent 28%),
+        radial-gradient(circle at 92% 78%, rgba(16, 111, 142, 0.12), transparent 34%),
+        linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+    color: #111827;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.detalle-lugar-state {
+    min-height: calc(100vh - 92px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.detalle-lugar-loader {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(15, 23, 42, 0.15);
+    border-top-color: #D91023;
+    border-radius: 50%;
+    animation: detalleLugarSpin 0.9s linear infinite;
+}
+
+@keyframes detalleLugarSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.detalle-lugar-state span {
+    font-size: 52px;
+}
+
+.detalle-lugar-state h2 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 950;
+}
+
+.detalle-lugar-state p {
+    margin: 0;
+    color: #64748b;
+    font-weight: 750;
+}
+
+.detalle-lugar-state button {
+    height: 46px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 950;
+    cursor: pointer;
+}
+
+.detalle-lugar-hero {
+    min-height: calc(100vh - 92px);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.detalle-lugar-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 82% 22%, rgba(255, 209, 102, 0.14), transparent 28%),
+        linear-gradient(0deg, rgba(0, 0, 0, 0.58) 0%, transparent 52%);
+    pointer-events: none;
+}
+
+.detalle-lugar-hero-content {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 1320px);
+    margin: 0 auto;
+    padding: 58px 56px;
+    color: #ffffff;
+}
+
+.detalle-lugar-back {
+    height: 40px;
+    padding: 0 20px;
+    margin-bottom: 46px;
+    border: 1.6px solid rgba(255, 255, 255, 0.58);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.25s ease;
+}
+
+.detalle-lugar-back:hover {
+    background: #ffffff;
+    color: #D91023;
+    transform: translateX(-4px);
+}
+
+.detalle-lugar-badge {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    font-size: 13px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.detalle-lugar-hero h1 {
+    max-width: 920px;
+    margin: 0 0 20px;
+    color: #ffffff;
+    font-size: clamp(50px, 7vw, 92px);
+    line-height: 0.96;
+    font-weight: 1000;
+    letter-spacing: -2.5px;
+    text-transform: uppercase;
+    text-shadow: 0 12px 28px rgba(0, 0, 0, 0.48);
+}
+
+.detalle-lugar-hero p {
+    max-width: 760px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 18px;
+    line-height: 1.7;
+    font-weight: 750;
+    text-shadow: 0 6px 18px rgba(0, 0, 0, 0.52);
+}
+
+.detalle-lugar-content {
+    width: min(calc(100vw - 72px), 1640px);
+    margin: 0 auto;
+    padding: 80px 0 95px;
+}
+
+.detalle-lugar-about,
+.detalle-lugar-info-card,
+.detalle-lugar-gallery-card,
+.detalle-lugar-route-section,
+.detalle-lugar-rec-card {
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 22px 48px rgba(15, 23, 42, 0.09),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    border-radius: 22px;
+}
+
+.detalle-lugar-about {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.45fr) minmax(0, 1fr);
+    gap: 34px;
+    padding: 42px;
+    margin-bottom: 34px;
+}
+
+.detalle-lugar-about span,
+.detalle-lugar-info-card span,
+.detalle-lugar-gallery-card span,
+.detalle-lugar-route-info span,
+.detalle-lugar-rec-card span {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(217, 16, 35, 0.10);
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.detalle-lugar-about h2,
+.detalle-lugar-info-card h2,
+.detalle-lugar-gallery-card h2,
+.detalle-lugar-route-info h2,
+.detalle-lugar-rec-card h2 {
+    margin: 0 0 18px;
+    color: #111827;
+    font-size: clamp(30px, 3.2vw, 44px);
+    line-height: 1.08;
+    font-weight: 1000;
+    letter-spacing: -1px;
+}
+
+.detalle-lugar-text p {
+    margin: 0 0 18px;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.85;
+    font-weight: 650;
+    text-align: justify;
+}
+
+.detalle-lugar-text p:last-child {
+    margin-bottom: 0;
+}
+
+.detalle-lugar-grid-section {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 30px;
+    margin-bottom: 34px;
+}
+
+.detalle-lugar-info-card,
+.detalle-lugar-gallery-card {
+    padding: 36px;
+}
+
+.detalle-lugar-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.detalle-lugar-info-grid article {
+    padding: 20px;
+    border-radius: 18px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.detalle-lugar-info-grid small {
+    display: block;
+    margin-bottom: 8px;
+    color: #D91023;
+    font-size: 11px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.detalle-lugar-info-grid strong {
+    display: block;
+    color: #111827;
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 900;
+}
+
+.detalle-lugar-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.detalle-lugar-gallery-grid img {
+    width: 100%;
+    height: 220px;
+    border-radius: 18px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.detalle-lugar-gallery-empty {
+    min-height: 220px;
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 80% 18%, rgba(255, 209, 102, 0.16), transparent 30%),
+        linear-gradient(135deg, #9f1025 0%, #106f8e 100%);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.detalle-lugar-route-section {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.42fr) minmax(0, 1fr);
+    overflow: hidden;
+    margin-bottom: 34px;
+}
+
+.detalle-lugar-route-info {
+    padding: 38px;
+    border-right: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.detalle-lugar-route-info p {
+    margin: 0 0 16px;
+    color: #64748b;
+    font-size: 16px;
+    line-height: 1.75;
+    font-weight: 650;
+}
+
+.detalle-lugar-route-info small {
+    display: block;
+    color: #94a3b8;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 750;
+}
+
+.detalle-lugar-map {
+    min-height: 520px;
+    width: 100%;
+}
+
+.detalle-lugar-map .leaflet-control-zoom {
+    border: none;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+}
+
+.detalle-lugar-map .leaflet-control-zoom a {
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    border: none;
+    color: #111827;
+    font-weight: 1000;
+}
+
+.detalle-lugar-map .leaflet-control-attribution {
+    padding: 4px 8px;
+    border-radius: 999px 0 0 0;
+    background: rgba(255, 255, 255, 0.84);
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.detalle-lugar-marker {
+    background: transparent;
+    border: none;
+}
+
+.detalle-lugar-marker div {
+    min-width: 72px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 1000;
+    letter-spacing: 0.6px;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.25);
+}
+
+.detalle-lugar-marker.origen div {
+    background: #106f8e;
+}
+
+.detalle-lugar-marker.destino div {
+    background: #D91023;
+}
+
+.detalle-lugar-recommendations {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+}
+
+.detalle-lugar-rec-card {
+    padding: 36px;
+}
+
+.detalle-lugar-rec-card ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.8;
+    font-weight: 650;
+}
+
+.detalle-lugar-rec-card li {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 1050px) {
+
+    .detalle-lugar-about,
+    .detalle-lugar-grid-section,
+    .detalle-lugar-route-section,
+    .detalle-lugar-recommendations {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-lugar-route-info {
+        border-right: none;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    }
+}
+
+@media (max-width: 720px) {
+    .detalle-lugar-hero-content {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .detalle-lugar-content {
+        width: calc(100vw - 40px);
+        padding-top: 56px;
+    }
+
+    .detalle-lugar-about,
+    .detalle-lugar-info-card,
+    .detalle-lugar-gallery-card,
+    .detalle-lugar-route-info,
+    .detalle-lugar-rec-card {
+        padding: 26px;
+    }
+
+    .detalle-lugar-info-grid,
+    .detalle-lugar-gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detalle-lugar-gallery-grid img {
+        height: 220px;
+    }
+
+    .detalle-lugar-map {
+        min-height: 390px;
+    }
+}

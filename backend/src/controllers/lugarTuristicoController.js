@@ -41,14 +41,31 @@ export const getLugarById = async (req, res) => {
 
 export const createLugarTuristico = async (req, res) => {
     try {
-        const imagen = req.file
-            ? `/uploads/lugares-turisticos/${req.file.filename}`
-            : req.body.imagen || null;
+        const imagen = req.files?.imagen?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen[0].filename}`
+            : req.file
+                ? `/uploads/lugares-turisticos/${req.file.filename}`
+                : req.body.imagen || null;
+
+        const imagen_2 = req.files?.imagen_2?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_2[0].filename}`
+            : req.body.imagen_2 || null;
+
+        const imagen_3 = req.files?.imagen_3?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_3[0].filename}`
+            : req.body.imagen_3 || null;
+
+        const imagen_4 = req.files?.imagen_4?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_4[0].filename}`
+            : req.body.imagen_4 || null;
 
         const nuevoLugar = await lugarTuristicoModel.createLugarTuristico({
             ...req.body,
             departamento_id: Number(req.body.departamento_id),
             imagen,
+            imagen_2,
+            imagen_3,
+            imagen_4,
         });
 
         res.status(201).json({
@@ -75,15 +92,33 @@ export const updateLugarTuristico = async (req, res) => {
             return res.status(404).json({ error: "Lugar turístico no encontrado" });
         }
 
-        const imagen = req.file
-            ? `/uploads/lugares-turisticos/${req.file.filename}`
-            : req.body.imagen || lugarActual.imagen || null;
+        const imagen = req.files?.imagen?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen[0].filename}`
+            : req.file
+                ? `/uploads/lugares-turisticos/${req.file.filename}`
+                : req.body.imagen || lugarActual.imagen || null;
+
+        const imagen_2 = req.files?.imagen_2?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_2[0].filename}`
+            : req.body.imagen_2 || lugarActual.imagen_2 || null;
+
+        const imagen_3 = req.files?.imagen_3?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_3[0].filename}`
+            : req.body.imagen_3 || lugarActual.imagen_3 || null;
+
+        const imagen_4 = req.files?.imagen_4?.[0]
+            ? `/uploads/lugares-turisticos/${req.files.imagen_4[0].filename}`
+            : req.body.imagen_4 || lugarActual.imagen_4 || null;
 
         const lugarActualizado = await lugarTuristicoModel.updateLugarTuristico(
             id,
             {
+                ...lugarActual,
                 ...req.body,
                 imagen,
+                imagen_2,
+                imagen_3,
+                imagen_4,
             },
         );
 

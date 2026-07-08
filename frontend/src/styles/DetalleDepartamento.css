@@ -751,3 +751,26 @@
         height: 220px;
     }
 }
+
+
+
+/*NUEVOS ESTILOS A LA CAJA DE DETALLE TURISTIVO*/
+.detalle-dep-feature-card.clickable {
+    cursor: pointer;
+}
+
+.detalle-dep-feature-card.clickable:focus {
+    outline: 3px solid rgba(217, 16, 35, 0.22);
+    outline-offset: 4px;
+}
+
+.detalle-dep-feature-card.clickable .detalle-dep-feature-content::after {
+    content: 'Ver detalle →';
+    display: inline-block;
+    margin-top: 18px;
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
