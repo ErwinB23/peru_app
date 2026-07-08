@@ -135,6 +135,81 @@
     border-left: 5px solid #D91023;
 }
 
+.gestion-contenido-intro-card {
+    padding: 32px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 18px 42px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.gestion-contenido-intro-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.gestion-contenido-intro-head span {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.gestion-contenido-intro-head h2 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 30px;
+    font-weight: 1000;
+    letter-spacing: -0.6px;
+}
+
+.gestion-contenido-intro-head p {
+    margin: 0;
+    max-width: 720px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 650;
+}
+
+.gestion-contenido-intro-head button {
+    flex: 0 0 auto;
+    height: 46px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 950;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 14px 28px rgba(217, 16, 35, 0.20);
+}
+
+.gestion-contenido-intro-head button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.gestion-contenido-intro-help {
+    display: block;
+    margin-top: 9px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 750;
+}
+
 .gestion-contenido-section {
     margin-bottom: 52px;
 }
@@ -592,6 +667,14 @@
     .gestion-contenido-toolbar {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .gestion-contenido-intro-head {
+        flex-direction: column;
+    }
+
+    .gestion-contenido-intro-head button {
+        width: 100%;
     }
 }
 

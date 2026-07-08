@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
-import { getDepartamentoById } from '../services/departamentoService';
+import { getDepartamentoById, updateDepartamento } from '../services/departamentoService';
 import {
     getLugaresByDepartamentoId,
     createLugarTuristico,
@@ -37,6 +37,8 @@ const GestionContenidoDepartamento = () => {
     const [departamento, setDepartamento] = useState(null);
     const [lugares, setLugares] = useState([]);
     const [comidas, setComidas] = useState([]);
+    const [introForm, setIntroForm] = useState('');
+    const [savingIntro, setSavingIntro] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -77,11 +79,10 @@ const GestionContenidoDepartamento = () => {
                 getComidasByDepartamentoId(id)
             ]);
 
-            if (departamentoData?.departamento) {
-                setDepartamento(departamentoData.departamento);
-            } else {
-                setDepartamento(departamentoData);
-            }
+            const departamentoFinal = departamentoData?.departamento || departamentoData;
+
+            setDepartamento(departamentoFinal);
+            setIntroForm(departamentoFinal?.introduccion || '');
 
             setLugares(Array.isArray(lugaresData) ? lugaresData : []);
             setComidas(Array.isArray(comidasData) ? comidasData : []);
@@ -95,6 +96,28 @@ const GestionContenidoDepartamento = () => {
     useEffect(() => {
         cargarContenido();
     }, [id]);
+
+    const handleSaveIntroduccion = async (e) => {
+        e.preventDefault();
+
+        try {
+            setSavingIntro(true);
+            setError('');
+            setMessage('');
+
+            const payload = new FormData();
+            payload.append('introduccion', introForm);
+
+            await updateDepartamento(id, payload);
+
+            setMessage('Presentación del departamento actualizada correctamente');
+            await cargarContenido();
+        } catch (err) {
+            setError(err.response?.data?.error || 'Error al guardar la presentación del departamento');
+        } finally {
+            setSavingIntro(false);
+        }
+    };
 
     const openCreateModal = (type) => {
         setModalType(type);
@@ -320,6 +343,47 @@ const GestionContenidoDepartamento = () => {
                             {error}
                         </div>
                     )}
+
+                    <div className="gestion-contenido-section">
+                        <form
+                            className="gestion-contenido-intro-card"
+                            onSubmit={handleSaveIntroduccion}
+                        >
+                            <div className="gestion-contenido-intro-head">
+                                <div>
+                                    <span>Presentación</span>
+                                    <h2>Introducción del departamento</h2>
+                                    <p>
+                                        Este texto se mostrará debajo de la ficha informativa
+                                        en la página pública del departamento.
+                                    </p>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={savingIntro}
+                                >
+                                    {savingIntro ? 'Guardando...' : 'Guardar presentación'}
+                                </button>
+                            </div>
+
+                            <div className="gestion-contenido-input-group">
+                                <label>Texto introductorio</label>
+
+                                <textarea
+                                    name="introduccion"
+                                    value={introForm}
+                                    onChange={(e) => setIntroForm(e.target.value)}
+                                    rows="9"
+                                    placeholder="Ejemplo: Debido a su proximidad con Lima, Ica es uno de los destinos ideales para escaparse..."
+                                ></textarea>
+
+                                <small className="gestion-contenido-intro-help">
+                                    Puedes escribir varios párrafos. Cada salto de línea se mostrará como un párrafo separado.
+                                </small>
+                            </div>
+                        </form>
+                    </div>
 
                     <div className="gestion-contenido-section">
                         <div className="gestion-contenido-toolbar">

@@ -1,10 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import { getDepartamentoById } from '../services/departamentoService';
 import '../styles/DetalleDepartamento.css';
 import { getLugaresByDepartamentoId } from '../services/lugarTuristicoService';
 import { getComidasByDepartamentoId } from '../services/comidaTipicaService';
+
 
 
 const DetalleDepartamento = () => {
@@ -16,6 +20,8 @@ const DetalleDepartamento = () => {
     const [comidasTipicas, setComidasTipicas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const mapContainerRef = useRef(null);
+    const mapInstanceRef = useRef(null);
 
     const getBackendImageUrl = (path) => {
         if (!path) return '';
@@ -37,6 +43,63 @@ const DetalleDepartamento = () => {
             data?.imagen ||
             ''
         );
+    };
+
+    const normalizeText = (text = '') => {
+        return text
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim();
+    };
+
+    const departamentosMapData = {
+        amazonas: { center: [-6.2317, -77.8690], zoom: 8, label: 'Amazonas, Perú' },
+        ancash: { center: [-9.5298, -77.5280], zoom: 8, label: 'Áncash, Perú' },
+        apurimac: { center: [-13.6340, -72.8810], zoom: 8, label: 'Apurímac, Perú' },
+        arequipa: { center: [-16.3989, -71.5350], zoom: 8, label: 'Arequipa, Perú' },
+        ayacucho: { center: [-13.1631, -74.2236], zoom: 8, label: 'Ayacucho, Perú' },
+        cajamarca: { center: [-7.1617, -78.5128], zoom: 8, label: 'Cajamarca, Perú' },
+        callao: { center: [-12.0566, -77.1181], zoom: 11, label: 'Callao, Perú' },
+        cusco: { center: [-13.5319, -71.9675], zoom: 8, label: 'Cusco, Perú' },
+        huancavelica: { center: [-12.7864, -74.9764], zoom: 8, label: 'Huancavelica, Perú' },
+        huanuco: { center: [-9.9306, -76.2422], zoom: 8, label: 'Huánuco, Perú' },
+        ica: { center: [-14.0678, -75.7286], zoom: 5, label: 'Ica, Perú' },
+        junin: { center: [-12.0651, -75.2049], zoom: 8, label: 'Junín, Perú' },
+        'la libertad': { center: [-8.1116, -79.0287], zoom: 8, label: 'La Libertad, Perú' },
+        lambayeque: { center: [-6.7714, -79.8409], zoom: 9, label: 'Lambayeque, Perú' },
+        lima: { center: [-12.0464, -77.0428], zoom: 8, label: 'Lima, Perú' },
+        loreto: { center: [-3.7437, -73.2516], zoom: 7, label: 'Loreto, Perú' },
+        'madre de dios': { center: [-12.5933, -69.1891], zoom: 8, label: 'Madre de Dios, Perú' },
+        moquegua: { center: [-17.1938, -70.9356], zoom: 9, label: 'Moquegua, Perú' },
+        pasco: { center: [-10.6864, -76.2567], zoom: 8, label: 'Pasco, Perú' },
+        piura: { center: [-5.1945, -80.6328], zoom: 8, label: 'Piura, Perú' },
+        puno: { center: [-15.8402, -70.0219], zoom: 8, label: 'Puno, Perú' },
+        'san martin': { center: [-6.0342, -76.9717], zoom: 8, label: 'San Martín, Perú' },
+        tacna: { center: [-18.0066, -70.2463], zoom: 9, label: 'Tacna, Perú' },
+        tumbes: { center: [-3.5669, -80.4515], zoom: 10, label: 'Tumbes, Perú' },
+        ucayali: { center: [-8.3791, -74.5539], zoom: 8, label: 'Ucayali, Perú' }
+    };
+
+    const getDepartamentoMapData = (data) => {
+        const key = normalizeText(data?.nombre);
+
+        return departamentosMapData[key] || {
+            center: [-9.19, -75.0152],
+            zoom: 5,
+            label: `${data?.nombre || 'Perú'}, Perú`
+        };
+    };
+
+
+    const getDepartamentoMapUrl = (data) => {
+        const nombre = data?.nombre?.trim();
+
+        if (!nombre) {
+            return '';
+        }
+
+        return `https://www.google.com/maps?q=${encodeURIComponent(`${nombre} Perú`)}&output=embed`;
     };
 
     const formatNumber = (value) => {
@@ -98,6 +161,70 @@ const DetalleDepartamento = () => {
             radial-gradient(circle at 18% 82%, rgba(16, 111, 142, 0.35), transparent 35%),
             linear-gradient(135deg, #111827 0%, #9f1025 48%, #106f8e 100%)
         `;
+    }, [departamento]);
+
+    const departamentoMapData = useMemo(() => {
+        return getDepartamentoMapData(departamento);
+    }, [departamento]);
+
+    useEffect(() => {
+        if (!departamento || !mapContainerRef.current) return;
+
+        if (mapInstanceRef.current) {
+            mapInstanceRef.current.remove();
+            mapInstanceRef.current = null;
+        }
+
+        const map = L.map(mapContainerRef.current, {
+            center: departamentoMapData.center,
+            zoom: departamentoMapData.zoom,
+            zoomSnap: 0.25,
+            zoomDelta: 0.5,
+            wheelPxPerZoomLevel: 90,
+            scrollWheelZoom: true,
+            zoomControl: false,
+            keyboard: false,
+            attributionControl: true
+        });
+
+        L.control.zoom({
+            position: 'bottomright'
+        }).addTo(map);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            detectRetina: true,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const markerIcon = L.divIcon({
+            className: 'detalle-dep-custom-marker',
+            html: '<div><span>📍</span></div>',
+            iconSize: [50, 50],
+            iconAnchor: [25, 45],
+            popupAnchor: [0, -42]
+        });
+
+        L.marker(departamentoMapData.center, {
+            icon: markerIcon
+        })
+            .addTo(map)
+            .bindPopup(`<strong>${departamentoMapData.label}</strong>`);
+
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+
+        mapInstanceRef.current = map;
+
+        return () => {
+            map.remove();
+            mapInstanceRef.current = null;
+        };
+    }, [departamento, departamentoMapData]);
+
+    const departamentoMapUrl = useMemo(() => {
+        return getDepartamentoMapUrl(departamento);
     }, [departamento]);
 
     if (loading) {
@@ -226,6 +353,50 @@ const DetalleDepartamento = () => {
                             <strong>{departamento.principales_actividades || 'No registradas'}</strong>
                         </article>
                     </div>
+
+                    <section className="detalle-dep-intro-section">
+                        <div className="detalle-dep-intro-text">
+                            <span>Presentación del departamento</span>
+
+                            <h2>
+                                Conoce {departamento.nombre}
+                            </h2>
+
+                            {departamento.introduccion ? (
+                                departamento.introduccion
+                                    .split('\n')
+                                    .filter((paragraph) => paragraph.trim() !== '')
+                                    .map((paragraph, index) => (
+                                        <p key={index}>
+                                            {paragraph}
+                                        </p>
+                                    ))
+                            ) : (
+                                <p>
+                                    Aún no se ha registrado una presentación detallada para este departamento.
+                                    El administrador podrá agregarla desde la gestión de contenido.
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="detalle-dep-map-card">
+                            <div className="detalle-dep-map-header">
+                                <span>Ubicación geográfica</span>
+                                <h3>Mapa de {departamento.nombre}</h3>
+                                <p>
+                                    Referencia visual del departamento dentro del territorio peruano.
+                                </p>
+                            </div>
+
+                            <div
+                                ref={mapContainerRef}
+                                className="detalle-dep-map-view"
+                                aria-label={`Mapa interactivo de ${departamento.nombre}`}
+                            ></div>
+                        </div>
+                    </section>
+
+
 
                     <section className="detalle-dep-tourism-section">
                         <div className="detalle-dep-section-header">

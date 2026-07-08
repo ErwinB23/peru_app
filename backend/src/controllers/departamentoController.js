@@ -45,6 +45,7 @@ export const createDepartamento = async (req, res) => {
         const newDepartamento = await departamentoModel.createDepartamento({
             ...req.body,
             imagen_fondo,
+            introduccion: req.body.introduccion || null,
         });
 
         res.status(201).json({
@@ -78,8 +79,13 @@ export const updateDepartamento = async (req, res) => {
             : req.body.imagen_fondo || departamentoActual.imagen_fondo || null;
 
         const updatedDepartamento = await departamentoModel.updateDepartamento(id, {
+            ...departamentoActual,
             ...req.body,
             imagen_fondo,
+            introduccion:
+                req.body.introduccion !== undefined
+                    ? req.body.introduccion
+                    : departamentoActual.introduccion || null,
         });
 
         res.json({
@@ -91,7 +97,6 @@ export const updateDepartamento = async (req, res) => {
         res.status(500).json({ error: "Error al actualizar departamento" });
     }
 };
-
 // ELIMINAR DEPARTAMENTO (solo admin)
 export const deleteDepartamento = async (req, res) => {
     try {

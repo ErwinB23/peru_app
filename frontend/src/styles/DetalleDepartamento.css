@@ -274,6 +274,178 @@
     line-height: 1.35;
 }
 
+.detalle-dep-intro-section {
+    width: min(calc(100vw - 72px), 1640px);
+    margin: 24px 0 88px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: minmax(620px, 1.35fr) minmax(620px, 1fr);
+    gap: 15px;
+    align-items: stretch;
+}
+
+.detalle-dep-intro-text {
+    min-height: 620px;
+    padding: 42px 46px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 24px 56px rgba(15, 23, 42, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+}
+
+.detalle-dep-intro-text span,
+.detalle-dep-map-header span {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(217, 16, 35, 0.10);
+    color: #D91023;
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+.detalle-dep-intro-text h2 {
+    margin: 0 0 20px;
+    color: #111827;
+    font-size: clamp(32px, 3.5vw, 46px);
+    line-height: 1.05;
+    font-weight: 1000;
+    letter-spacing: -1px;
+}
+
+.detalle-dep-intro-text p {
+    margin: 0 0 18px;
+    font-size: 16px;
+    line-height: 25px;
+    font-weight:900px;
+    
+}
+
+.detalle-dep-intro-text p:last-child {
+    margin-bottom: 0;
+}
+
+.detalle-dep-map-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 620px;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+        0 24px 56px rgba(15, 23, 42, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+}
+
+.detalle-dep-map-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 34px;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(217, 16, 35, 0.32), rgba(16, 111, 142, 0.32));
+    -webkit-mask:
+        linear-gradient(#ffffff 0 0) content-box,
+        linear-gradient(#ffffff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.detalle-dep-map-header {
+    position: relative;
+    z-index: 4;
+    padding: 30px 32px 24px;
+    background:
+        radial-gradient(circle at 84% 14%, rgba(255, 209, 102, 0.14), transparent 28%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+    border-bottom: 1px solid rgba(15, 23, 42, 0.07);
+}
+
+.detalle-dep-map-header h3 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 1000;
+    letter-spacing: -0.7px;
+}
+
+.detalle-dep-map-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    font-weight: 700;
+}
+
+.detalle-dep-map-view {
+    flex: 1;
+    min-height: 500px;
+    width: 100%;
+    z-index: 1;
+}
+
+.detalle-dep-map-view .leaflet-container {
+    width: 100%;
+    height: 100%;
+    font-family: inherit;
+}
+
+.detalle-dep-map-view .leaflet-control-zoom {
+    border: none;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.22);
+}
+
+.detalle-dep-map-view .leaflet-control-zoom a {
+    width: 38px;
+    height: 38px;
+    line-height: 38px;
+    border: none;
+    color: #111827;
+    font-weight: 1000;
+}
+
+.detalle-dep-map-view .leaflet-control-attribution {
+    padding: 4px 8px;
+    border-radius: 999px 0 0 0;
+    background: rgba(255, 255, 255, 0.84);
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.detalle-dep-custom-marker {
+    background: transparent;
+    border: none;
+}
+
+.detalle-dep-custom-marker div {
+    width: 50px;
+    height: 50px;
+    border-radius: 90% 90% 90% 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-45deg);
+    box-shadow: 0 0 0 5px rgba(217, 16, 36, 0.341);
+}
+
+.detalle-dep-custom-marker span {
+    transform: rotate(45deg);
+    font-size: 24px;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.24));
+}
+
 .detalle-dep-tourism {
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr;
@@ -344,6 +516,13 @@
     font-weight: 650;
 }
 
+@media (max-width: 1350px) {
+    .detalle-dep-intro-section {
+        width: min(calc(100vw - 48px), 1280px);
+        grid-template-columns: minmax(0, 1fr) minmax(480px, 0.9fr);
+    }
+}
+
 @media (max-width: 1050px) {
     .detalle-dep-info-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -351,6 +530,20 @@
 
     .detalle-dep-tourism {
         grid-template-columns: 1fr;
+    }
+
+    .detalle-dep-intro-section {
+        width: 100%;
+        margin-left: 0;
+        transform: none;
+        grid-template-columns: 1fr;
+    }
+    .detalle-dep-intro-text {
+        min-height: auto;
+    }
+
+    .detalle-dep-map-card {
+        min-height: 560px;
     }
 }
 
@@ -382,11 +575,51 @@
     .detalle-dep-actions button {
         width: 100%;
     }
+
+    .detalle-dep-intro-text {
+        padding: 28px;
+    }
+
+    .detalle-dep-map-card {
+        min-height: 500px;
+    }
+
+    .detalle-dep-map-header {
+        padding: 26px 24px 20px;
+    }
+
+    .detalle-dep-map-view {
+        min-height: 390px;
+    }
 }
 
 /* ==================== LUGARES TURÍSTICOS Y COMIDAS TÍPICAS ==================== */
 .detalle-dep-tourism-section {
-    margin-top: 70px;
+    width: min(calc(100vw - 72px), 1640px);
+    margin: 84px 0 0;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background: rgba(246, 231, 237, 0.542);
+    border-radius: 20px;
+    padding: 50px;
+    
+    
+}
+
+.detalle-dep-tourism-section .detalle-dep-section-header {
+    max-width: 980px;
+}
+.detalle-dep-tourism-section .detalle-dep-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.detalle-dep-tourism-section .detalle-dep-feature-image {
+    height: 270px;
+}
+
+.detalle-dep-tourism-section .detalle-dep-feature-content {
+    padding: 30px;
 }
 
 .detalle-dep-card-grid {
@@ -397,7 +630,7 @@
 
 .detalle-dep-feature-card {
     background: #ffffff;
-    border-radius: 28px;
+    border-radius: 15px;
     overflow: hidden;
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow:
@@ -453,7 +686,7 @@
     display: inline-block;
     margin-bottom: 12px;
     padding: 7px 14px;
-    border-radius: 999px;
+    border-radius: 20px;
     background: rgba(217, 16, 35, 0.10);
     color: #D91023;
     font-size: 12px;
@@ -500,6 +733,8 @@
     line-height: 1.65;
     font-weight: 650;
 }
+
+
 
 @media (max-width: 1050px) {
     .detalle-dep-card-grid {
