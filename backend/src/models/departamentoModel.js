@@ -44,7 +44,8 @@ export const createDepartamento = async (data) => {
             data.atractivo_turistico_principal,
         )
         .input("descripcion", sql.VarChar, data.descripcion)
-        .input("imagen_fondo", sql.VarChar, data.imagen_fondo).query(`
+        .input("imagen_fondo", sql.VarChar, data.imagen_fondo)
+        .input("introduccion", sql.VarChar(sql.MAX), data.introduccion || null).query(`
             INSERT INTO Departamentos (
                 nombre,
                 capital,
@@ -55,7 +56,8 @@ export const createDepartamento = async (data) => {
                 principales_actividades,
                 atractivo_turistico_principal,
                 descripcion,
-                imagen_fondo
+                imagen_fondo,
+                introduccion
             )
             OUTPUT INSERTED.*
             VALUES (
@@ -68,7 +70,8 @@ export const createDepartamento = async (data) => {
                 @principales_actividades,
                 @atractivo_turistico_principal,
                 @descripcion,
-                @imagen_fondo
+                @imagen_fondo,
+                @introduccion
             )
         `);
 
@@ -95,7 +98,8 @@ export const updateDepartamento = async (id, data) => {
             data.atractivo_turistico_principal,
         )
         .input("descripcion", sql.VarChar, data.descripcion)
-        .input("imagen_fondo", sql.VarChar, data.imagen_fondo).query(`
+        .input("imagen_fondo", sql.VarChar, data.imagen_fondo)
+        .input("introduccion", sql.VarChar(sql.MAX), data.introduccion || null).query(`
             UPDATE Departamentos
             SET
                 nombre = @nombre,
@@ -107,7 +111,8 @@ export const updateDepartamento = async (id, data) => {
                 principales_actividades = @principales_actividades,
                 atractivo_turistico_principal = @atractivo_turistico_principal,
                 descripcion = @descripcion,
-                imagen_fondo = @imagen_fondo
+                imagen_fondo = @imagen_fondo,
+                introduccion = @introduccion
             OUTPUT INSERTED.*
             WHERE id = @id`);
 
