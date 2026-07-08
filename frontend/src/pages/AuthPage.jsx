@@ -5,6 +5,16 @@
 
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  UserRound,
+  BookOpen,
+  CalendarDays,
+  Mail,
+  LockKeyhole,
+  X,
+  CircleAlert,
+  CheckCircle2
+} from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { login as loginService, register as registerService } from '../services/authService';
 import '../styles/AuthPage.css';
@@ -207,7 +217,7 @@ const handleRegisterSubmit = async (e) => {
           
           {/* Botón X para cerrar y volver a la bienvenida */}
           <button type="button" className="btn-close-auth" onClick={handleCloseAuth} title="Volver">
-            ✕
+            <X size={22} strokeWidth={2.8} />
           </button>
           
           {/* Panel de REGISTRO */}
@@ -217,7 +227,7 @@ const handleRegisterSubmit = async (e) => {
               <p className="form-subtitle">Completa tus datos</p>
 
               <div className="input-group">
-                <span className="input-icon">👤</span>
+                <span className="input-icon"><UserRound size={18} strokeWidth={2.4} /></span>
                 <input
                   type="text"
                   name="nombres"
@@ -231,7 +241,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">📖</span>
+                <span className="input-icon"><BookOpen size={18} strokeWidth={2.4} /></span>
                 <input
                   type="text"
                   name="apellidos"
@@ -245,7 +255,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">📅</span>
+                <span className="input-icon"><CalendarDays size={18} strokeWidth={2.4} /></span>
                 <input
                   type="date"
                   name="fecha_nacimiento"
@@ -258,7 +268,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">✉</span>
+                <span className="input-icon"><Mail size={18} strokeWidth={2.4} /></span>
                 <input
                   type="email"
                   name="email"
@@ -272,7 +282,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">🔒</span>
+                <span className="input-icon"><LockKeyhole size={18} strokeWidth={2.4} /></span>
                 <input
                   type="password"
                   name="password"
@@ -287,7 +297,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">🔒</span>
+                <span className="input-icon"><LockKeyhole size={18} strokeWidth={2.4} /></span>
                 <input
                   type="password"
                   name="confirmPassword"
@@ -319,7 +329,7 @@ const handleRegisterSubmit = async (e) => {
               <p className="form-subtitle">Ingresa tus credenciales</p>
 
               <div className="input-group">
-                <span className="input-icon">✉</span>
+                <span className="input-icon"><Mail size={18} strokeWidth={2.4} /></span>
                 <input
                   type="email"
                   name="email"
@@ -333,7 +343,7 @@ const handleRegisterSubmit = async (e) => {
               </div>
 
               <div className="input-group">
-                <span className="input-icon">🔒</span>
+                <span className="input-icon"><LockKeyhole size={18} strokeWidth={2.4} /></span>
                 <input
                   type="password"
                   name="password"
@@ -400,12 +410,12 @@ const handleRegisterSubmit = async (e) => {
       {/* Mensajes emergentes */}
       {error && (
         <div className="toast toast-error">
-          ⚠️ {error}
+          <CircleAlert size={18} strokeWidth={2.5} /> {error}
         </div>
       )}
       {success && (
         <div className="toast toast-success">
-          ✓ {success}
+          <CheckCircle2 size={18} strokeWidth={2.5} /> {success}
         </div>
       )}
     </div>

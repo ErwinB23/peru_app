@@ -349,6 +349,33 @@
   z-index: 2;
 }
 
+.input-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-icon svg {
+  display: block;
+}
+
+.btn-close-auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast svg {
+  flex-shrink: 0;
+}
+
+
 /* Inputs del login y registro con el mismo estilo */
 .input-group input {
   width: 100%;

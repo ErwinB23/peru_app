@@ -345,6 +345,18 @@
   background: rgba(217, 16, 35, 0.10);
 }
 
+.sidebar-icon svg,
+.sidebar-close svg {
+  display: block;
+}
+
+.sidebar-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
   .sidebar {

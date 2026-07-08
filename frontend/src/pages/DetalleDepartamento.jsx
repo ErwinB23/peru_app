@@ -91,17 +91,6 @@ const DetalleDepartamento = () => {
         };
     };
 
-
-    const getDepartamentoMapUrl = (data) => {
-        const nombre = data?.nombre?.trim();
-
-        if (!nombre) {
-            return '';
-        }
-
-        return `https://www.google.com/maps?q=${encodeURIComponent(`${nombre} Perú`)}&output=embed`;
-    };
-
     const formatNumber = (value) => {
         if (value === null || value === undefined || value === '') {
             return 'No registrado';
@@ -222,10 +211,6 @@ const DetalleDepartamento = () => {
             mapInstanceRef.current = null;
         };
     }, [departamento, departamentoMapData]);
-
-    const departamentoMapUrl = useMemo(() => {
-        return getDepartamentoMapUrl(departamento);
-    }, [departamento]);
 
     if (loading) {
         return (

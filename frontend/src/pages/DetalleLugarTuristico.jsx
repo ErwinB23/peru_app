@@ -31,13 +31,6 @@ const DetalleLugarTuristico = () => {
         return `${backendUrl}${path}`;
     };
 
-    const toNumber = (value) => {
-        if (value === null || value === undefined || value === '') return null;
-
-        const number = Number(value);
-        return Number.isNaN(number) ? null : number;
-    };
-
     const renderParagraphs = (text, fallback) => {
         if (!text) {
             return <p>{fallback}</p>;

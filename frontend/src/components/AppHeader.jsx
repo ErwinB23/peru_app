@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Home, Compass, BarChart3, MapPinned } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import UserDropdown from './UserDropdown';
 import Sidebar from './Sidebar';
@@ -49,18 +50,22 @@ const AppHeader = () => {
 
                     <nav className="header-nav">
                         <button type="button" onClick={irAHome}>
+                            <Home size={17} strokeWidth={2.4} />
                             Inicio
                         </button>
 
                         <button type="button" onClick={() => irASeccionHome('sobre-nosotros')}>
+                            <Compass size={17} strokeWidth={2.4} />
                             Explorar
                         </button>
 
                         <button type="button" onClick={() => irASeccionHome('estadisticas')}>
+                            <BarChart3 size={17} strokeWidth={2.4} />
                             Estadísticas
                         </button>
 
                         <button type="button" onClick={irADepartamentos}>
+                            <MapPinned size={17} strokeWidth={2.4} />
                             Departamentos
                         </button>
                     </nav>
