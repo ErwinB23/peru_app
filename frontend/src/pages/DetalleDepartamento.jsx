@@ -420,7 +420,18 @@ const DetalleDepartamento = () => {
                                     const imageUrl = getBackendImageUrl(lugar.imagen);
 
                                     return (
-                                        <article className="detalle-dep-feature-card" key={lugar.id}>
+                                        <article
+                                            className="detalle-dep-feature-card clickable"
+                                            key={lugar.id}
+                                            role="button"
+                                            tabIndex="0"
+                                            onClick={() => navigate(`/lugares-turisticos/${lugar.id}`)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    navigate(`/lugares-turisticos/${lugar.id}`);
+                                                }
+                                            }}
+                                        >
                                             <div className="detalle-dep-feature-image">
                                                 {imageUrl ? (
                                                     <img src={imageUrl} alt={lugar.nombre} />

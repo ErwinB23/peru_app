@@ -30,6 +30,7 @@ import CiudadesProvincia from './pages/CiudadesProvincia';
 import CiudadesDistrito from './pages/CiudadesDistrito';
 import GestionCiudades from './pages/GestionCiudades';
 import GestionContenidoCiudad from './pages/GestionContenidoCiudad';
+import DetalleLugarTuristico from './pages/DetalleLugarTuristico';
 
 
 function App() {
@@ -50,6 +51,8 @@ function App() {
                 </PrivateRoute>
               }
             />
+
+            
 
             <Route
               path="/departamentos/:id/provincias"
@@ -255,6 +258,15 @@ function App() {
                 <AdminRoute>
                   <GestionContenidoDepartamento />
                 </AdminRoute>
+              }
+            />
+
+            <Route
+              path="/lugares-turisticos/:id"
+              element={
+                <PrivateRoute>
+                  <DetalleLugarTuristico />
+                </PrivateRoute>
               }
             />
 

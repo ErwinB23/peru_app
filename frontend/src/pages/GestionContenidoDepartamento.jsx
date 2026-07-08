@@ -20,7 +20,21 @@ const emptyLugarForm = {
     nombre: '',
     descripcion: '',
     ubicacion_referencial: '',
-    imagen: null
+    acerca: '',
+    recomendaciones_antes: '',
+    recomendaciones_durante: '',
+    clima: '',
+    altura: '',
+    provincia: '',
+    distrito: '',
+    origen_nombre: '',
+    origen_busqueda: '',
+    destino_nombre: '',
+    destino_busqueda: '',
+    imagen: null,
+    imagen_2: null,
+    imagen_3: null,
+    imagen_4: null
 };
 
 const emptyComidaForm = {
@@ -145,7 +159,21 @@ const GestionContenidoDepartamento = () => {
                 nombre: item.nombre || '',
                 descripcion: item.descripcion || '',
                 ubicacion_referencial: item.ubicacion_referencial || '',
-                imagen: null
+                acerca: item.acerca || '',
+                recomendaciones_antes: item.recomendaciones_antes || '',
+                recomendaciones_durante: item.recomendaciones_durante || '',
+                clima: item.clima || '',
+                altura: item.altura || '',
+                provincia: item.provincia || '',
+                distrito: item.distrito || '',
+                origen_nombre: item.origen_nombre || '',
+                origen_busqueda: item.origen_busqueda || '',
+                destino_nombre: item.destino_nombre || '',
+                destino_busqueda: item.destino_busqueda || '',
+                imagen: null,
+                imagen_2: null,
+                imagen_3: null,
+                imagen_4: null
             });
         } else {
             setFormData({
@@ -175,14 +203,15 @@ const GestionContenidoDepartamento = () => {
     };
 
     const handleImageChange = (e) => {
+        const { name } = e.target;
         const file = e.target.files?.[0];
 
         setFormData((prev) => ({
             ...prev,
-            imagen: file || null
+            [name]: file || null
         }));
 
-        if (file) {
+        if (file && name === 'imagen') {
             setPreviewImage(URL.createObjectURL(file));
         }
     };
@@ -193,6 +222,17 @@ const GestionContenidoDepartamento = () => {
         payload.append('departamento_id', id);
         payload.append('nombre', formData.nombre);
         payload.append('descripcion', formData.descripcion);
+        payload.append('acerca', formData.acerca || '');
+        payload.append('recomendaciones_antes', formData.recomendaciones_antes || '');
+        payload.append('recomendaciones_durante', formData.recomendaciones_durante || '');
+        payload.append('clima', formData.clima || '');
+        payload.append('altura', formData.altura || '');
+        payload.append('provincia', formData.provincia || '');
+        payload.append('distrito', formData.distrito || '');
+        payload.append('origen_nombre', formData.origen_nombre || '');
+        payload.append('origen_busqueda', formData.origen_busqueda || '');
+        payload.append('destino_nombre', formData.destino_nombre || '');
+        payload.append('destino_busqueda', formData.destino_busqueda || '');
 
         if (modalType === 'lugar') {
             payload.append('ubicacion_referencial', formData.ubicacion_referencial || '');
@@ -204,6 +244,17 @@ const GestionContenidoDepartamento = () => {
 
         if (formData.imagen) {
             payload.append('imagen', formData.imagen);
+        }
+        if (formData.imagen_2) {
+            payload.append('imagen_2', formData.imagen_2);
+        }
+
+        if (formData.imagen_3) {
+            payload.append('imagen_3', formData.imagen_3);
+        }
+
+        if (formData.imagen_4) {
+            payload.append('imagen_4', formData.imagen_4);
         }
 
         return payload;
@@ -564,6 +615,182 @@ const GestionContenidoDepartamento = () => {
                                     />
                                 </div>
                             )}
+                            
+                            {modalType === 'lugar' && (
+                                <>
+                                    <div className="gestion-contenido-input-group">
+                                        <label>Acerca del lugar turístico</label>
+                                        <textarea
+                                            name="acerca"
+                                            value={formData.acerca}
+                                            onChange={handleChange}
+                                            rows="7"
+                                            placeholder="Escribe una presentación detallada del lugar turístico..."
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="gestion-contenido-lugar-grid">
+                                        <div className="gestion-contenido-input-group">
+                                            <label>Provincia</label>
+                                            <input
+                                                type="text"
+                                                name="provincia"
+                                                value={formData.provincia}
+                                                onChange={handleChange}
+                                                placeholder="Ejemplo: Pisco"
+                                            />
+                                        </div>
+
+                                        <div className="gestion-contenido-input-group">
+                                            <label>Distrito</label>
+                                            <input
+                                                type="text"
+                                                name="distrito"
+                                                value={formData.distrito}
+                                                onChange={handleChange}
+                                                placeholder="Ejemplo: Paracas"
+                                            />
+                                        </div>
+
+                                        <div className="gestion-contenido-input-group">
+                                            <label>Clima</label>
+                                            <input
+                                                type="text"
+                                                name="clima"
+                                                value={formData.clima}
+                                                onChange={handleChange}
+                                                placeholder="Ejemplo: Cálido y seco"
+                                            />
+                                        </div>
+
+                                        <div className="gestion-contenido-input-group">
+                                            <label>Altura</label>
+                                            <input
+                                                type="text"
+                                                name="altura"
+                                                value={formData.altura}
+                                                onChange={handleChange}
+                                                placeholder="Ejemplo: 2 m s. n. m."
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="gestion-contenido-input-group">
+                                        <label>Recomendaciones antes del viaje</label>
+                                        <textarea
+                                            name="recomendaciones_antes"
+                                            value={formData.recomendaciones_antes}
+                                            onChange={handleChange}
+                                            rows="5"
+                                            placeholder="- Contrata operadores turísticos autorizados&#10;- Lleva lentes de sol, gorro y bloqueador"
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="gestion-contenido-input-group">
+                                        <label>Recomendaciones durante el viaje</label>
+                                        <textarea
+                                            name="recomendaciones_durante"
+                                            value={formData.recomendaciones_durante}
+                                            onChange={handleChange}
+                                            rows="5"
+                                            placeholder="- Permanece en tu sitio&#10;- Evita arrojar alimentos a los animales"
+                                        ></textarea>
+                                    </div>
+
+                                    <div className="gestion-contenido-route-box">
+                                        <h3>Datos para el mapa de cómo llegar</h3>
+                                        <p>
+                                            Escribe el origen y destino en texto. El sistema calculará la ruta por carretera automáticamente.
+                                        </p>
+
+                                        <div className="gestion-contenido-lugar-grid">
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Nombre del origen</label>
+                                                <input
+                                                    type="text"
+                                                    name="origen_nombre"
+                                                    value={formData.origen_nombre}
+                                                    onChange={handleChange}
+                                                    placeholder="Ejemplo: Ayacucho"
+                                                />
+                                            </div>
+
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Búsqueda del origen</label>
+                                                <input
+                                                    type="text"
+                                                    name="origen_busqueda"
+                                                    value={formData.origen_busqueda}
+                                                    onChange={handleChange}
+                                                    placeholder="Ejemplo: Ayacucho, Perú"
+                                                />
+                                            </div>
+
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Nombre del destino</label>
+                                                <input
+                                                    type="text"
+                                                    name="destino_nombre"
+                                                    value={formData.destino_nombre}
+                                                    onChange={handleChange}
+                                                    placeholder="Ejemplo: Reserva Nacional de Paracas"
+                                                />
+                                            </div>
+
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Búsqueda del destino</label>
+                                                <input
+                                                    type="text"
+                                                    name="destino_busqueda"
+                                                    value={formData.destino_busqueda}
+                                                    onChange={handleChange}
+                                                    placeholder="Ejemplo: Reserva Nacional de Paracas, Paracas, Pisco, Ica, Perú"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="gestion-contenido-gallery-box">
+                                        <h3>Fotos adicionales</h3>
+                                        <p>
+                                            Puedes subir hasta 3 imágenes adicionales para la galería del lugar turístico.
+                                        </p>
+
+                                        <div className="gestion-contenido-lugar-grid">
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Foto adicional 1</label>
+                                                <input
+                                                    type="file"
+                                                    name="imagen_2"
+                                                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                                                    onChange={handleImageChange}
+                                                />
+                                            </div>
+
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Foto adicional 2</label>
+                                                <input
+                                                    type="file"
+                                                    name="imagen_3"
+                                                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                                                    onChange={handleImageChange}
+                                                />
+                                            </div>
+
+                                            <div className="gestion-contenido-input-group">
+                                                <label>Foto adicional 3</label>
+                                                <input
+                                                    type="file"
+                                                    name="imagen_4"
+                                                    accept="image/png,image/jpeg,image/jpg,image/webp"
+                                                    onChange={handleImageChange}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
 
                             {modalType === 'comida' && (
                                 <div className="gestion-contenido-input-group">
@@ -595,6 +822,7 @@ const GestionContenidoDepartamento = () => {
                                 <div className="gestion-contenido-file-box">
                                     <input
                                         type="file"
+                                        name="imagen"
                                         accept="image/png,image/jpeg,image/jpg,image/webp"
                                         onChange={handleImageChange}
                                     />
