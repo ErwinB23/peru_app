@@ -403,6 +403,106 @@
     margin-bottom: 10px;
 }
 
+
+.detalle-lugar-route-form {
+    margin-top: 24px;
+    padding: 20px;
+    border-radius: 20px;
+    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.detalle-lugar-route-form label {
+    display: block;
+    margin-bottom: 12px;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detalle-lugar-route-form-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.detalle-lugar-route-form input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    padding: 0 14px;
+    border: 1.5px solid rgba(15, 23, 42, 0.14);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #111827;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+}
+
+.detalle-lugar-route-form input:focus {
+    border-color: #D91023;
+    box-shadow: 0 0 0 4px rgba(217, 16, 35, 0.10);
+}
+
+.detalle-lugar-route-form button {
+    flex: 0 0 auto;
+    height: 40px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #D91023 0%, #106f8e 100%);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.detalle-lugar-route-form button:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.detalle-lugar-route-reset {
+    width: 100%;
+    margin-top: 10px;
+    background: #111827 !important;
+}
+
+.detalle-lugar-route-status {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(16, 111, 142, 0.10);
+    color: #106f8e;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 850;
+}
+
+.detalle-lugar-route-status.error {
+    background: rgba(217, 16, 35, 0.10);
+    color: #D91023;
+}
+
+@media (max-width: 720px) {
+    .detalle-lugar-route-form-row {
+        flex-direction: column;
+    }
+
+    .detalle-lugar-route-form button {
+        width: 100%;
+    }
+}
+
+
 @media (max-width: 1050px) {
 
     .detalle-lugar-about,

@@ -15,6 +15,11 @@ const DetalleLugarTuristico = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    const [customOrigin, setCustomOrigin] = useState('');
+    const [activeOriginQuery, setActiveOriginQuery] = useState('');
+    const [routeLoading, setRouteLoading] = useState(false);
+    const [routeStatus, setRouteStatus] = useState('');
+
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
 
@@ -120,6 +125,39 @@ const DetalleLugarTuristico = () => {
         };
     }, [lugar]);
 
+
+    const activeRouteData = useMemo(() => {
+        const customQuery = activeOriginQuery.trim();
+        const hasCustomOrigin = customQuery !== '';
+
+        return {
+            origenNombre: hasCustomOrigin ? customQuery : routeTextData.origenNombre,
+            origenBusqueda: hasCustomOrigin ? customQuery : routeTextData.origenBusqueda,
+            destinoNombre: routeTextData.destinoNombre,
+            destinoBusqueda: routeTextData.destinoBusqueda,
+            isCustom: hasCustomOrigin,
+        };
+    }, [activeOriginQuery, routeTextData]);
+
+    const handleCalculateCustomRoute = (e) => {
+        e.preventDefault();
+
+        const origin = customOrigin.trim();
+
+        if (!origin) {
+            setRouteStatus('Escribe un origen válido para calcular la ruta.');
+            return;
+        }
+
+        setActiveOriginQuery(origin);
+    };
+
+    const handleResetRoute = () => {
+        setCustomOrigin('');
+        setActiveOriginQuery('');
+        setRouteStatus('');
+    };
+
     const getCoordinatesFromText = async (query) => {
         if (!query) return null;
 
@@ -157,6 +195,9 @@ const DetalleLugarTuristico = () => {
         let cancelled = false;
 
         const loadMapRoute = async () => {
+            setRouteLoading(true);
+            setRouteStatus(activeRouteData.isCustom ? 'Calculando ruta personalizada...' : '');
+
             if (mapInstanceRef.current) {
                 mapInstanceRef.current.remove();
                 mapInstanceRef.current = null;
@@ -184,8 +225,16 @@ const DetalleLugarTuristico = () => {
             mapInstanceRef.current = map;
 
             try {
-                const originCoords = await getCoordinatesFromText(routeTextData.origenBusqueda);
-                const destinationCoords = await getCoordinatesFromText(routeTextData.destinoBusqueda);
+                if (!activeRouteData.origenBusqueda || !activeRouteData.destinoBusqueda) {
+                    if (!cancelled) {
+                        setRouteStatus('No hay información suficiente para calcular la ruta.');
+                    }
+
+                    return;
+                }
+
+                const originCoords = await getCoordinatesFromText(activeRouteData.origenBusqueda);
+                const destinationCoords = await getCoordinatesFromText(activeRouteData.destinoBusqueda);
 
                 if (cancelled) return;
 
@@ -210,7 +259,7 @@ const DetalleLugarTuristico = () => {
 
                     L.marker(originPoint, { icon: origenIcon })
                         .addTo(map)
-                        .bindPopup(`<strong>${routeTextData.origenNombre}</strong>`);
+                        .bindPopup(`<strong>${activeRouteData.origenNombre}</strong>`);
 
                     points.push(originPoint);
                 }
@@ -220,7 +269,7 @@ const DetalleLugarTuristico = () => {
 
                     L.marker(destinationPoint, { icon: destinoIcon })
                         .addTo(map)
-                        .bindPopup(`<strong>${routeTextData.destinoNombre}</strong>`);
+                        .bindPopup(`<strong>${activeRouteData.destinoNombre}</strong>`);
 
                     points.push(destinationPoint);
                 }
@@ -242,6 +291,10 @@ const DetalleLugarTuristico = () => {
                         map.fitBounds(routeLine.getBounds(), {
                             padding: [70, 70],
                         });
+
+                        if (activeRouteData.isCustom) {
+                            setRouteStatus(`Ruta calculada desde ${activeRouteData.origenNombre}.`);
+                        }
                     } else if (points.length > 1) {
                         const fallbackLine = L.polyline(points, {
                             color: '#D91023',
@@ -253,16 +306,34 @@ const DetalleLugarTuristico = () => {
                         map.fitBounds(fallbackLine.getBounds(), {
                             padding: [70, 70],
                         });
+
+                        setRouteStatus('No se pudo obtener la ruta por carretera. Se muestra una ruta referencial.');
                     }
                 } else if (points.length > 0) {
                     map.setView(points[0], 8);
-                }
 
-                setTimeout(() => {
-                    map.invalidateSize();
-                }, 150);
+                    if (!originCoords) {
+                        setRouteStatus('No se encontró el origen ingresado. Prueba con una ciudad más específica.');
+                    } else if (!destinationCoords) {
+                        setRouteStatus('No se encontró el destino registrado.');
+                    }
+                } else {
+                    setRouteStatus('No se encontró el origen ni el destino. Revisa los nombres ingresados.');
+                }
             } catch (err) {
                 console.error('Error al calcular ruta:', err);
+
+                if (!cancelled) {
+                    setRouteStatus('No se pudo calcular la ruta en este momento.');
+                }
+            } finally {
+                if (!cancelled) {
+                    setRouteLoading(false);
+
+                    setTimeout(() => {
+                        map.invalidateSize();
+                    }, 150);
+                }
             }
         };
 
@@ -276,7 +347,7 @@ const DetalleLugarTuristico = () => {
                 mapInstanceRef.current = null;
             }
         };
-    }, [lugar, routeTextData]);
+    }, [lugar, activeRouteData]);
 
     if (loading) {
         return (
@@ -421,14 +492,56 @@ const DetalleLugarTuristico = () => {
                             <h2>Ruta referencial</h2>
 
                             <p>
-                                El mapa muestra una ruta por carretera desde{' '}
-                                <strong>{routeTextData.origenNombre}</strong>{' '}
-                                hasta <strong>{routeTextData.destinoNombre}</strong>.
+                                El mapa muestra una{' '}
+                                <strong>{activeRouteData.isCustom ? 'ruta personalizada' : 'ruta referencial'}</strong>{' '}
+                                desde <strong>{activeRouteData.origenNombre}</strong>{' '}
+                                hasta <strong>{activeRouteData.destinoNombre}</strong>.
                             </p>
 
                             <small>
-                                La ruta se calcula automáticamente usando el origen y destino registrados.
+                                El destino permanece fijo porque corresponde al lugar turístico seleccionado.
                             </small>
+
+                            <form className="detalle-lugar-route-form" onSubmit={handleCalculateCustomRoute}>
+                                <label htmlFor="detalle-lugar-custom-origin">
+                                    Calcula tu ruta desde otro origen
+                                </label>
+
+                                <div className="detalle-lugar-route-form-row">
+                                    <input
+                                        id="detalle-lugar-custom-origin"
+                                        type="text"
+                                        value={customOrigin}
+                                        onChange={(e) => setCustomOrigin(e.target.value)}
+                                        placeholder="Ejemplo: Lima, Perú"
+                                        disabled={routeLoading}
+                                    />
+
+                                    <button type="submit" disabled={routeLoading}>
+                                        {routeLoading ? 'Calculando...' : 'Calcular ruta'}
+                                    </button>
+                                </div>
+
+                                <button
+                                    type="button"
+                                    className="detalle-lugar-route-reset"
+                                    onClick={handleResetRoute}
+                                    disabled={routeLoading || (!activeOriginQuery && !customOrigin)}
+                                >
+                                    Usar ruta referencial
+                                </button>
+
+                                {routeStatus && (
+                                    <div
+                                        className={`detalle-lugar-route-status ${routeStatus.startsWith('No') || routeStatus.startsWith('Escribe')
+                                                ? 'error'
+                                                : ''
+                                            }`}
+                                    >
+                                        {routeStatus}
+                                    </div>
+                                )}
+                            </form>
                         </div>
 
                         <div
