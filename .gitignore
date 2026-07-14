@@ -8,55 +8,15 @@ backend/node_modules/
 .env.local
 .env.development.local
 .env.test.local
-.env.production.local   
-backend/.env
-frontend/.env
-
-# Builds
-dist/
-build/
-frontend/dist/
-frontend/build/
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Sistema operativo
-.DS_Store
-Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-
-# Uploads locales
-backend/uploads/
-
-# Archivos temporales
-*.zip
-*.rar
-*.7z# Dependencias
-node_modules/
-frontend/node_modules/
-backend/node_modules/
-
-# Variables de entorno
-.env
-.env.local
-.env.development.local
-.env.test.local
 .env.production.local
 backend/.env
 frontend/.env
 
 # Builds
-dist/
 build/
-frontend/dist/
+dist/
 frontend/build/
+frontend/dist/
 
 # Logs
 npm-debug.log*
@@ -68,14 +28,16 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Editor
+# Editores
 .vscode/
 .idea/
 
-# Uploads locales
+# Archivos subidos localmente
 backend/uploads/
 
-# Archivos temporales
+# Respaldos y archivos temporales
+phase0-backups/
 *.zip
 *.rar
 *.7z
+*.bak

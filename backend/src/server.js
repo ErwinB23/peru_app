@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { getConnection, closeConnection } from './config/database.js';
+import { env } from './config/env.js';
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -24,10 +24,8 @@ import lugarTuristicoCiudadRoutes from './routes/lugarTuristicoCiudadRoutes.js';
 import comidaTipicaCiudadRoutes from './routes/comidaTipicaCiudadRoutes.js';
 
 
-dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = env.port;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadsPath = path.join(__dirname, "..", "uploads");
@@ -38,7 +36,6 @@ app.use(cors()); // Permite peticiones desde el frontend
 app.use(express.json()); // Parsea JSON en las peticiones
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadsPath));
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/api/lugares-turisticos", lugarTuristicoRoutes);
 app.use("/api/comidas-tipicas", comidaTipicaRoutes);
 app.use('/api/lugares-turisticos-provincias', lugarTuristicoProvinciaRoutes);
@@ -73,8 +70,8 @@ app.get('/api/test-db', async (req, res) => {
     
     res.json({
       message: '✅ Conexión a base de datos exitosa',
-      database: process.env.DB_DATABASE,
-      server: process.env.DB_SERVER,
+      database: env.db.database,
+      server: env.db.server,
       datos: result.recordset[0]
     });
   } catch (error) {
@@ -140,8 +137,8 @@ const startServer = async () => {
     // Iniciar servidor
     app.listen(PORT, () => {
       console.log(`\n🚀 Servidor corriendo en http://localhost:${PORT}`);
-      console.log(`📊 Entorno: ${process.env.NODE_ENV}`);
-      console.log(`🗄️  Base de datos: ${process.env.DB_DATABASE}\n`);
+      console.log(`📊 Entorno: ${env.nodeEnv}`);
+      console.log(`🗄️  Base de datos: ${env.db.database}\n`);
     });
   } catch (error) {
     console.error('❌ Error al iniciar el servidor:', error);
