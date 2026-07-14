@@ -1,0 +1,5 @@
+﻿Fecha: 2026-07-14 18:24:40
+Proyecto: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL
+Node: v22.21.0
+npm: 10.9.4
+Node compatible: True
