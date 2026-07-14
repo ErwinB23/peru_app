@@ -1,5 +1,9 @@
 # Constitución del Proyecto PERU APP
 
+**Versión:** 1.1.0  
+**Fecha de actualización:** 14 de julio de 2026  
+**Cambio principal:** Se establece la autenticación obligatoria para acceder a toda información y funcionalidad de la plataforma.  
+
 ## 1. Nombre del proyecto
 
 PERU APP: Plataforma web turístico-educativa basada en Spec-Driven Development para la difusión turística del Perú, 2026.
@@ -50,6 +54,18 @@ La comunicación entre frontend y backend debe realizarse mediante una API REST 
 ### 3.8. Seguridad básica del sistema
 
 El sistema debe implementar autenticación, protección de rutas y control de acceso por roles. Las funcionalidades administrativas deben estar disponibles únicamente para usuarios con rol administrador.
+
+### 3.8.1. Autenticación obligatoria para el acceso al sistema
+
+El acceso a PERU APP requiere una sesión autenticada. Las únicas operaciones públicas permitidas son el registro y el inicio de sesión. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido.
+
+La protección visual del frontend no sustituye la protección del backend. Cada endpoint protegido debe validar el token, comprobar que el usuario aún existe en la base de datos y utilizar el rol vigente almacenado en SQL Server. Un usuario eliminado, un token expirado o un administrador cuyo rol haya cambiado no debe conservar acceso mediante información antigua contenida en el token.
+
+Política de acceso oficial:
+
+- Público: `POST /api/auth/register` y `POST /api/auth/login`.
+- Usuario autenticado: consultas territoriales, turísticas y gastronómicas, perfil y cierre de sesión.
+- Administrador autenticado: gestión de usuarios y operaciones de creación, actualización y eliminación de contenido.
 
 ### 3.9. Roles del sistema
 
@@ -125,7 +141,9 @@ El sistema debe cumplir las siguientes reglas de calidad:
 
 - Adecuación funcional: las funcionalidades deben cumplir su propósito.
 - Usabilidad: la interfaz debe ser fácil de comprender y utilizar.
-- Seguridad: las rutas protegidas deben requerir autenticación.
+- Seguridad: toda ruta, excepto registro e inicio de sesión, debe requerir autenticación válida.
+- Autorización vigente: los permisos deben comprobarse con el usuario y rol actuales almacenados en la base de datos.
+- Denegación por defecto: una solicitud sin token, con token inválido, expirado o asociado a un usuario inexistente debe ser rechazada.
 - Mantenibilidad: el código debe organizarse por módulos, capas y responsabilidades.
 - Consistencia visual: los componentes deben mantener una línea gráfica uniforme.
 - Disponibilidad de información: los datos deben mostrarse de forma clara y ordenada.

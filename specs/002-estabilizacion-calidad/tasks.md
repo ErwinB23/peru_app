@@ -1,0 +1,124 @@
+# Tareas de Estabilización — PERU APP
+
+## 1. Identificación
+
+- **Código:** TASKS-002
+- **Especificación:** SPEC-002
+- **Plan:** PLAN-002
+- **Rama:** `002-estabilizacion-calidad`
+
+## 2. Estados
+
+- `[ ]` Pendiente
+- `[~]` En progreso
+- `[x]` Completada y validada
+- `[!]` Bloqueada
+
+## 3. Fase 0 — Respaldo y línea base
+
+- [ ] **T-EST-001** Crear o cambiar a la rama `002-estabilizacion-calidad`.
+- [ ] **T-EST-002** Crear copia ZIP del código sin dependencias, builds, `.git` ni `.env`.
+- [ ] **T-EST-003** Calcular y guardar hash SHA-256 del respaldo.
+- [ ] **T-EST-004** Crear respaldo `.bak` de `PeruDepartamentosDB`.
+- [ ] **T-EST-005** Ejecutar `RESTORE VERIFYONLY` sobre el respaldo.
+- [ ] **T-EST-006** Ejecutar `scripts/phase0-baseline.ps1`.
+- [ ] **T-EST-007** Verificar manualmente backend, frontend, registro, login, perfil, roles y logout.
+- [ ] **T-EST-008** Registrar evidencia visual del diseño actual.
+- [ ] **T-EST-009** Documentar cualquier error existente sin corregirlo todavía.
+
+## 4. Fase 1 — Especificación SDD
+
+- [ ] **T-EST-010** Reemplazar la Constitución por la versión 1.1.0.
+- [ ] **T-EST-011** Incorporar `specs/002-estabilizacion-calidad`.
+- [ ] **T-EST-012** Confirmar que solo registro y login serán públicos.
+- [ ] **T-EST-013** Revisar historias, requisitos, alcance y criterios de éxito de SPEC-002.
+- [ ] **T-EST-014** Aprobar PLAN-002 como orden oficial de corrección.
+- [ ] **T-EST-015** Guardar Fase 0 y 1 en un commit independiente.
+
+## 5. Configuración y dependencias
+
+- [ ] **T-EST-020** Corregir y unificar archivos `.env.example`.
+- [ ] **T-EST-021** Centralizar la URL de la API en el frontend.
+- [ ] **T-EST-022** Limpiar `.gitignore` duplicado.
+- [ ] **T-EST-023** Eliminar publicación duplicada de `/uploads`.
+- [ ] **T-EST-024** Completar README de instalación.
+- [ ] **T-EST-025** Revisar `npm outdated` del backend.
+- [ ] **T-EST-026** Revisar `npm audit` del backend.
+- [ ] **T-EST-027** Revisar `npm outdated` del frontend.
+- [ ] **T-EST-028** Revisar `npm audit` del frontend.
+- [ ] **T-EST-029** Actualizar dependencias en grupos controlados y validar regresión.
+
+## 6. Autenticación, sesión y rutas
+
+- [ ] **T-EST-030** Modificar middleware JWT para consultar el usuario actual en SQL Server.
+- [ ] **T-EST-031** Usar el rol vigente de la base de datos.
+- [ ] **T-EST-032** Rechazar token asociado a usuario inexistente.
+- [ ] **T-EST-033** Diferenciar token ausente, inválido y expirado.
+- [ ] **T-EST-034** Validar sesión desde `AuthContext` al iniciar el frontend.
+- [ ] **T-EST-035** Crear interceptor Axios para HTTP 401.
+- [ ] **T-EST-036** Proteger todos los GET territoriales con autenticación.
+- [ ] **T-EST-037** Proteger todos los GET turísticos y gastronómicos con autenticación.
+- [ ] **T-EST-038** Verificar CRUD administrativo mediante `isAdmin`.
+- [ ] **T-EST-039** Agregar rate limit a login y registro.
+- [ ] **T-EST-040** Automatizar matriz de acceso 401/403/200.
+
+## 7. Seguridad, validación y errores
+
+- [ ] **T-EST-050** Configurar cabeceras HTTP seguras.
+- [ ] **T-EST-051** Restringir CORS al origen autorizado.
+- [ ] **T-EST-052** Limitar tamaño de JSON y formularios.
+- [ ] **T-EST-053** Retirar o restringir endpoints de depuración.
+- [ ] **T-EST-054** Crear middleware global de errores.
+- [ ] **T-EST-055** Mapear errores SQL a HTTP 409/400/404 según el caso.
+- [ ] **T-EST-056** Mapear errores de Multer a HTTP 413/415.
+- [ ] **T-EST-057** Implementar validación centralizada de usuarios.
+- [ ] **T-EST-058** Implementar validación centralizada territorial.
+- [ ] **T-EST-059** Implementar validación centralizada turística y gastronómica.
+
+## 8. Base de datos e imágenes
+
+- [ ] **T-EST-060** Crear migraciones SQL numeradas.
+- [ ] **T-EST-061** Agregar restricciones para área, población y coordenadas.
+- [ ] **T-EST-062** Definir y aplicar política de eliminación con relaciones.
+- [ ] **T-EST-063** Incorporar transacciones en operaciones múltiples.
+- [ ] **T-EST-064** Diseñar campos de fuente, licencia y auditoría.
+- [ ] **T-EST-065** Validar firma y tamaño real de imágenes.
+- [ ] **T-EST-066** Eliminar archivo temporal si falla SQL Server.
+- [ ] **T-EST-067** Eliminar imagen anterior después de una actualización confirmada.
+- [ ] **T-EST-068** Eliminar imagen asociada al borrar un contenido.
+
+## 9. Revisión de módulos
+
+- [ ] **T-EST-070** Cerrar pruebas de autenticación.
+- [ ] **T-EST-071** Cerrar pruebas de usuarios.
+- [ ] **T-EST-072** Cerrar pruebas de departamentos.
+- [ ] **T-EST-073** Cerrar pruebas de provincias.
+- [ ] **T-EST-074** Cerrar pruebas de distritos.
+- [ ] **T-EST-075** Cerrar pruebas de ciudades.
+- [ ] **T-EST-076** Cerrar pruebas de contenido de departamentos.
+- [ ] **T-EST-077** Cerrar pruebas de contenido de provincias.
+- [ ] **T-EST-078** Cerrar pruebas de contenido de distritos.
+- [ ] **T-EST-079** Cerrar pruebas de contenido de ciudades.
+
+## 10. Contrato, automatización y rendimiento
+
+- [ ] **T-EST-080** Inventariar rutas reales del backend.
+- [ ] **T-EST-081** Sincronizar `openapi.yaml`.
+- [ ] **T-EST-082** Actualizar matriz de trazabilidad.
+- [ ] **T-EST-083** Actualizar checklist SDD con estados reales.
+- [ ] **T-EST-084** Configurar pruebas del backend.
+- [ ] **T-EST-085** Crear colección Postman y ejecución Newman.
+- [ ] **T-EST-086** Configurar pruebas del frontend.
+- [ ] **T-EST-087** Configurar pruebas E2E.
+- [ ] **T-EST-088** Configurar GitHub Actions.
+- [ ] **T-EST-089** Optimizar imágenes y video.
+- [ ] **T-EST-090** Implementar carga diferida y división de código.
+- [ ] **T-EST-091** Comparar diseño final con evidencia de Fase 0.
+
+## 11. Datos reales y cierre
+
+- [ ] **T-EST-100** Cargar y validar datos reales de Ayacucho.
+- [ ] **T-EST-101** Cargar y validar datos reales de Cusco.
+- [ ] **T-EST-102** Revisar fuentes y licencias.
+- [ ] **T-EST-103** Ejecutar suite completa de calidad.
+- [ ] **T-EST-104** Cerrar documentación SDD y evidencias.
