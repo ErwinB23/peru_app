@@ -1,0 +1,5 @@
+﻿Fecha: 2026-07-14 17:33:08
+ProjectRoot: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL
+Node: v22.21.0
+npm: 10.9.4
+Rama: 002-estabilizacion-calidad

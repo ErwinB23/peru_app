@@ -1,0 +1,30 @@
+﻿{
+  "bcrypt": {
+    "current": "5.1.1",
+    "wanted": "5.1.1",
+    "latest": "6.0.0",
+    "dependent": "backend",
+    "location": "C:\\Users\\ACER\\OneDrive\\Desktop\\PERU_APP_FINAL\\backend\\node_modules\\bcrypt"
+  },
+  "dotenv": {
+    "current": "16.6.1",
+    "wanted": "16.6.1",
+    "latest": "17.4.2",
+    "dependent": "backend",
+    "location": "C:\\Users\\ACER\\OneDrive\\Desktop\\PERU_APP_FINAL\\backend\\node_modules\\dotenv"
+  },
+  "express": {
+    "current": "4.22.2",
+    "wanted": "4.22.2",
+    "latest": "5.2.1",
+    "dependent": "backend",
+    "location": "C:\\Users\\ACER\\OneDrive\\Desktop\\PERU_APP_FINAL\\backend\\node_modules\\express"
+  },
+  "mssql": {
+    "current": "10.0.4",
+    "wanted": "10.0.4",
+    "latest": "12.7.0",
+    "dependent": "backend",
+    "location": "C:\\Users\\ACER\\OneDrive\\Desktop\\PERU_APP_FINAL\\backend\\node_modules\\mssql"
+  }
+}

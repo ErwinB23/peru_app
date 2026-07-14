@@ -1,0 +1,16 @@
+﻿FASE 0 - LÃNEA BASE AUTOMÃTICA
+Fecha: 2026-07-14 17:33:44
+Proyecto: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL
+Evidencias: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\docs\estabilizacion\evidencias\fase-0\20260714-173307
+Respaldo fuente: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\phase0-backups\PERU_APP_PRE_ESTABILIZACION_20260714-173307.zip
+SHA256: 5ADA56EC7C020CCD4EFF0AB47FA8CC74B0F1B3BF63E04857B240666B07ADC15A
+Backend sintaxis: APROBADO
+Frontend lint: APROBADO
+Frontend build: APROBADO
+AuditorÃ­as: REGISTRADAS (las vulnerabilidades no hacen fallar esta fase)
+
+Pendiente manual:
+- confirmar el respaldo verificado de SQL Server;
+- iniciar realmente backend y frontend;
+- comprobar registro, login, perfil, roles y cierre de sesiÃ³n;
+- registrar evidencia visual del diseÃ±o actual.

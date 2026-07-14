@@ -1,0 +1,3 @@
+﻿ M scripts/phase0-baseline.ps1
+?? docs/estabilizacion/evidencias/fase-0/20260714-172703/
+?? docs/estabilizacion/evidencias/fase-0/20260714-173307/
