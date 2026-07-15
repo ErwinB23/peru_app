@@ -124,3 +124,15 @@ No debe usarse “completado” como sinónimo de “documentado”.
 | RNF-EST-008 | Regresion | GitHub Actions | Jest, lint y build |
 
 **Estado:** codigo de prueba implementado; evidencia de ejecucion local pendiente.
+
+## 10. Trazabilidad del Bloque 5.1 — Mejora de cobertura
+
+| Requisito | Tareas | Archivos de prueba | Evidencia | Estado |
+|---|---|---|---|---|
+| RF-EST-002/003/004 | T-EST-092, T-EST-094 | `authController.test.js`, `authMiddleware.test.js` | Jest + cobertura HTML | Implementado, pendiente de ejecución local |
+| RF-EST-009/010/011/012 | T-EST-093, T-EST-095 | `departamentoController.test.js`, `httpErrors.test.js` | Jest + resumen JSON | Implementado, pendiente de ejecución local |
+| RF-EST-018/019 | T-EST-093 | Casos de actualización y eliminación de imagen en `departamentoController.test.js` | Jest | Implementado, pendiente de ejecución local |
+| RF-EST-023 | T-EST-092..097 | `backend/tests/unit/*.test.js`, `jest.config.js` | `coverage-summary.json` | Implementado, pendiente de superar umbrales |
+| RNF-EST-008 | T-EST-096/097 | `block5-coverage-improvement.ps1` | Evidencia reproducible | Implementado, pendiente de ejecución local |
+
+**Puerta de calidad:** el Bloque 5.1 se considera validado únicamente cuando las pruebas pasan y Jest confirma simultáneamente statements >= 80%, branches >= 70%, functions >= 85% y lines >= 80%.

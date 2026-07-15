@@ -223,3 +223,14 @@ Las tareas permanecen `[~]` hasta ejecutar la auditoría y migración en SQL Ser
 ## 17. Estado del Bloque 5 — Implementado, pendiente de ejecucion
 
 Se incorporaron pruebas unitarias, integracion HTTP, Postman/Newman, Playwright y CI. Ninguna tarea se marca como validada hasta conservar los reportes generados en el ambiente local.
+
+## 16. Bloque 5.1 — Mejora estratégica de cobertura
+
+- [~] **T-EST-092** Ampliar pruebas unitarias de `authController.js` para registro, login, perfil, actualización y errores inesperados.
+- [~] **T-EST-093** Ampliar pruebas unitarias de `departamentoController.js` para listar, consultar, crear, actualizar, eliminar e imágenes.
+- [~] **T-EST-094** Completar ramas de `authMiddleware.js`: formato, usuario inexistente, expiración, token inválido y error interno.
+- [~] **T-EST-095** Completar el mapeo automatizado de errores SQL Server, Multer y errores HTTP controlados.
+- [~] **T-EST-096** Establecer umbrales mínimos verificables de cobertura: 80% statements, 70% branches, 85% functions y 80% lines.
+- [~] **T-EST-097** Generar reporte HTML, resumen JSON y evidencia reproducible del Bloque 5.1.
+
+Estas tareas cambian a `[x]` después de ejecutar `scripts/block5-coverage-improvement.ps1`, superar todos los umbrales y guardar la evidencia generada.

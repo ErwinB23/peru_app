@@ -1,0 +1,15 @@
+﻿BLOQUE 5.1 - RESULTADO DE COBERTURA
+Fecha: 2026-07-15 01:14:40
+
+Statements: 94.76% (308/325)
+Branches:   86.59% (226/261)
+Functions:  97.29% (36/37)
+Lines:      94.55% (295/312)
+
+Umbrales obligatorios:
+Statements >= 80%
+Branches   >= 70%
+Functions  >= 85%
+Lines      >= 80%
+
+Reporte HTML: backend\reports\jest\coverage\index.html

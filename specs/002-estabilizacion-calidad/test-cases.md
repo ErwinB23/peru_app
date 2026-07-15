@@ -76,3 +76,35 @@ Estos casos definen el comportamiento objetivo. Se ejecutarán cuando se impleme
 | CP-AUTO-013 | E2E | URL privada sin sesion | Redireccion al login | `frontend/tests/e2e/auth.spec.js` |
 | CP-AUTO-014 | E2E | Login, navegacion y logout | Flujo completo | `frontend/tests/e2e/auth.spec.js` |
 | CP-AUTO-015 | E2E | CRUD admin temporal | Crear y eliminar | `frontend/tests/e2e/admin.spec.js` |
+
+## Casos automatizados del Bloque 5.1 — Cobertura crítica
+
+| ID | Nivel | Caso | Resultado esperado |
+|---|---|---|---|
+| CP-COV-AUTH-001 | Unitario | Registro con campos ausentes | 400 |
+| CP-COV-AUTH-002 | Unitario | Registro con contraseña corta | 400 |
+| CP-COV-AUTH-003 | Unitario | Registro con correo duplicado | 409 |
+| CP-COV-AUTH-004 | Unitario | Registro exitoso y contraseña cifrada | 201 |
+| CP-COV-AUTH-005 | Unitario | Login sin credenciales completas | 400 |
+| CP-COV-AUTH-006 | Unitario | Login con usuario inexistente o clave incorrecta | 401 |
+| CP-COV-AUTH-007 | Unitario | Login exitoso y JWT seguro | 200 |
+| CP-COV-AUTH-008 | Unitario | Perfil existente, inexistente y error interno | 200/404/500 |
+| CP-COV-AUTH-009 | Unitario | Cambio de correo duplicado | 409 |
+| CP-COV-AUTH-010 | Unitario | Cambio de contraseña incompleto, corto o incorrecto | 400/401/404 |
+| CP-COV-AUTH-011 | Unitario | Actualización de perfil con y sin cambio de contraseña | 200 |
+| CP-COV-MW-001 | Unitario | Cabecera Authorization ausente o mal formada | 401 |
+| CP-COV-MW-002 | Unitario | JWT con identificador inválido | 401 |
+| CP-COV-MW-003 | Unitario | Usuario eliminado después de emitir el JWT | 401 |
+| CP-COV-MW-004 | Unitario | Token expirado, inválido o aún no vigente | 401 |
+| CP-COV-MW-005 | Unitario | Usuario y rol vigentes recuperados de SQL Server | Continúa |
+| CP-COV-DEP-001 | Unitario | Listado y consulta por ID | 200 |
+| CP-COV-DEP-002 | Unitario | ID inválido o departamento inexistente | 400/404 |
+| CP-COV-DEP-003 | Unitario | Creación con imagen local, URL o sin imagen | 201 |
+| CP-COV-DEP-004 | Unitario | Actualización conservando o reemplazando imagen | 200 |
+| CP-COV-DEP-005 | Unitario | Eliminación y limpieza de imagen | 200 |
+| CP-COV-DEP-006 | Unitario | Errores inesperados de cada operación CRUD | 500 controlado |
+| CP-COV-ERR-001 | Unitario | Duplicados SQL 2601/2627 | 409 |
+| CP-COV-ERR-002 | Unitario | FK, CHECK y valores SQL inválidos | 400/409 |
+| CP-COV-ERR-003 | Unitario | Límites y tipos de archivo | 400/413/415 |
+| CP-COV-ERR-004 | Unitario | Error HTTP controlado y error interno oculto | Payload uniforme |
+| CP-COV-GATE-001 | Calidad | Umbrales globales de cobertura | S80/B70/F85/L80 o superior |

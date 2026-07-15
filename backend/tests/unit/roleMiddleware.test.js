@@ -37,4 +37,24 @@ describe('isAdmin', () => {
     expect(next).toHaveBeenCalledTimes(1);
     expect(res.body).toBeUndefined();
   });
+
+  test('devuelve 500 ante un error inesperado al leer el usuario', () => {
+    const req = {};
+    Object.defineProperty(req, 'user', {
+      get() {
+        throw new Error('lectura inesperada');
+      }
+    });
+    const res = createResponse();
+    const next = jest.fn();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    isAdmin(req, res, next);
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.error).toMatch(/verificar los permisos/i);
+    expect(next).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
 });

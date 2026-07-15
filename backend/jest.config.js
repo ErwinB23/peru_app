@@ -12,5 +12,13 @@ export default {
     'src/controllers/departamentoController.js'
   ],
   coverageDirectory: 'reports/jest/coverage',
-  coverageReporters: ['text', 'html', 'lcov'],
+  coverageReporters: ['text', 'html', 'lcov', 'json-summary'],
+  coverageThreshold: {
+    global: {
+      statements: 80,
+      branches: 70,
+      functions: 85,
+      lines: 80
+    }
+  }
 };
