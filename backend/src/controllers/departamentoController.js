@@ -1,5 +1,5 @@
 import * as departamentoModel from '../models/departamentoModel.js';
-import { handleControllerError } from '../utils/httpErrors.js';
+import { AppError, handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 //OBTENER TODOS LOS DEPARTAMENTOS
@@ -25,7 +25,11 @@ export const getDepartamentoById = async (req, res) => {
         const departamento = await departamentoModel.getDepartamentoById(id);
 
         if (!departamento) {
-            return res.status(404).json({ error: 'Departamento no encontrado' });
+            throw new AppError(
+                'Departamento no encontrado',
+                404,
+                'RESOURCE_NOT_FOUND'
+            );
         }
 
         res.json(departamento);

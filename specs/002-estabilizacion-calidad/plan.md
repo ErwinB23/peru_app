@@ -226,3 +226,8 @@ perf(frontend): optimizar recursos multimedia
 ## 7. Criterio de finalización
 
 PLAN-002 se cierra cuando todos los requisitos P1 están implementados y validados, la API está documentada, las pruebas críticas son repetibles y el diseño coincide con la línea base aprobada.
+
+
+## Bloque 5 — Estrategia de automatizacion
+
+La piramide aplicada prioriza pruebas unitarias e integracion con mocks, complementadas por una coleccion Newman contra QA local y dos flujos E2E Playwright. Los reportes se generan en HTML/JSON/JUnit y se vinculan a la matriz de trazabilidad.

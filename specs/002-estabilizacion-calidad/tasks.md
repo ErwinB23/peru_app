@@ -76,7 +76,7 @@
 - [~] **T-EST-037** Proteger todos los GET turísticos y gastronómicos con autenticación.
 - [~] **T-EST-038** Verificar CRUD administrativo mediante `isAdmin`.
 - [~] **T-EST-039** Agregar rate limit a login y registro.
-- [ ] **T-EST-040** Automatizar matriz de acceso 401/403/200.
+- [~] **T-EST-040** Automatizar matriz de acceso 401/403/200; implementada en Jest/Supertest y Newman, pendiente de ejecucion local.
 
 ## 7. Seguridad, validación y errores
 
@@ -122,11 +122,11 @@
 - [ ] **T-EST-081** Sincronizar `openapi.yaml`.
 - [x] **T-EST-082** Actualizar matriz de trazabilidad.
 - [x] **T-EST-083** Actualizar checklist SDD con estados reales.
-- [ ] **T-EST-084** Configurar pruebas del backend.
-- [ ] **T-EST-085** Crear colección Postman y ejecución Newman.
-- [ ] **T-EST-086** Configurar pruebas del frontend.
-- [ ] **T-EST-087** Configurar pruebas E2E.
-- [ ] **T-EST-088** Configurar GitHub Actions.
+- [~] **T-EST-084** Configurar pruebas del backend; Jest y Supertest implementados, pendientes de ejecucion local.
+- [~] **T-EST-085** Crear colección Postman y ejecución Newman; coleccion y reporte configurados, pendientes de credenciales y ejecucion local.
+- [~] **T-EST-086** Configurar pruebas del frontend; Playwright configurado para rutas y sesion, pendiente de ejecucion local.
+- [~] **T-EST-087** Configurar pruebas E2E; flujo de usuario y CRUD admin implementados, pendientes de ejecucion local.
+- [~] **T-EST-088** Configurar GitHub Actions; workflow de Jest, lint y build creado, pendiente de validacion en GitHub.
 - [ ] **T-EST-089** Optimizar imágenes y video.
 - [ ] **T-EST-090** Implementar carga diferida y división de código.
 - [ ] **T-EST-091** Comparar diseño final con evidencia de Fase 0.
@@ -218,3 +218,8 @@ Se incorporaron los siguientes cambios:
 - Script `block4-integrity-image-check.ps1` y checklist funcional.
 
 Las tareas permanecen `[~]` hasta ejecutar la auditoría y migración en SQL Server, completar las pruebas manuales por módulo y guardar evidencias.
+
+
+## 17. Estado del Bloque 5 — Implementado, pendiente de ejecucion
+
+Se incorporaron pruebas unitarias, integracion HTTP, Postman/Newman, Playwright y CI. Ninguna tarea se marca como validada hasta conservar los reportes generados en el ambiente local.

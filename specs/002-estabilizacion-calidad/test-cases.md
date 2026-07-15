@@ -55,3 +55,24 @@ Estos casos definen el comportamiento objetivo. Se ejecutarán cuando se impleme
 | CP-EST-IMG-006 | P1 | Renombrar un archivo de texto como `.jpg` | HTTP 415 `INVALID_IMAGE_SIGNATURE`; no queda archivo. |
 | CP-EST-IMG-007 | P1 | Fallar eliminación por relación | HTTP 409 y la imagen vigente permanece intacta. |
 | CP-EST-FUN-001 | P1 | Ejecutar CRUD representativo por módulo | Listar, crear, editar y eliminar funcionan según rol. |
+
+
+## Casos automatizados del Bloque 5
+
+| ID | Nivel | Caso | Resultado esperado | Archivo |
+|---|---|---|---|---|
+| CP-AUTO-001 | Unitario | `isAdmin` sin usuario | 401 | `backend/tests/unit/roleMiddleware.test.js` |
+| CP-AUTO-002 | Unitario | `isAdmin` con usuario normal | 403 | `backend/tests/unit/roleMiddleware.test.js` |
+| CP-AUTO-003 | Unitario | Registro con correo invalido | 400 + detalles | `backend/tests/unit/validationMiddleware.test.js` |
+| CP-AUTO-004 | Unitario | Error SQL duplicado | 409 | `backend/tests/unit/httpErrors.test.js` |
+| CP-AUTO-005 | Integracion | Login correcto | 200 + token | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-006 | Integracion | Login incorrecto | 401 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-007 | Integracion | GET sin token | 401 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-008 | Integracion | Usuario administra | 403 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-009 | Integracion | Admin crea departamento | 201 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-010 | Integracion | Datos invalidos | 400 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-011 | Integracion | ID inexistente | 404 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-012 | Integracion | Nombre duplicado | 409 | `backend/tests/integration/api.integration.test.js` |
+| CP-AUTO-013 | E2E | URL privada sin sesion | Redireccion al login | `frontend/tests/e2e/auth.spec.js` |
+| CP-AUTO-014 | E2E | Login, navegacion y logout | Flujo completo | `frontend/tests/e2e/auth.spec.js` |
+| CP-AUTO-015 | E2E | CRUD admin temporal | Crear y eliminar | `frontend/tests/e2e/admin.spec.js` |

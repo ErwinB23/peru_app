@@ -1,0 +1,8 @@
+﻿BLOQUE 5 - PRUEBAS AUTOMATIZADAS
+Fecha: 2026-07-15 00:13:56
+Rama esperada: 002-estabilizacion-calidad
+[RUN] Instalacion de dependencias backend
+[OK] Instalacion de dependencias backend
+[RUN] Instalacion de dependencias frontend
+[OK] Instalacion de dependencias frontend
+[RUN] Jest + Supertest con cobertura

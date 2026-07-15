@@ -1,0 +1,10 @@
+process.env.NODE_ENV = 'test';
+process.env.PORT = process.env.PORT || '5000';
+process.env.DB_SERVER = process.env.DB_SERVER || 'localhost';
+process.env.DB_DATABASE = process.env.DB_DATABASE || 'PeruDepartamentosDB_Test';
+process.env.DB_USER = process.env.DB_USER || 'test_user';
+process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'test_password';
+process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-only-for-automated-tests';
+process.env.JWT_EXPIRE = process.env.JWT_EXPIRE || '1h';
+process.env.FRONTEND_URLS = process.env.FRONTEND_URLS || 'http://localhost:5173';
+process.env.REQUEST_BODY_LIMIT = process.env.REQUEST_BODY_LIMIT || '1mb';

@@ -1,0 +1,19 @@
+﻿BLOQUE 5 - PRUEBAS AUTOMATIZADAS
+Fecha: 2026-07-15 00:38:01
+Rama esperada: 002-estabilizacion-calidad
+[RUN] Jest + Supertest con cobertura
+[OK] Jest + Supertest con cobertura
+[RUN] ESLint frontend
+[OK] ESLint frontend
+[RUN] Build frontend
+[OK] Build frontend
+[RUN] Instalacion de Chromium para Playwright
+[OK] Instalacion de Chromium para Playwright
+[RUN] Playwright E2E
+[OK] Playwright E2E
+Reportes esperados:
+- backend\reports\jest\coverage\index.html
+- backend\reports\jest\results.json
+- backend\reports\newman\peru-app-api.html
+- frontend\reports\playwright\html\index.html
+Resultado guardado en: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\docs\estabilizacion\evidencias\bloque-5\20260715-003801\resultado-bloque-5.txt

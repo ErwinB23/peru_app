@@ -104,3 +104,23 @@ No debe usarse “completado” como sinónimo de “documentado”.
 | Ciclo de vida de imágenes | RF-EST-018/019 | `imageLifecycle.js`, 12 controladores | Reemplazo, borrado y error 409 |
 | Revisión funcional | RF-EST-009/011/015 | Checklist del Bloque 4 | Matriz manual por módulo |
 | Evidencia reproducible | RNF-EST-007/008 | `block4-integrity-image-check.ps1` | Reporte local y commit |
+
+
+## Cobertura automatizada incorporada en el Bloque 5
+
+| Requisito | Prueba automatizada | Herramienta | Resultado esperado |
+|---|---|---|---|
+| RF-EST-002 | Consulta sin token | Supertest / Newman | 401 |
+| RF-EST-004 | Rol vigente de usuario y admin | Supertest | 403 o acceso |
+| RF-EST-005 | Recarga y ruta privada | Playwright | Sesion valida o redireccion |
+| RF-EST-006 | Logout y limpieza de token | Playwright | Token eliminado y login |
+| RF-EST-007 | Usuario intenta crear departamento | Supertest / Newman | 403 |
+| RF-EST-009 | Cuerpo territorial invalido | Jest / Supertest / Newman | 400 con detalles |
+| RF-EST-011 | Matriz 400/401/403/404/409 | Supertest / Newman | Estados correctos |
+| RF-EST-012 | Normalizacion de errores | Jest | Payload controlado |
+| RF-EST-023 | Suite backend | Jest + Supertest | Ejecucion repetible |
+| RF-EST-024 | Coleccion API | Postman + Newman | Reporte HTML |
+| RF-EST-025 | Flujos frontend | Playwright | Reporte HTML/JUnit |
+| RNF-EST-008 | Regresion | GitHub Actions | Jest, lint y build |
+
+**Estado:** codigo de prueba implementado; evidencia de ejecucion local pendiente.

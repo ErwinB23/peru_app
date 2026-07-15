@@ -60,3 +60,10 @@ local-backups/
 # Temporales
 *.tmp
 *.temp
+
+# QA local y reportes generados
+**/reports/
+tests/qa-credentials.local.ps1
+tests/postman/*.runtime.json
+playwright-report/
+test-results/
