@@ -139,3 +139,14 @@ Este archivo es la línea base para:
 5. La matriz de trazabilidad de `SPEC-002`.
 
 El inventario refleja la implementación del Bloque 2. La corrección permanece pendiente de validación mediante los casos 401, 403 y 200.
+
+
+## Middleware transversal incorporado en el Bloque 3
+
+Las rutas de escritura siguen el orden: autenticación → rol → ID existente (edición/eliminación) → carga de archivo → validación → relación → duplicado → controlador.
+
+- `validationMiddleware.js`: campos, tipos, rangos y normalización.
+- `dataIntegrityMiddleware.js`: existencia, relaciones y duplicados.
+- `uploadMiddleware.js`: extensión/MIME y máximo 5 MB.
+- `httpErrors.js`: traducción de errores SQL y de archivos.
+- `fileCleanup.js`: limpieza de archivos nuevos ante solicitudes fallidas.

@@ -85,11 +85,11 @@
 - [~] **T-EST-052** Limitar tamaño de JSON y formularios.
 - [~] **T-EST-053** Retirar o restringir endpoints de depuración.
 - [~] **T-EST-054** Crear middleware global de errores.
-- [ ] **T-EST-055** Mapear errores SQL a HTTP 409/400/404 según el caso.
-- [ ] **T-EST-056** Mapear errores de Multer a HTTP 413/415.
-- [ ] **T-EST-057** Implementar validación centralizada de usuarios.
-- [ ] **T-EST-058** Implementar validación centralizada territorial.
-- [ ] **T-EST-059** Implementar validación centralizada turística y gastronómica.
+- [~] **T-EST-055** Mapear errores SQL a HTTP 409/400/404 según el caso.
+- [~] **T-EST-056** Mapear errores de Multer a HTTP 413/415.
+- [~] **T-EST-057** Implementar validación centralizada de usuarios.
+- [~] **T-EST-058** Implementar validación centralizada territorial.
+- [~] **T-EST-059** Implementar validación centralizada turística y gastronómica.
 
 ## 8. Base de datos e imágenes
 
@@ -98,8 +98,8 @@
 - [ ] **T-EST-062** Definir y aplicar política de eliminación con relaciones.
 - [ ] **T-EST-063** Incorporar transacciones en operaciones múltiples.
 - [ ] **T-EST-064** Diseñar campos de fuente, licencia y auditoría.
-- [ ] **T-EST-065** Validar firma y tamaño real de imágenes.
-- [ ] **T-EST-066** Eliminar archivo temporal si falla SQL Server.
+- [~] **T-EST-065** Validar extensión, MIME y tamaño máximo de imágenes; la firma binaria real queda pendiente.
+- [~] **T-EST-066** Eliminar archivo nuevo si falla validación, relación, duplicado o SQL Server.
 - [ ] **T-EST-067** Eliminar imagen anterior después de una actualización confirmada.
 - [ ] **T-EST-068** Eliminar imagen asociada al borrar un contenido.
 
@@ -183,3 +183,20 @@ Se incorporaron los siguientes cambios:
 - Separación `app.js` / `server.js` para facilitar pruebas de integración posteriores.
 
 Las tareas permanecen `[~]` hasta ejecutar los casos 401, 403, 200, expiración, usuario eliminado, cambio de rol, lint y build.
+
+
+## 15. Estado del Bloque 3 — Implementado, pendiente de validación
+
+Se incorporaron los siguientes cambios:
+
+- Validación central de usuarios, territorios y contenido.
+- Conversión y normalización de formularios multipart.
+- Comprobación de IDs, fechas, correo, contraseña, números y coordenadas.
+- Comprobación de relaciones territoriales.
+- Detección de nombres duplicados por ámbito.
+- Mapeo de SQL Server a HTTP 400/409.
+- Mapeo de Multer a HTTP 413/415.
+- Eliminación de archivos nuevos cuando una solicitud falla.
+- Mensajes detallados de validación visibles desde el frontend.
+
+Las tareas se mantienen `[~]` hasta ejecutar los casos CP-EST-ERR e IMG, guardar evidencias y configurar la suite automatizada.

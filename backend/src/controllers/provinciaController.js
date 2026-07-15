@@ -1,5 +1,6 @@
 import * as provinciaModel from "../models/provinciaModel.js";
 import * as departamentoModel from "../models/departamentoModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
 
 // OBTENER TODAS LAS PROVINCIAS
 export const getProvincias = async (req, res) => {
@@ -28,8 +29,7 @@ export const getProvincias = async (req, res) => {
         const provincias = await provinciaModel.getAllProvincias();
         res.json(provincias);
     } catch (error) {
-        console.error("Error en getProvincias:", error);
-        res.status(500).json({ error: "Error al obtener provincias" });
+      return handleControllerError(error, req, res, 'Error al obtener provincias');
     }
 };
 
@@ -50,8 +50,7 @@ export const getProvinciaById = async (req, res) => {
 
         res.json(provincia);
     } catch (error) {
-        console.error("Error en getProvinciaById:", error);
-        res.status(500).json({ error: "Error al obtener provincia" });
+      return handleControllerError(error, req, res, 'Error al obtener provincia');
     }
 };
 
@@ -118,8 +117,7 @@ export const createProvincia = async (req, res) => {
             provincia: newProvincia,
         });
     } catch (error) {
-        console.error("Error en createProvincia:", error);
-        res.status(500).json({ error: "Error al crear provincia" });
+      return handleControllerError(error, req, res, 'Error al crear provincia');
     }
 };
 
@@ -198,8 +196,7 @@ export const updateProvincia = async (req, res) => {
             provincia: updatedProvincia,
         });
     } catch (error) {
-        console.error("Error en updateProvincia:", error);
-        res.status(500).json({ error: "Error al actualizar provincia" });
+      return handleControllerError(error, req, res, 'Error al actualizar provincia');
     }
 };
 
@@ -223,7 +220,6 @@ export const deleteProvincia = async (req, res) => {
             provincia: deletedProvincia,
         });
     } catch (error) {
-        console.error("Error en deleteProvincia:", error);
-        res.status(500).json({ error: "Error al eliminar provincia" });
+      return handleControllerError(error, req, res, 'Error al eliminar provincia');
     }
 };

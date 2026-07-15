@@ -7,7 +7,7 @@
 - **Plan:** `PLAN-002`
 - **Tareas:** `TASKS-002`
 - **Estado:** activa; se actualiza con cada bloque
-- **Fecha de corte:** 14 de julio de 2026 — Bloque 2 implementado
+- **Fecha de corte:** 14 de julio de 2026 — Bloque 3 implementado
 
 ## 2. Convención de estados
 
@@ -29,16 +29,16 @@
 | RF-EST-006 | P1 | T-EST-035 | Cliente Axios central | Respuesta 401 global | CP-EST-AUTH-010 | Playwright | Implementado, pendiente de validación |
 | RF-EST-007 | P1 | T-EST-038, T-EST-040 | `roleMiddleware.js`, routers CRUD | Usuario intenta administrar | CP-EST-AUTH-006 | Supertest/Newman | Implementado, pendiente de validación |
 | RF-EST-008 | P1 | T-EST-039 | `authRateLimiter.js`, `authRoutes.js` | Login/registro abusivo | Caso por crear | Reporte 429 | Implementado, pendiente de validación |
-| RF-EST-009 | P1 | T-EST-057/058/059 | Validadores y controladores | CRUD principal | CP-EST-ERR-001 | Unitarias/integración | Implementado de forma dispersa |
-| RF-EST-010 | P1 | T-EST-057/058/059 | Middleware de validación | Errores por campo | CP-EST-ERR-001 | JSON de respuesta | Pendiente |
-| RF-EST-011 | P1 | T-EST-054/055/056 | Error handler global | 400/401/403/404/409/413/415/500 | CP-EST-ERR-001..004, IMG-003/004 | Newman | Pendiente |
-| RF-EST-012 | P1 | T-EST-053/054 | `app.js`, `errorMiddleware.js` | Error inesperado | Caso por crear | Sin datos internos | Implementado parcialmente; validación pendiente |
+| RF-EST-009 | P1 | T-EST-057/058/059 | `validationMiddleware.js`, rutas y controladores | CRUD principal | CP-EST-ERR-001 | Unitarias/integración | Implementado centralmente, pendiente de validación |
+| RF-EST-010 | P1 | T-EST-057/058/059 | `validationMiddleware.js`, `api.js` | Errores por campo | CP-EST-ERR-001 | JSON de respuesta | Implementado, pendiente de validación |
+| RF-EST-011 | P1 | T-EST-054/055/056 | `errorMiddleware.js`, `httpErrors.js`, `uploadMiddleware.js` | 400/401/403/404/409/413/415/500 | CP-EST-ERR-001..004, IMG-003/004 | Newman | Implementado, pendiente de validación |
+| RF-EST-012 | P1 | T-EST-053/054 | `app.js`, `errorMiddleware.js`, `httpErrors.js` | Error inesperado | Caso por crear | Sin datos internos | Implementado, pendiente de validación |
 | RF-EST-013 | P2 | T-EST-060 | `database/migrations/` | Evolución SQL | Caso revisión | Scripts versionados | Pendiente |
 | RF-EST-014 | P1 | T-EST-061 | Migración SQL | Área/población/coordenadas | Caso BD | Evidencia SSMS | Pendiente |
-| RF-EST-015 | P1 | T-EST-062 | Modelos/controladores/SQL | Eliminación con hijos | CP-EST-ERR-004 | HTTP 409 | Integridad FK existente; mapeo HTTP pendiente |
+| RF-EST-015 | P1 | T-EST-062 | Modelos/controladores/SQL, `httpErrors.js` | Eliminación con hijos | CP-EST-ERR-004 | HTTP 409 | Mapeo HTTP implementado; prueba pendiente |
 | RF-EST-016 | P2 | T-EST-063 | Modelos y transacciones | Operación múltiple | Caso integración | Rollback probado | Pendiente |
-| RF-EST-017 | P1 | T-EST-065 | `uploadMiddleware.js` | Archivo inválido | CP-EST-IMG-003/004 | 413/415 | Implementado parcialmente |
-| RF-EST-018 | P1 | T-EST-066 | Controladores/upload | Falla SQL tras upload | CP-EST-IMG-001 | Archivo no queda huérfano | Pendiente |
+| RF-EST-017 | P1 | T-EST-065 | `uploadMiddleware.js`, `errorMiddleware.js` | Archivo inválido | CP-EST-IMG-003/004 | 413/415 | Extensión/MIME/tamaño implementados; firma real pendiente |
+| RF-EST-018 | P1 | T-EST-066 | `fileCleanup.js`, validación, integridad y controladores | Falla antes o durante SQL | CP-EST-IMG-001 | Archivo no queda huérfano | Implementado, pendiente de validación |
 | RF-EST-019 | P1 | T-EST-067 | Controladores/modelos | Reemplazo de imagen | CP-EST-IMG-002 | Archivo anterior eliminado | Pendiente |
 | RF-EST-020 | P2 | T-EST-023 | `server.js` | `/uploads` | Caso manual | URL única | Implementado, pendiente de validación de despliegue |
 | RF-EST-021 | P1 | T-EST-080/081 | `route-inventory.md`, `openapi.yaml` | Contrato REST | CP-EST-SDD-001 | Comparación contrato/código | Inventario validado; OpenAPI pendiente |
@@ -82,3 +82,14 @@ No debe usarse “completado” como sinónimo de “documentado”.
 | Sesión frontend | RF-EST-005/006 | `AuthContext.jsx`, `api.js`, rutas privadas | Recarga y expiración |
 | Seguridad HTTP | RF-EST-008/012/028 | `app.js`, rate limit, error handler | CORS, 429 y ausencia de debug |
 | Preparación de tests | RF-EST-023 | `app.js` separado de `server.js` | Supertest en Bloque 6 |
+
+
+## 7. Trazabilidad del Bloque 3
+
+| Entregable | Requisitos | Archivos principales | Validación pendiente |
+|---|---|---|---|
+| Validación central | RF-EST-009/010 | `validationMiddleware.js`, rutas | Casos 400 por módulo |
+| Duplicados y relaciones | RF-EST-009/011/015 | `dataIntegrityMiddleware.js`, `httpErrors.js` | Casos 404 y 409 |
+| Archivos rechazados | RF-EST-017/018 | `uploadMiddleware.js`, `fileCleanup.js` | Casos 413, 415 y limpieza |
+| Errores uniformes | RF-EST-011/012 | `errorMiddleware.js`, controladores | Newman y Supertest |
+| Presentación frontend | RNF-EST-005 | `frontend/src/services/api.js` | Revisión visual de mensajes |

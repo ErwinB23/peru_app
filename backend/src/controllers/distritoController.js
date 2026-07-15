@@ -1,5 +1,6 @@
 import * as distritoModel from "../models/distritoModel.js";
 import * as provinciaModel from "../models/provinciaModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
 
 // OBTENER TODOS LOS DISTRITOS CON PAGINACIÓN
 export const getDistritos = async (req, res) => {
@@ -45,8 +46,7 @@ export const getDistritos = async (req, res) => {
         const result = await distritoModel.getAllDistritos(pageNum, limitNum);
         res.json(result);
     } catch (error) {
-        console.error("Error en getDistritos:", error);
-        res.status(500).json({ error: "Error al obtener distritos" });
+      return handleControllerError(error, req, res, 'Error al obtener distritos');
     }
 };
 
@@ -67,8 +67,7 @@ export const getDistritoById = async (req, res) => {
 
         res.json(distrito);
     } catch (error) {
-        console.error("Error en getDistritoById:", error);
-        res.status(500).json({ error: "Error al obtener distrito" });
+      return handleControllerError(error, req, res, 'Error al obtener distrito');
     }
 };
 
@@ -145,8 +144,7 @@ export const createDistrito = async (req, res) => {
             distrito: newDistrito,
         });
     } catch (error) {
-        console.error("Error en createDistrito:", error);
-        res.status(500).json({ error: "Error al crear distrito" });
+      return handleControllerError(error, req, res, 'Error al crear distrito');
     }
 };
 // ACTUALIZAR DISTRITO (solo admin)
@@ -234,8 +232,7 @@ export const updateDistrito = async (req, res) => {
             distrito: updatedDistrito,
         });
     } catch (error) {
-        console.error("Error en updateDistrito:", error);
-        res.status(500).json({ error: "Error al actualizar distrito" });
+      return handleControllerError(error, req, res, 'Error al actualizar distrito');
     }
 };
 
@@ -259,7 +256,6 @@ export const deleteDistrito = async (req, res) => {
             distrito: deletedDistrito,
         });
     } catch (error) {
-        console.error("Error en deleteDistrito:", error);
-        res.status(500).json({ error: "Error al eliminar distrito" });
+      return handleControllerError(error, req, res, 'Error al eliminar distrito');
     }
 };

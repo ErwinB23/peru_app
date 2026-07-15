@@ -1,4 +1,5 @@
 import * as lugarTuristicoModel from "../models/lugarTuristicoModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
 
 export const getLugaresByDepartamentoId = async (req, res) => {
     try {
@@ -13,8 +14,7 @@ export const getLugaresByDepartamentoId = async (req, res) => {
 
         res.json(lugares);
     } catch (error) {
-        console.error("Error en getLugaresByDepartamentoId:", error);
-        res.status(500).json({ error: "Error al obtener lugares turísticos" });
+      return handleControllerError(error, req, res, 'Error al obtener lugares turísticos');
     }
 };
 
@@ -34,8 +34,7 @@ export const getLugarById = async (req, res) => {
 
         res.json(lugar);
     } catch (error) {
-        console.error("Error en getLugarById:", error);
-        res.status(500).json({ error: "Error al obtener lugar turístico" });
+      return handleControllerError(error, req, res, 'Error al obtener lugar turístico');
     }
 };
 
@@ -73,8 +72,7 @@ export const createLugarTuristico = async (req, res) => {
             lugar: nuevoLugar,
         });
     } catch (error) {
-        console.error("Error en createLugarTuristico:", error);
-        res.status(500).json({ error: "Error al crear lugar turístico" });
+      return handleControllerError(error, req, res, 'Error al crear lugar turístico');
     }
 };
 
@@ -127,8 +125,7 @@ export const updateLugarTuristico = async (req, res) => {
             lugar: lugarActualizado,
         });
     } catch (error) {
-        console.error("Error en updateLugarTuristico:", error);
-        res.status(500).json({ error: "Error al actualizar lugar turístico" });
+      return handleControllerError(error, req, res, 'Error al actualizar lugar turístico');
     }
 };
 
@@ -151,7 +148,6 @@ export const deleteLugarTuristico = async (req, res) => {
             lugar: lugarEliminado,
         });
     } catch (error) {
-        console.error("Error en deleteLugarTuristico:", error);
-        res.status(500).json({ error: "Error al eliminar lugar turístico" });
+      return handleControllerError(error, req, res, 'Error al eliminar lugar turístico');
     }
 };

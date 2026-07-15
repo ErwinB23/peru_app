@@ -1,34 +1,56 @@
+import { cleanupRequestFiles } from '../utils/fileCleanup.js';
+import { AppError, errorPayload, normalizeError } from '../utils/httpErrors.js';
+
 export const notFoundHandler = (req, res) => {
-  return res.status(404).json({
-    error: 'Ruta no encontrada',
-    path: req.originalUrl
-  });
+  const error = new AppError(
+    'Ruta no encontrada',
+    404,
+    'ROUTE_NOT_FOUND',
+    [{ field: 'path', message: req.originalUrl }]
+  );
+
+  return res.status(404).json(errorPayload(error));
 };
 
-export const errorHandler = (error, req, res, next) => {
+export const errorHandler = async (error, req, res, next) => {
   if (res.headersSent) {
     return next(error);
   }
 
+  await cleanupRequestFiles(req);
+
   if (error instanceof SyntaxError && error.status === 400 && 'body' in error) {
-    return res.status(400).json({ error: 'El cuerpo JSON no es válido' });
+    const jsonError = new AppError(
+      'El cuerpo JSON no es válido',
+      400,
+      'INVALID_JSON'
+    );
+    return res.status(400).json(errorPayload(jsonError));
   }
 
   if (error.type === 'entity.too.large') {
-    return res.status(413).json({ error: 'El cuerpo de la solicitud es demasiado grande' });
+    const bodyError = new AppError(
+      'El cuerpo de la solicitud es demasiado grande',
+      413,
+      'REQUEST_TOO_LARGE'
+    );
+    return res.status(413).json(errorPayload(bodyError));
   }
 
   if (error.code === 'CORS_ORIGIN_DENIED') {
-    return res.status(403).json({ error: 'Origen no autorizado por CORS' });
+    const corsError = new AppError(
+      'Origen no autorizado por CORS',
+      403,
+      'CORS_ORIGIN_DENIED'
+    );
+    return res.status(403).json(errorPayload(corsError));
   }
 
-  const status = Number.isInteger(error.status) ? error.status : 500;
+  const normalized = normalizeError(error);
 
-  if (status >= 500) {
+  if (normalized.status >= 500) {
     console.error('Error no controlado:', error);
   }
 
-  return res.status(status).json({
-    error: status >= 500 ? 'Error interno inesperado' : error.message
-  });
+  return res.status(normalized.status).json(errorPayload(normalized));
 };

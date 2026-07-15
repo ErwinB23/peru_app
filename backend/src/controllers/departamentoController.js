@@ -1,4 +1,5 @@
 import * as departamentoModel from '../models/departamentoModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
 
 //OBTENER TODOS LOS DEPARTAMENTOS
 export const getDepartamentos = async (req, res) => {
@@ -7,8 +8,7 @@ export const getDepartamentos = async (req, res) => {
         res.json(departamentos);
     }
     catch (error) {
-        console.error('Error al obtener departamentos:', error);
-        res.status(500).json({ message: 'Error al obtener departamentos' });
+      return handleControllerError(error, req, res, 'Error al obtener departamentos');
     }
 };
 
@@ -30,8 +30,7 @@ export const getDepartamentoById = async (req, res) => {
         res.json(departamento);
     }
     catch (error) {
-        console.error('Error en getDepartamentoById:', error);
-        res.status(500).json({ error: 'Error al obtener departamento' });
+      return handleControllerError(error, req, res, 'Error al obtener departamento');
     }
 };
 
@@ -53,8 +52,7 @@ export const createDepartamento = async (req, res) => {
             departamento: newDepartamento,
         });
     } catch (error) {
-        console.error("Error en createDepartamento:", error);
-        res.status(500).json({ error: "Error al crear departamento" });
+      return handleControllerError(error, req, res, 'Error al crear departamento');
     }
 };
 
@@ -93,8 +91,7 @@ export const updateDepartamento = async (req, res) => {
             departamento: updatedDepartamento,
         });
     } catch (error) {
-        console.error("Error en updateDepartamento:", error);
-        res.status(500).json({ error: "Error al actualizar departamento" });
+      return handleControllerError(error, req, res, 'Error al actualizar departamento');
     }
 };
 // ELIMINAR DEPARTAMENTO (solo admin)
@@ -118,7 +115,6 @@ export const deleteDepartamento = async (req, res) => {
         });
     }
     catch (error) {
-        console.error('Error en deleteDepartamento:', error);
-        res.status(500).json({ error: 'Error al eliminar departamento' });
+      return handleControllerError(error, req, res, 'Error al eliminar departamento');
     }
 };

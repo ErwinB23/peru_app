@@ -9,6 +9,7 @@ import {
   updateUser,
   updatePassword,
 } from "../models/userModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
 
 // REGISTRAR USUARIO
 export const register = async (req, res) => {
@@ -31,7 +32,7 @@ export const register = async (req, res) => {
     // Verificar si el email ya existe
     const existingUser = await findUserByEmail(emailNormalizado);
     if (existingUser) {
-      return res.status(400).json({ error: 'El email ya está registrado' });
+      return res.status(409).json({ error: 'El email ya está registrado', code: 'DUPLICATE_RESOURCE' });
     }
 
     // Encriptar contraseña
@@ -59,8 +60,7 @@ export const register = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error en register:', error);
-    res.status(500).json({ error: 'Error al registrar usuario' });
+    return handleControllerError(error, req, res, 'Error al registrar usuario');
   }
 };
 
@@ -115,8 +115,7 @@ export const login = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error en login:', error);
-    res.status(500).json({ error: 'Error al iniciar sesión' });
+    return handleControllerError(error, req, res, 'Error al iniciar sesión');
   }
 };
 
@@ -129,8 +128,7 @@ export const getProfile = async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    console.error('Error en getProfile:', error);
-    res.status(500).json({ error: 'Error al obtener perfil' });
+    return handleControllerError(error, req, res, 'Error al obtener perfil');
   }
 };
 
@@ -152,7 +150,7 @@ export const updateProfile = async (req, res) => {
       const existingUser = await findUserByEmail(emailNormalizado);
 
       if (existingUser && existingUser.id !== userId) {
-        return res.status(400).json({ error: 'El email ya está en uso por otro usuario' });
+        return res.status(409).json({ error: 'El email ya está en uso por otro usuario', code: 'DUPLICATE_RESOURCE' });
       }
     }
 
@@ -203,7 +201,6 @@ export const updateProfile = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error en updateProfile:', error);
-    res.status(500).json({ error: 'Error al actualizar perfil' });
+    return handleControllerError(error, req, res, 'Error al actualizar perfil');
   }
 };

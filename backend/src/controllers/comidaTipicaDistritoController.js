@@ -1,5 +1,6 @@
 import * as comidaModel from '../models/comidaTipicaDistritoModel.js';
 import * as distritoModel from '../models/distritoModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
 
 export const getComidasByDistritoId = async (req, res) => {
     try {
@@ -13,8 +14,7 @@ export const getComidasByDistritoId = async (req, res) => {
 
         res.json(comidas);
     } catch (error) {
-        console.error('Error en getComidasByDistritoId:', error);
-        res.status(500).json({ error: 'Error al obtener comidas típicas del distrito' });
+      return handleControllerError(error, req, res, 'Error al obtener comidas típicas del distrito');
     }
 };
 
@@ -34,8 +34,7 @@ export const getComidaById = async (req, res) => {
 
         res.json(comida);
     } catch (error) {
-        console.error('Error en getComidaById:', error);
-        res.status(500).json({ error: 'Error al obtener comida típica' });
+      return handleControllerError(error, req, res, 'Error al obtener comida típica');
     }
 };
 
@@ -68,8 +67,7 @@ export const createComida = async (req, res) => {
             comida: nuevaComida
         });
     } catch (error) {
-        console.error('Error en createComida:', error);
-        res.status(500).json({ error: 'Error al crear comida típica de distrito' });
+      return handleControllerError(error, req, res, 'Error al crear comida típica de distrito');
     }
 };
 
@@ -101,8 +99,7 @@ export const updateComida = async (req, res) => {
             comida: comidaActualizada
         });
     } catch (error) {
-        console.error('Error en updateComida:', error);
-        res.status(500).json({ error: 'Error al actualizar comida típica de distrito' });
+      return handleControllerError(error, req, res, 'Error al actualizar comida típica de distrito');
     }
 };
 
@@ -125,7 +122,6 @@ export const deleteComida = async (req, res) => {
             comida: comidaEliminada
         });
     } catch (error) {
-        console.error('Error en deleteComida:', error);
-        res.status(500).json({ error: 'Error al eliminar comida típica de distrito' });
+      return handleControllerError(error, req, res, 'Error al eliminar comida típica de distrito');
     }
 };

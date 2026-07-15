@@ -1,0 +1,8 @@
+Controladores: 14
+Bloques catch: 69
+handleControllerError: 69
+Rutas POST: 14
+Rutas PUT: 14
+Rutas DELETE: 13
+Rutas de escritura totales: 41
+Problemas de validación detectados: 0

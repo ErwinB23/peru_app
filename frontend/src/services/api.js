@@ -29,6 +29,18 @@ api.interceptors.response.use(
     const isPublicAuthRequest =
       requestUrl.includes('/auth/login') || requestUrl.includes('/auth/register');
 
+    const responseData = error.response?.data;
+
+    if (
+      responseData?.code === 'VALIDATION_ERROR' &&
+      Array.isArray(responseData.details) &&
+      responseData.details.length > 0
+    ) {
+      responseData.error = responseData.details
+        .map((item) => `${item.field}: ${item.message}`)
+        .join(' · ');
+    }
+
     if (status === 401 && hasStoredToken && !isPublicAuthRequest) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
