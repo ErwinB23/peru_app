@@ -7,7 +7,7 @@
 - **Proyecto:** PERU APP
 - **Metodología:** Spec-Driven Development
 - **Herramienta:** GitHub Spec Kit
-- **Estado:** Aprobada para planificación
+- **Estado:** En implementación — Bloque documental y de repositorio validado
 - **Responsable:** Erwin Brayam Inca Pauccara
 - **Fecha:** 14 de julio de 2026
 - **Especificación base:** `specs/001-peru-app/spec.md`
@@ -26,12 +26,12 @@ PERU APP ya cuenta con frontend, backend, SQL Server, autenticación JWT, roles,
 
 Toda persona debe registrarse o iniciar sesión antes de acceder al contenido de la plataforma.
 
-Las únicas operaciones públicas son:
+Las únicas operaciones funcionales públicas son:
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
-Toda otra ruta debe exigir un token JWT válido.
+Como excepción técnica de despliegue podrá existir `GET /api/health`, con una respuesta mínima que no revele datos de negocio ni detalles de infraestructura. Toda otra ruta debe exigir un token JWT válido.
 
 ### 4.2. Autorización por rol
 
@@ -47,7 +47,24 @@ La estabilización no debe rediseñar la interfaz. Se conservarán la estructura
 
 Cada corrección debe especificarse, implementarse, probarse y registrarse antes de iniciar la siguiente. No se permiten cambios masivos sin evidencia de regresión.
 
-## 5. Actores
+## 5. Estado real de implementación al inicio del Bloque 1
+
+La auditoría del código estableció la siguiente línea base:
+
+- 69 operaciones declaradas en routers Express.
+- 41 operaciones usan JWT y rol administrador.
+- 18 operaciones usan JWT para usuario autenticado.
+- 10 operaciones de routers están públicas.
+- Solo registro y login cumplen la política pública objetivo.
+- Ocho GET territoriales constituyen una brecha de autenticación.
+- `/api/test-db` y `/api/debug-token` deben eliminarse.
+- El middleware JWT todavía no consulta el usuario ni el rol vigentes en SQL Server.
+- El frontend todavía no revalida la sesión mediante `/api/auth/profile`.
+- No existe todavía una suite automatizada activa.
+
+Estos puntos representan el estado observado, no una funcionalidad ya corregida. El detalle se mantiene en `route-inventory.md` y `traceability-matrix.md`.
+
+## 6. Actores
 
 | Actor | Descripción |
 |---|---|
@@ -56,7 +73,7 @@ Cada corrección debe especificarse, implementarse, probarse y registrarse antes
 | Administrador autenticado | Puede consultar y gestionar usuarios, territorios y contenido. |
 | Sistema | Valida sesión, permisos, datos, relaciones y archivos. |
 
-## 6. Historias de usuario priorizadas
+## 7. Historias de usuario priorizadas
 
 ### US-EST-001 — Acceso obligatorio mediante login (P1)
 
@@ -123,7 +140,7 @@ Como usuario, necesito que la plataforma cargue con mayor rapidez sin perder su 
 2. Las páginas pesadas se cargan de forma diferida.
 3. La navegación y apariencia se mantienen equivalentes a la línea base aprobada.
 
-## 7. Requisitos funcionales
+## 8. Requisitos funcionales
 
 ### Autenticación y autorización
 
@@ -171,7 +188,7 @@ Como usuario, necesito que la plataforma cargue con mayor rapidez sin perder su 
 - **RF-EST-027:** Los recursos multimedia deben optimizarse sin cambiar la composición visual.
 - **RF-EST-028:** El código de depuración y los endpoints técnicos deben eliminarse o restringirse al entorno de desarrollo.
 
-## 8. Requisitos no funcionales
+## 9. Requisitos no funcionales
 
 - **RNF-EST-001 Seguridad:** ninguna información funcional debe ser accesible sin autenticación válida.
 - **RNF-EST-002 Integridad:** el sistema no debe dejar actualizaciones parciales en operaciones críticas.
@@ -182,7 +199,7 @@ Como usuario, necesito que la plataforma cargue con mayor rapidez sin perder su 
 - **RNF-EST-007 Trazabilidad:** cada requisito P1 debe tener código, prueba y evidencia asociada.
 - **RNF-EST-008 Regresión:** después de cada bloque deben ejecutarse sintaxis, lint, build y pruebas del módulo afectado.
 
-## 9. Fuera de alcance
+## 10. Fuera de alcance
 
 Esta especificación no incluye:
 
@@ -194,7 +211,7 @@ Esta especificación no incluye:
 - migración inmediata a una arquitectura distinta;
 - carga masiva de todos los datos reales antes de estabilizar.
 
-## 10. Riesgos y mitigaciones
+## 11. Riesgos y mitigaciones
 
 | Riesgo | Mitigación |
 |---|---|
@@ -205,11 +222,11 @@ Esta especificación no incluye:
 | Documentación se desvía del código | Revisión de OpenAPI y trazabilidad al cerrar cada módulo. |
 | Optimización cambia el diseño | Comparación con evidencia visual de Fase 0. |
 
-## 11. Criterios de éxito
+## 12. Criterios de éxito
 
 La estabilización será aceptada cuando:
 
-1. Sin token, toda ruta distinta de registro y login responde 401.
+1. Sin token, toda ruta funcional distinta de registro y login responde 401; `/api/health` solo entrega estado técnico mínimo.
 2. Un usuario autenticado consulta contenido, pero no administra.
 3. Un administrador puede gestionar contenido con su rol vigente.
 4. Un usuario eliminado o degradado pierde acceso con su token anterior.

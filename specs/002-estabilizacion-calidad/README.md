@@ -15,7 +15,7 @@ El orden de precedencia para este cambio es:
 
 ## Regla principal
 
-Solo el registro y el inicio de sesión son públicos. Toda otra operación debe exigir una sesión válida.
+Solo el registro y el inicio de sesión son operaciones funcionales públicas. Para despliegue se permite `GET /api/health` como operación técnica mínima y no sensible. Toda otra operación debe exigir una sesión válida.
 
 ## Alcance visual
 
@@ -23,8 +23,16 @@ La estabilización conserva colores, estructura, tarjetas, sidebar, tipografías
 
 ## Estado
 
-- Especificación: preparada
-- Plan: preparado
-- Tareas: preparadas
-- Implementación: pendiente
-- Pruebas automatizadas: pendientes
+- Especificación: en implementación.
+- Plan: ruta crítica acelerada aprobada.
+- Bloque 1 SDD/repositorio: validado documentalmente.
+- Implementación de autenticación y seguridad: pendiente.
+- Pruebas automatizadas: pendientes.
+- Despliegue: no autorizado todavía.
+
+## Artefactos incorporados en el Bloque 1
+
+- `route-inventory.md`
+- `traceability-matrix.md`
+- `checklists/sdd-consistency-checklist.md`
+- `docs/estabilizacion/bloque-1/`

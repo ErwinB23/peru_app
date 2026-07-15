@@ -8,7 +8,9 @@ Plataforma web turístico-educativa para organizar y difundir información terri
 - Especificación de estabilización y calidad: `specs/002-estabilizacion-calidad`.
 - Rama de trabajo: `002-estabilizacion-calidad`.
 - Fases 1–3: documentadas y técnicamente ejecutadas.
-- Próximo bloque: autenticación, sesión, protección de rutas y pruebas de acceso.
+- Bloque 1 de auditoría SDD/repositorio: documentado y trazado.
+- Estado de seguridad: ocho GET territoriales aún públicos; no está listo para despliegue.
+- Próximo bloque: autenticación, sesión, protección de rutas y seguridad HTTP esencial.
 
 ## Arquitectura
 
@@ -151,6 +153,9 @@ specs/002-estabilizacion-calidad/spec.md
 specs/002-estabilizacion-calidad/plan.md
 specs/002-estabilizacion-calidad/tasks.md
 specs/002-estabilizacion-calidad/test-cases.md
+specs/002-estabilizacion-calidad/route-inventory.md
+specs/002-estabilizacion-calidad/traceability-matrix.md
+specs/002-estabilizacion-calidad/checklists/sdd-consistency-checklist.md
 ```
 
 Ciclo obligatorio de cambio:
@@ -214,6 +219,21 @@ No deben versionarse `.env`, `node_modules`, `dist`, respaldos `.bak` ni archivo
 ## Estado de pruebas
 
 Las evidencias manuales y de compilación se encuentran en `docs/estabilizacion/evidencias`. Las pruebas automatizadas con Supertest, Postman/Newman y Playwright se incorporarán en el bloque de validación definido en `TASKS-002`.
+
+## Auditoría reproducible del Bloque 1
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\block1-repository-audit.ps1
+```
+
+Para mover fuera de la raíz los respaldos duplicados y eliminar únicamente `dist`/`.vite` generados:
+
+```powershell
+.\scripts\block1-repository-audit.ps1 -ApplyCleanup
+```
+
+El script no elimina `.git`, `.env`, `uploads` ni dependencias.
 
 ## Despliegue
 

@@ -44,6 +44,13 @@
 - [x] **T-EST-014** Aprobar PLAN-002 como orden oficial de corrección.
 - [x] **T-EST-015** Guardar Fase 0 y 1 en un commit independiente.
 
+## 4.1. Bloque 1 — Auditoría SDD y repositorio
+
+- [x] **T-EST-016** Clasificar carpetas fuente, locales, generadas y duplicadas.
+- [x] **T-EST-017** Crear la matriz de trazabilidad específica de `SPEC-002`.
+- [x] **T-EST-018** Inventariar las rutas reales y clasificar su acceso actual y objetivo.
+- [x] **T-EST-019** Actualizar estados SDD sin declarar como implementado lo que solo está documentado.
+
 ## 5. Configuración y dependencias
 
 - [x] **T-EST-020** Corregir y unificar archivos `.env.example`.
@@ -111,10 +118,10 @@
 
 ## 10. Contrato, automatización y rendimiento
 
-- [ ] **T-EST-080** Inventariar rutas reales del backend.
+- [x] **T-EST-080** Inventariar rutas reales del backend.
 - [ ] **T-EST-081** Sincronizar `openapi.yaml`.
-- [ ] **T-EST-082** Actualizar matriz de trazabilidad.
-- [ ] **T-EST-083** Actualizar checklist SDD con estados reales.
+- [x] **T-EST-082** Actualizar matriz de trazabilidad.
+- [x] **T-EST-083** Actualizar checklist SDD con estados reales.
 - [ ] **T-EST-084** Configurar pruebas del backend.
 - [ ] **T-EST-085** Crear colección Postman y ejecución Newman.
 - [ ] **T-EST-086** Configurar pruebas del frontend.
@@ -144,9 +151,16 @@
 
 ## 13. Próxima puerta de calidad
 
-No iniciar la Fase 4 de autenticación hasta completar y registrar:
+El siguiente bloque de código es autenticación, sesión, protección de rutas y seguridad HTTP esencial. Para cerrarlo deberán existir:
 
-1. Respaldo `.bak` de `PeruDepartamentosDB`.
-2. Resultado satisfactorio de `RESTORE VERIFYONLY`.
-3. Registro, login válido, login inválido, perfil, usuario, administrador y cierre de sesión.
-4. `git status` limpio o con cambios identificados y justificados.
+1. Middleware JWT que consulte usuario y rol vigentes en SQL Server.
+2. Ocho GET territoriales protegidos.
+3. Validación de sesión desde el frontend.
+4. Interceptor global de 401.
+5. CORS restringido.
+6. Eliminación de `/api/test-db` y `/api/debug-token`.
+7. `GET /api/health` seguro.
+8. Evidencia de 401, 403 y 200.
+9. Backend sin errores de sintaxis; frontend con lint y build aprobados.
+
+Los pendientes de respaldo SQL Server permanecen obligatorios antes del despliegue final, pero no bloquean la preparación documental del Bloque 1.

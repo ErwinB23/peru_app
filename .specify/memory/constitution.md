@@ -1,8 +1,8 @@
 # Constitución del Proyecto PERU APP
 
-**Versión:** 1.1.0  
+**Versión:** 1.2.0  
 **Fecha de actualización:** 14 de julio de 2026  
-**Cambio principal:** Se establece la autenticación obligatoria para acceder a toda información y funcionalidad de la plataforma.  
+**Cambio principal:** Se consolida la trazabilidad de SPEC-002, se distingue documentación de validación y se admite un health check técnico mínimo para el despliegue.  
 
 ## 1. Nombre del proyecto
 
@@ -57,13 +57,14 @@ El sistema debe implementar autenticación, protección de rutas y control de ac
 
 ### 3.8.1. Autenticación obligatoria para el acceso al sistema
 
-El acceso a PERU APP requiere una sesión autenticada. Las únicas operaciones públicas permitidas son el registro y el inicio de sesión. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido.
+El acceso a PERU APP requiere una sesión autenticada. Las únicas operaciones funcionales públicas permitidas son el registro y el inicio de sesión. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública, siempre que devuelva únicamente el estado general del servicio y no exponga datos de negocio, credenciales, conteos, servidor, base de datos ni detalles internos.
 
 La protección visual del frontend no sustituye la protección del backend. Cada endpoint protegido debe validar el token, comprobar que el usuario aún existe en la base de datos y utilizar el rol vigente almacenado en SQL Server. Un usuario eliminado, un token expirado o un administrador cuyo rol haya cambiado no debe conservar acceso mediante información antigua contenida en el token.
 
 Política de acceso oficial:
 
-- Público: `POST /api/auth/register` y `POST /api/auth/login`.
+- Público funcional: `POST /api/auth/register` y `POST /api/auth/login`.
+- Público técnico: `GET /api/health`, exclusivamente con una respuesta mínima y no sensible.
 - Usuario autenticado: consultas territoriales, turísticas y gastronómicas, perfil y cierre de sesión.
 - Administrador autenticado: gestión de usuarios y operaciones de creación, actualización y eliminación de contenido.
 
@@ -97,6 +98,14 @@ Todo cambio relevante del sistema debe registrarse mediante Git y GitHub. Las me
 ### 3.15. Validación mediante pruebas
 
 Toda funcionalidad implementada debe poder verificarse mediante pruebas funcionales documentadas. El TDD debe derivarse del SDD y debe validar los módulos principales del sistema.
+
+### 3.16. Evidencia antes de cierre
+
+Una tarea no se considera terminada solo porque exista documentación o código. Para declararla validada debe existir una prueba ejecutada y una evidencia verificable. Los artefactos SDD deben distinguir como mínimo los estados `Pendiente`, `Brecha`, `Implementado, pendiente de validación` y `Validado`.
+
+### 3.17. Coherencia entre especificación, código y pruebas
+
+La Constitución, `spec.md`, `plan.md`, `tasks.md`, OpenAPI, rutas, pruebas y matriz de trazabilidad deben describir el mismo comportamiento. Cuando se detecte una contradicción, el estado se registra como brecha y no se oculta mediante una marca de tarea completada.
 
 ## 4. Tecnologías oficiales del proyecto
 
@@ -141,7 +150,7 @@ El sistema debe cumplir las siguientes reglas de calidad:
 
 - Adecuación funcional: las funcionalidades deben cumplir su propósito.
 - Usabilidad: la interfaz debe ser fácil de comprender y utilizar.
-- Seguridad: toda ruta, excepto registro e inicio de sesión, debe requerir autenticación válida.
+- Seguridad: toda ruta funcional, excepto registro e inicio de sesión, debe requerir autenticación válida; el health check técnico se limita a información no sensible.
 - Autorización vigente: los permisos deben comprobarse con el usuario y rol actuales almacenados en la base de datos.
 - Denegación por defecto: una solicitud sin token, con token inválido, expirado o asociado a un usuario inexistente debe ser rechazada.
 - Mantenibilidad: el código debe organizarse por módulos, capas y responsabilidades.

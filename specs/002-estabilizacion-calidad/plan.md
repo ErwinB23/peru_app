@@ -5,7 +5,7 @@
 - **Código:** PLAN-002
 - **Especificación:** SPEC-002
 - **Rama:** `002-estabilizacion-calidad`
-- **Estado:** Preparado
+- **Estado:** En ejecución — Bloque 1 documental cerrado
 - **Fecha:** 14 de julio de 2026
 
 ## 2. Estrategia
@@ -26,9 +26,37 @@ Antes de cerrar cualquier bloque:
 6. Especificación y tareas actualizadas.
 7. Commit pequeño y descriptivo.
 
-## 4. Orden de implementación
+## 4. Ruta crítica acelerada para entrega y despliegue
 
-### Bloque 0 — Respaldo y línea base
+La ejecución se concentra en ocho bloques obligatorios. Las optimizaciones avanzadas y la carga masiva de datos se postergan.
+
+| Bloque | Alcance | Salida obligatoria |
+|---|---|---|
+| 1 | SDD, repositorio, inventarios y trazabilidad | Fuente de verdad consistente y estructura limpia |
+| 2 | Autenticación, sesión, rutas y seguridad HTTP esencial | 401/403/200 correctos, CORS y debug retirado |
+| 3 | Validaciones y errores claros | 400/404/409/413/415/500 uniformes |
+| 4 | Revisión de módulos principales | CRUD y roles verificados por módulo |
+| 5 | Integridad básica de SQL e imágenes | Relaciones protegidas e imágenes sincronizadas |
+| 6 | Pruebas automatizadas esenciales | Backend, Newman y Playwright con reportes |
+| 7 | Documentación final y despliegue | OpenAPI sincronizado y sistema público funcional |
+| 8 | Verificación final | audit, lint, build, tests y smoke tests aprobados |
+
+### 4.1. Estado del Bloque 1
+
+Se consideran cerrados documentalmente:
+
+- inventario de carpetas;
+- inventario real de rutas;
+- matriz de trazabilidad de SPEC-002;
+- checklist de consistencia;
+- clasificación de brechas;
+- reglas de limpieza y entrega.
+
+El Bloque 1 no modifica todavía el comportamiento de la aplicación.
+
+## 5. Subfases técnicas de referencia
+
+### Subfase técnica T0 — Respaldo y línea base
 
 - Crear rama.
 - Respaldar código y SQL Server.
@@ -37,7 +65,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** estado anterior reproducible y protegido.
 
-### Bloque 1 — Configuración y entorno
+### Subfase técnica T1 — Configuración y entorno
 
 - Corregir `.env.example`.
 - Unificar URL de API y base de datos.
@@ -47,7 +75,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** entorno consistente y reproducible.
 
-### Bloque 2 — Dependencias controladas
+### Subfase técnica T2 — Dependencias controladas
 
 - Ejecutar `npm outdated` y `npm audit`.
 - Actualizar dependencias por grupos compatibles.
@@ -56,7 +84,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** dependencias mantenidas sin romper el sistema.
 
-### Bloque 3 — Autenticación y sesión
+### Subfase técnica T3 — Autenticación y sesión
 
 - Validar JWT.
 - Consultar usuario actual en SQL Server.
@@ -68,7 +96,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** sesión consistente y revocable.
 
-### Bloque 4 — Protección integral de rutas
+### Subfase técnica T4 — Protección integral de rutas
 
 - Mantener públicas solo `register` y `login`.
 - Proteger GET territoriales y turísticos.
@@ -77,7 +105,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** login obligatorio en frontend y backend.
 
-### Bloque 5 — Seguridad HTTP y errores
+### Subfase técnica T5 — Seguridad HTTP y errores
 
 - Agregar cabeceras de seguridad.
 - Restringir CORS.
@@ -88,7 +116,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** respuestas seguras y predecibles.
 
-### Bloque 6 — Validación centralizada
+### Subfase técnica T6 — Validación centralizada
 
 - Definir esquemas por módulo.
 - Normalizar correos y textos.
@@ -97,7 +125,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** datos válidos antes de llegar a los modelos.
 
-### Bloque 7 — Integridad y migraciones SQL
+### Subfase técnica T7 — Integridad y migraciones SQL
 
 - Crear carpeta `database/migrations`.
 - Versionar restricciones e índices.
@@ -107,7 +135,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** base preparada para datos reales.
 
-### Bloque 8 — Gestión segura de imágenes
+### Subfase técnica T8 — Gestión segura de imágenes
 
 - Validar archivos.
 - Manejar temporales.
@@ -117,7 +145,7 @@ Antes de cerrar cualquier bloque:
 
 **Salida:** sincronización entre disco y SQL Server.
 
-### Bloque 9 — Revisión funcional por módulo
+### Subfase técnica T9 — Revisión funcional por módulo
 
 Orden:
 
@@ -134,7 +162,7 @@ Orden:
 
 Para cada módulo: positivo, negativo, sin token, usuario, admin, duplicado, inexistente y relación bloqueada.
 
-### Bloque 10 — Contrato SDD y OpenAPI
+### Subfase técnica T10 — Contrato SDD y OpenAPI
 
 - Inventariar rutas reales.
 - Corregir `openapi.yaml`.
@@ -144,7 +172,7 @@ Para cada módulo: positivo, negativo, sin token, usuario, admin, duplicado, ine
 
 **Salida:** especificación, contrato y código convergentes.
 
-### Bloque 11 — Automatización de pruebas
+### Subfase técnica T11 — Automatización de pruebas
 
 - Backend: Vitest/Jest y Supertest.
 - API: Postman y Newman.
@@ -154,7 +182,7 @@ Para cada módulo: positivo, negativo, sin token, usuario, admin, duplicado, ine
 
 **Salida:** regresión repetible y reportable.
 
-### Bloque 12 — Rendimiento del frontend
+### Subfase técnica T12 — Rendimiento del frontend
 
 - Comprimir y redimensionar multimedia.
 - Carga diferida de páginas.
@@ -164,7 +192,7 @@ Para cada módulo: positivo, negativo, sin token, usuario, admin, duplicado, ine
 
 **Salida:** misma apariencia con carga más eficiente.
 
-### Bloque 13 — Carga controlada de datos reales
+### Subfase técnica T13 — Carga controlada de datos reales
 
 - Registrar primero Ayacucho.
 - Verificar relaciones, contenido, imágenes y fuentes.
@@ -173,7 +201,7 @@ Para cada módulo: positivo, negativo, sin token, usuario, admin, duplicado, ine
 
 **Salida:** contenido real confiable y verificable.
 
-## 5. Estrategia de commits
+## 6. Estrategia de commits
 
 Ejemplos:
 
@@ -189,6 +217,6 @@ test(api): automatizar autenticación y usuarios
 perf(frontend): optimizar recursos multimedia
 ```
 
-## 6. Criterio de finalización
+## 7. Criterio de finalización
 
 PLAN-002 se cierra cuando todos los requisitos P1 están implementados y validados, la API está documentada, las pruebas críticas son repetibles y el diseño coincide con la línea base aprobada.
