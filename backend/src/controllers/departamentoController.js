@@ -1,5 +1,6 @@
 import * as departamentoModel from '../models/departamentoModel.js';
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 //OBTENER TODOS LOS DEPARTAMENTOS
 export const getDepartamentos = async (req, res) => {
@@ -86,6 +87,8 @@ export const updateDepartamento = async (req, res) => {
                     : departamentoActual.introduccion || null,
         });
 
+        await cleanupReplacedImages(departamentoActual, updatedDepartamento, ['imagen_fondo']);
+
         res.json({
             message: "Departamento actualizado exitosamente",
             departamento: updatedDepartamento,
@@ -108,6 +111,8 @@ export const deleteDepartamento = async (req, res) => {
         if (!deletedDepartamento) {
             return res.status(404).json({ error: 'Departamento no encontrado' });
         }
+
+        await cleanupResourceImages(deletedDepartamento, ['imagen_fondo']);
 
         res.json({
             message: 'Departamento eliminado exitosamente',

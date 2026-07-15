@@ -8,7 +8,10 @@ import {
 } from '../controllers/comidaTipicaController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadComidaTipicaImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadComidaTipicaImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
   ensureResourceExists,
@@ -38,6 +41,7 @@ router.post(
   verifyToken,
   isAdmin,
   uploadComidaTipicaImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateComidaDepartamentoBody,
   departamentoExists,
   uniqueComida,
@@ -51,6 +55,7 @@ router.put(
   validateIdParam,
   comidaExists,
   uploadComidaTipicaImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateComidaDepartamentoBody,
   departamentoExists,
   uniqueComida,

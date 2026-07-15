@@ -1,6 +1,7 @@
 import * as distritoModel from "../models/distritoModel.js";
 import * as provinciaModel from "../models/provinciaModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 // OBTENER TODOS LOS DISTRITOS CON PAGINACIÓN
 export const getDistritos = async (req, res) => {
@@ -227,6 +228,8 @@ export const updateDistrito = async (req, res) => {
             imagen_fondo,
         });
 
+        await cleanupReplacedImages(distrito, updatedDistrito, ['imagen_fondo']);
+
         res.json({
             message: "Distrito actualizado exitosamente",
             distrito: updatedDistrito,
@@ -250,6 +253,8 @@ export const deleteDistrito = async (req, res) => {
         if (!deletedDistrito) {
             return res.status(404).json({ error: "Distrito no encontrado" });
         }
+
+        await cleanupResourceImages(deletedDistrito, ['imagen_fondo']);
 
         res.json({
             message: "Distrito eliminado exitosamente",

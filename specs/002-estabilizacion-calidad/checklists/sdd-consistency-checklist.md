@@ -1,4 +1,4 @@
-# Checklist de Consistencia SDD — Bloque 1
+# Checklist de Consistencia SDD — SPEC-002
 
 ## Gobierno y alcance
 
@@ -34,9 +34,24 @@
 - [x] Se identificaron 18 operaciones autenticadas de consulta/perfil.
 - [x] Se identificaron 10 operaciones públicas actuales, de las cuales solo 2 son funcionalmente permitidas.
 - [ ] `openapi.yaml` está sincronizado con el inventario.
-- [ ] Las ocho brechas de autenticación están corregidas en código.
-- [ ] `/api/test-db` y `/api/debug-token` fueron eliminadas.
-- [ ] Existe `/api/health` seguro.
+- [x] Las ocho brechas de autenticación están corregidas en código.
+- [x] `/api/test-db` y `/api/debug-token` fueron eliminadas.
+- [x] Existe `/api/health` seguro.
+
+
+## Integridad e imágenes — Bloque 4
+
+- [x] Existe auditoría SQL previa para datos inválidos, duplicados y relaciones huérfanas.
+- [x] Existe una migración SQL numerada, transaccional e idempotente.
+- [x] El script base incorpora restricciones para instalaciones nuevas.
+- [x] La política de eliminación conserva las relaciones y evita cascadas accidentales.
+- [x] Las cargas comprueban extensión, MIME, tamaño y firma binaria.
+- [x] Los errores eliminan archivos nuevos que no llegaron a confirmarse.
+- [x] Las actualizaciones confirmadas eliminan la imagen anterior.
+- [x] Las eliminaciones confirmadas eliminan la imagen asociada.
+- [ ] La auditoría SQL fue ejecutada y todos los conteos son 0.
+- [ ] La migración 005 fue aplicada y evidenciada en SSMS.
+- [ ] Los casos manuales de reemplazo, eliminación, 413 y 415 fueron aprobados.
 
 ## Pruebas y despliegue
 
@@ -49,6 +64,6 @@
 ## Dictamen
 
 **Bloque documental y de repositorio:** aprobado.  
-**Código de seguridad:** pendiente.  
+**Código de seguridad e integridad:** implementado, pendiente de validación completa.  
 **Pruebas automatizadas:** pendientes.  
 **Despliegue:** no autorizado todavía.

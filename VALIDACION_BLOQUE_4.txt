@@ -1,0 +1,15 @@
+BLOQUE 4 - RESULTADO DE VALIDACION INTERNA
+Fecha: 2026-07-14
+
+- 55 archivos JavaScript del backend: sintaxis correcta.
+- 24 flujos de carga: verificacion de firma binaria incorporada.
+- 12 actualizaciones: limpieza de imagen anterior incorporada.
+- 12 eliminaciones: limpieza de imagen asociada incorporada.
+- Migracion SQL: 13 restricciones CHECK y 8 indices unicos.
+- Script PowerShell: texto ASCII compatible con Windows PowerShell 5.1.
+- Prueba aislada de imageLifecycle: elimina solo rutas locales bajo /uploads.
+
+Pendiente en el equipo del usuario:
+- Ejecutar auditoria y migracion en SQL Server.
+- Ejecutar script block4-integrity-image-check.ps1.
+- Completar pruebas manuales y conservar evidencias.

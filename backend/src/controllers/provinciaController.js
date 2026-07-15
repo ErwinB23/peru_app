@@ -1,6 +1,7 @@
 import * as provinciaModel from "../models/provinciaModel.js";
 import * as departamentoModel from "../models/departamentoModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 // OBTENER TODAS LAS PROVINCIAS
 export const getProvincias = async (req, res) => {
@@ -191,6 +192,8 @@ export const updateProvincia = async (req, res) => {
             imagen_fondo,
         });
 
+        await cleanupReplacedImages(provincia, updatedProvincia, ['imagen_fondo']);
+
         res.json({
             message: "Provincia actualizada exitosamente",
             provincia: updatedProvincia,
@@ -214,6 +217,8 @@ export const deleteProvincia = async (req, res) => {
         if (!deletedProvincia) {
             return res.status(404).json({ error: "Provincia no encontrada" });
         }
+
+        await cleanupResourceImages(deletedProvincia, ['imagen_fondo']);
 
         res.json({
             message: "Provincia eliminada exitosamente",

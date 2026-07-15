@@ -8,7 +8,10 @@ import {
 } from '../controllers/comidaTipicaCiudadController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadComidaTipicaCiudadImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadComidaTipicaCiudadImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
   ensureResourceExists,
@@ -30,12 +33,14 @@ router.get('/:id', verifyToken, validateIdParam, getComidaById);
 router.post(
   '/', verifyToken, isAdmin,
   uploadComidaTipicaCiudadImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateComidaCiudadBody, ciudadExists, uniqueComida, createComida
 );
 router.put(
   '/:id', verifyToken, isAdmin, validateIdParam,
   comidaExists,
   uploadComidaTipicaCiudadImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateComidaCiudadBody, ciudadExists, uniqueComida, updateComida
 );
 router.delete('/:id', verifyToken, isAdmin, validateIdParam, comidaExists, deleteComida);

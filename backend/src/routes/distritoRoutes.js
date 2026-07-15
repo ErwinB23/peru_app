@@ -8,7 +8,10 @@ import {
 } from '../controllers/distritoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadDistritoImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadDistritoImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
   ensureResourceExists,
@@ -33,6 +36,7 @@ router.post(
   verifyToken,
   isAdmin,
   uploadDistritoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
   validateDistritoBody,
   provinciaExists,
   uniqueDistrito,
@@ -45,6 +49,7 @@ router.put(
   validateIdParam,
   distritoResourceExists,
   uploadDistritoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
   validateDistritoBody,
   provinciaExists,
   uniqueDistrito,

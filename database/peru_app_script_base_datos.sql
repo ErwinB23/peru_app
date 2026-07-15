@@ -93,7 +93,9 @@ BEGIN
         fecha_creacion DATETIME NOT NULL CONSTRAINT DF_Departamentos_fecha_creacion DEFAULT (GETDATE()),
 
         CONSTRAINT PK_Departamentos PRIMARY KEY (id),
-        CONSTRAINT UQ_Departamentos_nombre UNIQUE (nombre)
+        CONSTRAINT UQ_Departamentos_nombre UNIQUE (nombre),
+        CONSTRAINT CK_Departamentos_area_km2 CHECK (area_km2 IS NULL OR area_km2 > 0),
+        CONSTRAINT CK_Departamentos_poblacion CHECK (poblacion_aprox IS NULL OR poblacion_aprox >= 0)
     );
 END;
 GO
@@ -119,7 +121,9 @@ BEGIN
         CONSTRAINT PK_Provincias PRIMARY KEY (id),
         CONSTRAINT FK_Provincias_Departamentos FOREIGN KEY (departamento_id)
             REFERENCES dbo.Departamentos(id),
-        CONSTRAINT UQ_Provincias_departamento_nombre UNIQUE (departamento_id, nombre)
+        CONSTRAINT UQ_Provincias_departamento_nombre UNIQUE (departamento_id, nombre),
+        CONSTRAINT CK_Provincias_area_km2 CHECK (area_km2 IS NULL OR area_km2 > 0),
+        CONSTRAINT CK_Provincias_poblacion CHECK (poblacion_aprox IS NULL OR poblacion_aprox >= 0)
     );
 END;
 GO
@@ -146,7 +150,9 @@ BEGIN
         CONSTRAINT PK_Distritos PRIMARY KEY (id),
         CONSTRAINT FK_Distritos_Provincias FOREIGN KEY (provincia_id)
             REFERENCES dbo.Provincias(id),
-        CONSTRAINT UQ_Distritos_provincia_nombre UNIQUE (provincia_id, nombre)
+        CONSTRAINT UQ_Distritos_provincia_nombre UNIQUE (provincia_id, nombre),
+        CONSTRAINT CK_Distritos_area_km2 CHECK (area_km2 IS NULL OR area_km2 > 0),
+        CONSTRAINT CK_Distritos_poblacion CHECK (poblacion_aprox IS NULL OR poblacion_aprox >= 0)
     );
 END;
 GO
@@ -175,7 +181,10 @@ BEGIN
         CONSTRAINT PK_Ciudades PRIMARY KEY (id),
         CONSTRAINT FK_Ciudades_Distritos FOREIGN KEY (distrito_id)
             REFERENCES dbo.Distritos(id),
-        CONSTRAINT UQ_Ciudades_distrito_nombre UNIQUE (distrito_id, nombre)
+        CONSTRAINT UQ_Ciudades_distrito_nombre UNIQUE (distrito_id, nombre),
+        CONSTRAINT CK_Ciudades_poblacion CHECK (poblacion IS NULL OR poblacion >= 0),
+        CONSTRAINT CK_Ciudades_latitud CHECK (latitud IS NULL OR latitud BETWEEN -90 AND 90),
+        CONSTRAINT CK_Ciudades_longitud CHECK (longitud IS NULL OR longitud BETWEEN -180 AND 180)
     );
 END;
 GO
@@ -215,7 +224,12 @@ BEGIN
 
         CONSTRAINT PK_LugaresTuristicos PRIMARY KEY (id),
         CONSTRAINT FK_LugaresTuristicos_Departamentos FOREIGN KEY (departamento_id)
-            REFERENCES dbo.Departamentos(id)
+            REFERENCES dbo.Departamentos(id),
+        CONSTRAINT UQ_LugaresTuristicos_departamento_nombre UNIQUE (departamento_id, nombre),
+        CONSTRAINT CK_LugaresTuristicos_latitud_origen CHECK (latitud_origen IS NULL OR latitud_origen BETWEEN -90 AND 90),
+        CONSTRAINT CK_LugaresTuristicos_longitud_origen CHECK (longitud_origen IS NULL OR longitud_origen BETWEEN -180 AND 180),
+        CONSTRAINT CK_LugaresTuristicos_latitud_destino CHECK (latitud_destino IS NULL OR latitud_destino BETWEEN -90 AND 90),
+        CONSTRAINT CK_LugaresTuristicos_longitud_destino CHECK (longitud_destino IS NULL OR longitud_destino BETWEEN -180 AND 180)
     );
 END;
 GO
@@ -237,7 +251,8 @@ BEGIN
 
         CONSTRAINT PK_ComidasTipicas PRIMARY KEY (id),
         CONSTRAINT FK_ComidasTipicas_Departamentos FOREIGN KEY (departamento_id)
-            REFERENCES dbo.Departamentos(id)
+            REFERENCES dbo.Departamentos(id),
+        CONSTRAINT UQ_ComidasTipicas_departamento_nombre UNIQUE (departamento_id, nombre)
     );
 END;
 GO
@@ -258,7 +273,8 @@ BEGIN
 
         CONSTRAINT PK_LugaresTuristicosProvincias PRIMARY KEY (id),
         CONSTRAINT FK_LugaresTuristicosProvincias_Provincias FOREIGN KEY (provincia_id)
-            REFERENCES dbo.Provincias(id)
+            REFERENCES dbo.Provincias(id),
+        CONSTRAINT UQ_LugaresTuristicosProvincias_provincia_nombre UNIQUE (provincia_id, nombre)
     );
 END;
 GO
@@ -279,7 +295,8 @@ BEGIN
 
         CONSTRAINT PK_ComidasTipicasProvincias PRIMARY KEY (id),
         CONSTRAINT FK_ComidasTipicasProvincias_Provincias FOREIGN KEY (provincia_id)
-            REFERENCES dbo.Provincias(id)
+            REFERENCES dbo.Provincias(id),
+        CONSTRAINT UQ_ComidasTipicasProvincias_provincia_nombre UNIQUE (provincia_id, nombre)
     );
 END;
 GO
@@ -300,7 +317,8 @@ BEGIN
 
         CONSTRAINT PK_LugaresTuristicosDistritos PRIMARY KEY (id),
         CONSTRAINT FK_LugaresTuristicosDistritos_Distritos FOREIGN KEY (distrito_id)
-            REFERENCES dbo.Distritos(id)
+            REFERENCES dbo.Distritos(id),
+        CONSTRAINT UQ_LugaresTuristicosDistritos_distrito_nombre UNIQUE (distrito_id, nombre)
     );
 END;
 GO
@@ -321,7 +339,8 @@ BEGIN
 
         CONSTRAINT PK_ComidasTipicasDistritos PRIMARY KEY (id),
         CONSTRAINT FK_ComidasTipicasDistritos_Distritos FOREIGN KEY (distrito_id)
-            REFERENCES dbo.Distritos(id)
+            REFERENCES dbo.Distritos(id),
+        CONSTRAINT UQ_ComidasTipicasDistritos_distrito_nombre UNIQUE (distrito_id, nombre)
     );
 END;
 GO
@@ -342,7 +361,8 @@ BEGIN
 
         CONSTRAINT PK_LugaresTuristicosCiudades PRIMARY KEY (id),
         CONSTRAINT FK_LugaresTuristicosCiudades_Ciudades FOREIGN KEY (ciudad_id)
-            REFERENCES dbo.Ciudades(id)
+            REFERENCES dbo.Ciudades(id),
+        CONSTRAINT UQ_LugaresTuristicosCiudades_ciudad_nombre UNIQUE (ciudad_id, nombre)
     );
 END;
 GO
@@ -363,7 +383,8 @@ BEGIN
 
         CONSTRAINT PK_ComidasTipicasCiudades PRIMARY KEY (id),
         CONSTRAINT FK_ComidasTipicasCiudades_Ciudades FOREIGN KEY (ciudad_id)
-            REFERENCES dbo.Ciudades(id)
+            REFERENCES dbo.Ciudades(id),
+        CONSTRAINT UQ_ComidasTipicasCiudades_ciudad_nombre UNIQUE (ciudad_id, nombre)
     );
 END;
 GO

@@ -41,3 +41,17 @@ Estos casos definen el comportamiento objetivo. Se ejecutarán cuando se impleme
 | CP-EST-VAL-008 | P1 | Repetir nombre en otro ámbito permitido | Operación permitida. |
 | CP-EST-VAL-009 | P1 | Editar un ID inexistente enviando imagen | HTTP 404 y la imagen nueva no se almacena. |
 | CP-EST-VAL-010 | P1 | Error SQL después de cargar una imagen | Error controlado y archivo nuevo eliminado. |
+
+
+## Casos detallados del Bloque 4
+
+| ID | Prioridad | Escenario | Resultado esperado |
+|---|---|---|---|
+| CP-EST-DB-001 | P1 | Ejecutar auditoría previa | Todos los conteos son 0 y no aparecen duplicados. |
+| CP-EST-DB-002 | P1 | Ejecutar migración 005 | Commit correcto; restricciones e índices creados una sola vez. |
+| CP-EST-DB-003 | P1 | Eliminar departamento con provincias | HTTP 409 y ningún registro eliminado. |
+| CP-EST-DB-004 | P1 | Insertar población negativa directamente en SQL | SQL Server rechaza la operación por CHECK. |
+| CP-EST-IMG-005 | P1 | Eliminar contenido con imagen local | Registro e imagen se eliminan después de confirmar SQL Server. |
+| CP-EST-IMG-006 | P1 | Renombrar un archivo de texto como `.jpg` | HTTP 415 `INVALID_IMAGE_SIGNATURE`; no queda archivo. |
+| CP-EST-IMG-007 | P1 | Fallar eliminación por relación | HTTP 409 y la imagen vigente permanece intacta. |
+| CP-EST-FUN-001 | P1 | Ejecutar CRUD representativo por módulo | Listar, crear, editar y eliminar funcionan según rol. |

@@ -7,7 +7,7 @@
 - **Plan:** `PLAN-002`
 - **Tareas:** `TASKS-002`
 - **Estado:** activa; se actualiza con cada bloque
-- **Fecha de corte:** 14 de julio de 2026 — Bloque 3 implementado
+- **Fecha de corte:** 14 de julio de 2026 — Bloque 4 implementado
 
 ## 2. Convención de estados
 
@@ -33,13 +33,13 @@
 | RF-EST-010 | P1 | T-EST-057/058/059 | `validationMiddleware.js`, `api.js` | Errores por campo | CP-EST-ERR-001 | JSON de respuesta | Implementado, pendiente de validación |
 | RF-EST-011 | P1 | T-EST-054/055/056 | `errorMiddleware.js`, `httpErrors.js`, `uploadMiddleware.js` | 400/401/403/404/409/413/415/500 | CP-EST-ERR-001..004, IMG-003/004 | Newman | Implementado, pendiente de validación |
 | RF-EST-012 | P1 | T-EST-053/054 | `app.js`, `errorMiddleware.js`, `httpErrors.js` | Error inesperado | Caso por crear | Sin datos internos | Implementado, pendiente de validación |
-| RF-EST-013 | P2 | T-EST-060 | `database/migrations/` | Evolución SQL | Caso revisión | Scripts versionados | Pendiente |
-| RF-EST-014 | P1 | T-EST-061 | Migración SQL | Área/población/coordenadas | Caso BD | Evidencia SSMS | Pendiente |
+| RF-EST-013 | P2 | T-EST-060 | `database/migrations/005-integridad-basica.sql` | Evolución SQL | CP-EST-DB-001 | Evidencia SSMS | Implementado, pendiente de ejecución |
+| RF-EST-014 | P1 | T-EST-061 | Script base, auditoría y migración 005 | Área/población/coordenadas | CP-EST-DB-002 | Evidencia SSMS | Implementado, pendiente de ejecución |
 | RF-EST-015 | P1 | T-EST-062 | Modelos/controladores/SQL, `httpErrors.js` | Eliminación con hijos | CP-EST-ERR-004 | HTTP 409 | Mapeo HTTP implementado; prueba pendiente |
 | RF-EST-016 | P2 | T-EST-063 | Modelos y transacciones | Operación múltiple | Caso integración | Rollback probado | Pendiente |
-| RF-EST-017 | P1 | T-EST-065 | `uploadMiddleware.js`, `errorMiddleware.js` | Archivo inválido | CP-EST-IMG-003/004 | 413/415 | Extensión/MIME/tamaño implementados; firma real pendiente |
+| RF-EST-017 | P1 | T-EST-065 | `uploadMiddleware.js`, `errorMiddleware.js` | Archivo inválido | CP-EST-IMG-003/004/006 | 413/415 | Implementado, pendiente de validación |
 | RF-EST-018 | P1 | T-EST-066 | `fileCleanup.js`, validación, integridad y controladores | Falla antes o durante SQL | CP-EST-IMG-001 | Archivo no queda huérfano | Implementado, pendiente de validación |
-| RF-EST-019 | P1 | T-EST-067 | Controladores/modelos | Reemplazo de imagen | CP-EST-IMG-002 | Archivo anterior eliminado | Pendiente |
+| RF-EST-019 | P1 | T-EST-067/068 | `imageLifecycle.js`, 12 controladores | Reemplazo y eliminación | CP-EST-IMG-002/005 | Archivo anterior o asociado eliminado | Implementado, pendiente de validación |
 | RF-EST-020 | P2 | T-EST-023 | `server.js` | `/uploads` | Caso manual | URL única | Implementado, pendiente de validación de despliegue |
 | RF-EST-021 | P1 | T-EST-080/081 | `route-inventory.md`, `openapi.yaml` | Contrato REST | CP-EST-SDD-001 | Comparación contrato/código | Inventario validado; OpenAPI pendiente |
 | RF-EST-022 | P1 | T-EST-082/083 | `traceability-matrix.md`, checklist | Requisito→código→prueba | CP-EST-SDD-001 | Revisión SDD | **Validado documentalmente en Bloque 1** |
@@ -93,3 +93,14 @@ No debe usarse “completado” como sinónimo de “documentado”.
 | Archivos rechazados | RF-EST-017/018 | `uploadMiddleware.js`, `fileCleanup.js` | Casos 413, 415 y limpieza |
 | Errores uniformes | RF-EST-011/012 | `errorMiddleware.js`, controladores | Newman y Supertest |
 | Presentación frontend | RNF-EST-005 | `frontend/src/services/api.js` | Revisión visual de mensajes |
+
+
+## 8. Trazabilidad del Bloque 4
+
+| Entregable | Requisitos | Archivos principales | Validación pendiente |
+|---|---|---|---|
+| Auditoría y migración SQL | RF-EST-013/014/015 | `database/maintenance/010-auditoria-integridad-bloque-4.sql`, `database/migrations/005-integridad-basica.sql` | Ejecución y captura en SSMS |
+| Firma real de imágenes | RF-EST-017 | `uploadMiddleware.js`, 12 routers | Casos 413, 415 y archivo falso |
+| Ciclo de vida de imágenes | RF-EST-018/019 | `imageLifecycle.js`, 12 controladores | Reemplazo, borrado y error 409 |
+| Revisión funcional | RF-EST-009/011/015 | Checklist del Bloque 4 | Matriz manual por módulo |
+| Evidencia reproducible | RNF-EST-007/008 | `block4-integrity-image-check.ps1` | Reporte local y commit |

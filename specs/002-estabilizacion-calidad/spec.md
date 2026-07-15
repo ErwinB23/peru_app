@@ -7,7 +7,7 @@
 - **Proyecto:** PERU APP
 - **Metodología:** Spec-Driven Development
 - **Herramienta:** GitHub Spec Kit
-- **Estado:** En implementación — Bloque documental y de repositorio validado
+- **Estado:** En implementación — Bloques 1 a 4 implementados; validaciones manuales y automatizadas pendientes
 - **Responsable:** Erwin Brayam Inca Pauccara
 - **Fecha:** 14 de julio de 2026
 - **Especificación base:** `specs/001-peru-app/spec.md`

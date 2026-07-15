@@ -5,7 +5,7 @@
 - **Código:** PLAN-002
 - **Especificación:** SPEC-002
 - **Rama:** `002-estabilizacion-calidad`
-- **Estado:** En ejecución — Bloque 2 implementado, pendiente de validación
+- **Estado:** En ejecución — Bloque 4 implementado, pendiente de validación
 - **Fecha:** 14 de julio de 2026
 
 ## 2. Estrategia
@@ -53,6 +53,12 @@ Se consideran cerrados documentalmente:
 - reglas de limpieza y entrega.
 
 El Bloque 1 no modificó el comportamiento de la aplicación. El Bloque 2 incorpora autenticación contra SQL Server, protección de rutas y seguridad HTTP esencial; su cierre depende de ejecutar las verificaciones incluidas en el paquete.
+
+### 4.2. Estado de los Bloques 3 y 4
+
+- El Bloque 3 centralizó validaciones, duplicados, relaciones y errores HTTP.
+- El Bloque 4 incorporó auditoría y migración SQL, firma binaria de imágenes y limpieza segura en reemplazos y eliminaciones.
+- Ambos bloques requieren ejecución manual y evidencia antes de cambiar su estado a validado.
 
 ## 5. Subfases técnicas de referencia
 

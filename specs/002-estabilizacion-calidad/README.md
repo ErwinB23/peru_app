@@ -26,9 +26,9 @@ La estabilización conserva colores, estructura, tarjetas, sidebar, tipografías
 - Especificación: en implementación.
 - Plan: ruta crítica acelerada aprobada.
 - Bloque 1 SDD/repositorio: validado documentalmente.
-- Implementación de autenticación y seguridad: pendiente.
+- Autenticación, seguridad, validaciones e integridad de imágenes: implementadas, pendientes de validación completa.
 - Pruebas automatizadas: pendientes.
-- Despliegue: no autorizado todavía.
+- Despliegue: no autorizado hasta cerrar pruebas automatizadas y persistencia Cloudinary.
 
 ## Artefactos incorporados en el Bloque 1
 
@@ -36,3 +36,5 @@ La estabilización conserva colores, estructura, tarjetas, sidebar, tipografías
 - `traceability-matrix.md`
 - `checklists/sdd-consistency-checklist.md`
 - `docs/estabilizacion/bloque-1/`
+
+- Bloque 4 integridad e imágenes: código y scripts incorporados; migración SQL y pruebas manuales pendientes.

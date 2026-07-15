@@ -100,6 +100,14 @@ export const normalizeError = (error, fallbackMessage = 'Error interno inesperad
     );
   }
 
+  if (error?.code === 'LIMIT_FILE_COUNT') {
+    return new AppError(
+      'Se enviaron más archivos de los permitidos',
+      400,
+      'TOO_MANY_FILES'
+    );
+  }
+
   if (error?.code === 'UNSUPPORTED_MEDIA_TYPE') {
     return new AppError(
       error.message || 'El tipo de archivo no está permitido',

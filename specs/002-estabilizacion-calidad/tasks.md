@@ -93,15 +93,15 @@
 
 ## 8. Base de datos e imágenes
 
-- [ ] **T-EST-060** Crear migraciones SQL numeradas.
-- [ ] **T-EST-061** Agregar restricciones para área, población y coordenadas.
-- [ ] **T-EST-062** Definir y aplicar política de eliminación con relaciones.
+- [~] **T-EST-060** Crear migraciones SQL numeradas; migración 005 creada, pendiente de ejecución en SQL Server.
+- [~] **T-EST-061** Agregar restricciones para área, población y coordenadas; implementadas en script base y migración 005, pendientes de evidencia SSMS.
+- [~] **T-EST-062** Definir y aplicar política de eliminación con relaciones; política sin cascada y respuesta 409 implementadas, pendiente de prueba manual.
 - [ ] **T-EST-063** Incorporar transacciones en operaciones múltiples.
 - [ ] **T-EST-064** Diseñar campos de fuente, licencia y auditoría.
-- [~] **T-EST-065** Validar extensión, MIME y tamaño máximo de imágenes; la firma binaria real queda pendiente.
+- [~] **T-EST-065** Validar extensión, MIME, tamaño máximo y firma binaria real de imágenes; implementado, pendiente de prueba 413/415.
 - [~] **T-EST-066** Eliminar archivo nuevo si falla validación, relación, duplicado o SQL Server.
-- [ ] **T-EST-067** Eliminar imagen anterior después de una actualización confirmada.
-- [ ] **T-EST-068** Eliminar imagen asociada al borrar un contenido.
+- [~] **T-EST-067** Eliminar imagen anterior después de una actualización confirmada; implementado en 12 controladores, pendiente de prueba manual.
+- [~] **T-EST-068** Eliminar imagen asociada al borrar un contenido; implementado en 12 controladores, pendiente de prueba manual.
 
 ## 9. Revisión de módulos
 
@@ -200,3 +200,21 @@ Se incorporaron los siguientes cambios:
 - Mensajes detallados de validación visibles desde el frontend.
 
 Las tareas se mantienen `[~]` hasta ejecutar los casos CP-EST-ERR e IMG, guardar evidencias y configurar la suite automatizada.
+
+
+## 16. Estado del Bloque 4 — Implementado, pendiente de validación
+
+Se incorporaron los siguientes cambios:
+
+- Auditoría SQL de valores inválidos, duplicados y relaciones huérfanas.
+- Migración `005-integridad-basica.sql` transaccional e idempotente.
+- Restricciones CHECK para áreas, poblaciones y coordenadas.
+- Índices únicos de contenido por ámbito territorial.
+- Política de eliminación sin `ON DELETE CASCADE`; los conflictos se devuelven como HTTP 409.
+- Verificación de firma binaria real para JPEG, PNG y WEBP.
+- Eliminación segura de imágenes sustituidas después de confirmar la actualización.
+- Eliminación de imágenes asociadas después de confirmar el borrado.
+- Protección para no eliminar URLs externas ni rutas fuera de `/uploads`.
+- Script `block4-integrity-image-check.ps1` y checklist funcional.
+
+Las tareas permanecen `[~]` hasta ejecutar la auditoría y migración en SQL Server, completar las pruebas manuales por módulo y guardar evidencias.

@@ -8,7 +8,10 @@ import {
 } from '../controllers/lugarTuristicoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadLugarTuristicoImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadLugarTuristicoImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
   ensureResourceExists,
@@ -44,6 +47,7 @@ router.post(
   verifyToken,
   isAdmin,
   uploadImages,
+  verifyUploadedImageSignatures,
   validateLugarDepartamentoBody,
   departamentoExists,
   uniqueLugar,
@@ -57,6 +61,7 @@ router.put(
   validateIdParam,
   lugarExists,
   uploadImages,
+  verifyUploadedImageSignatures,
   validateLugarDepartamentoBody,
   departamentoExists,
   uniqueLugar,

@@ -1,6 +1,7 @@
 import * as comidaModel from '../models/comidaTipicaProvinciaModel.js';
 import * as provinciaModel from '../models/provinciaModel.js';
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getComidasByProvinciaId = async (req, res) => {
     try {
@@ -94,6 +95,8 @@ export const updateComida = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(comidaActual, comidaActualizada, ['imagen']);
+
         res.json({
             message: 'Comida típica de provincia actualizada exitosamente',
             comida: comidaActualizada
@@ -116,6 +119,8 @@ export const deleteComida = async (req, res) => {
         if (!comidaEliminada) {
             return res.status(404).json({ error: 'Comida típica no encontrada' });
         }
+
+        await cleanupResourceImages(comidaEliminada, ['imagen']);
 
         res.json({
             message: 'Comida típica de provincia eliminada exitosamente',

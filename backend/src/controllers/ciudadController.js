@@ -1,6 +1,7 @@
 import * as ciudadModel from "../models/ciudadModel.js";
 import * as distritoModel from "../models/distritoModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 // OBTENER TODAS LAS CIUDADES CON PAGINACIÓN
 export const getCiudades = async (req, res) => {
@@ -255,6 +256,8 @@ export const updateCiudad = async (req, res) => {
             imagen_fondo,
         });
 
+        await cleanupReplacedImages(ciudad, updatedCiudad, ['imagen_fondo']);
+
         res.json({
             message: "Ciudad actualizada exitosamente",
             ciudad: updatedCiudad,
@@ -278,6 +281,8 @@ export const deleteCiudad = async (req, res) => {
         if (!deletedCiudad) {
             return res.status(404).json({ error: "Ciudad no encontrada" });
         }
+
+        await cleanupResourceImages(deletedCiudad, ['imagen_fondo']);
 
         res.json({
             message: "Ciudad eliminada exitosamente",

@@ -1,5 +1,6 @@
 import * as lugarTuristicoModel from "../models/lugarTuristicoModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getLugaresByDepartamentoId = async (req, res) => {
     try {
@@ -120,6 +121,8 @@ export const updateLugarTuristico = async (req, res) => {
             },
         );
 
+        await cleanupReplacedImages(lugarActual, lugarActualizado, ['imagen', 'imagen_2', 'imagen_3', 'imagen_4']);
+
         res.json({
             message: "Lugar turístico actualizado exitosamente",
             lugar: lugarActualizado,
@@ -142,6 +145,8 @@ export const deleteLugarTuristico = async (req, res) => {
         if (!lugarEliminado) {
             return res.status(404).json({ error: "Lugar turístico no encontrado" });
         }
+
+        await cleanupResourceImages(lugarEliminado, ['imagen', 'imagen_2', 'imagen_3', 'imagen_4']);
 
         res.json({
             message: "Lugar turístico eliminado exitosamente",

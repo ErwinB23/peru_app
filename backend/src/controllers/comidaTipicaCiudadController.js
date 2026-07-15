@@ -1,6 +1,7 @@
 import * as comidaModel from '../models/comidaTipicaCiudadModel.js';
 import * as ciudadModel from '../models/ciudadModel.js';
 import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getComidasByCiudadId = async (req, res) => {
     try {
@@ -93,6 +94,8 @@ export const updateComida = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(comidaActual, comidaActualizada, ['imagen']);
+
         res.json({
             message: 'Comida típica de ciudad actualizada exitosamente',
             comida: comidaActualizada
@@ -115,6 +118,8 @@ export const deleteComida = async (req, res) => {
         if (!comidaEliminada) {
             return res.status(404).json({ error: 'Comida típica no encontrada' });
         }
+
+        await cleanupResourceImages(comidaEliminada, ['imagen']);
 
         res.json({
             message: 'Comida típica de ciudad eliminada exitosamente',

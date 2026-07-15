@@ -8,7 +8,10 @@ import {
 } from '../controllers/lugarTuristicoCiudadController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadLugarTuristicoCiudadImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadLugarTuristicoCiudadImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
   ensureResourceExists,
@@ -30,12 +33,14 @@ router.get('/:id', verifyToken, validateIdParam, getLugarById);
 router.post(
   '/', verifyToken, isAdmin,
   uploadLugarTuristicoCiudadImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateLugarCiudadBody, ciudadExists, uniqueLugar, createLugar
 );
 router.put(
   '/:id', verifyToken, isAdmin, validateIdParam,
   lugarExists,
   uploadLugarTuristicoCiudadImage.single('imagen'),
+  verifyUploadedImageSignatures,
   validateLugarCiudadBody, ciudadExists, uniqueLugar, updateLugar
 );
 router.delete('/:id', verifyToken, isAdmin, validateIdParam, lugarExists, deleteLugar);
