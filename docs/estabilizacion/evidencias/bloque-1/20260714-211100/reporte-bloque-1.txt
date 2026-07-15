@@ -1,0 +1,44 @@
+﻿PERU APP - AUDITORIA DEL BLOQUE 1
+Fecha: 2026-07-14 21:11:00
+Raiz: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL
+
+1. ARTEFACTOS SDD
+[OK] .specify\memory\constitution.md
+[OK] specs\001-peru-app\spec.md
+[OK] specs\001-peru-app\openapi.yaml
+[OK] specs\002-estabilizacion-calidad\spec.md
+[OK] specs\002-estabilizacion-calidad\plan.md
+[OK] specs\002-estabilizacion-calidad\tasks.md
+[OK] specs\002-estabilizacion-calidad\test-cases.md
+[OK] specs\002-estabilizacion-calidad\route-inventory.md
+[OK] specs\002-estabilizacion-calidad\traceability-matrix.md
+[OK] specs\002-estabilizacion-calidad\checklists\sdd-consistency-checklist.md
+[OK] docs\estabilizacion\bloque-1\inventario-carpetas.md
+[OK] docs\estabilizacion\bloque-1\cierre-bloque-1.md
+
+2. ESTADO GIT
+Rama actual: 002-estabilizacion-calidad
+Estado: limpio
+[OK] No se detectaron .env versionados.
+
+3. INVENTARIO DE RUTAS
+Operaciones detectadas en routers: 69
+[OK] Coincide con ROUTES-002.
+GET territoriales aun publicos: 8
+[BRECHA] Deben corregirse en el siguiente bloque.
+
+4. CARPETAS GENERADAS O DUPLICADAS
+[OK] No presente: frontend\dist
+[ENCONTRADA] frontend\.vite
+[ENCONTRADA] phase0-backups
+[ENCONTRADA] backup-documentacion-sdd-20260714-195931
+[ENCONTRADA] CIERRE_FASES_0_A_3_SDD
+
+5. LIMPIEZA NO APLICADA
+Para mover respaldos duplicados y borrar solo caches/builds:
+.\scripts\block1-repository-audit.ps1 -ApplyCleanup
+
+6. DICTAMEN
+[OK] Artefactos documentales del Bloque 1 completos.
+El proyecto aun no esta listo para despliegue.
+Siguiente bloque: autenticacion, sesion, rutas y seguridad HTTP esencial.
