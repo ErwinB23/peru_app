@@ -3,236 +3,99 @@
 ## 1. Identificación
 
 - **Código:** SPEC-002
-- **Nombre:** Estabilización, calidad y seguridad de PERU APP
-- **Proyecto:** PERU APP
-- **Metodología:** Spec-Driven Development
-- **Herramienta:** GitHub Spec Kit
-- **Estado:** En implementación — Bloques 1 a 4 implementados; validaciones manuales y automatizadas pendientes
-- **Responsable:** Erwin Brayam Inca Pauccara
-- **Fecha:** 14 de julio de 2026
+- **Rama:** `002-estabilizacion-calidad`
+- **Estado:** implementada y aprobada para puerta de despliegue; aceptación en producción pendiente
+- **Fecha de cierre documental:** 15 de julio de 2026
 - **Especificación base:** `specs/001-peru-app/spec.md`
+- **Constitución:** `.specify/memory/constitution.md` v1.3.0
 
 ## 2. Propósito
 
-Estabilizar PERU APP mediante correcciones incrementales de autenticación, autorización, validación, manejo de errores, integridad de datos, gestión de imágenes, contrato API, pruebas y rendimiento, conservando el diseño visual y el alcance turístico-educativo existente.
+Estabilizar PERU APP sin rediseñar su identidad visual, garantizando autenticación obligatoria, autorización por rol vigente, datos válidos, errores HTTP uniformes, integridad territorial, manejo seguro de imágenes, pruebas repetibles y trazabilidad SDD antes del despliegue.
 
-## 3. Contexto
+## 3. Alcance cerrado
 
-PERU APP ya cuenta con frontend, backend, SQL Server, autenticación JWT, roles, gestión territorial, contenido turístico y documentación inicial con Spec Kit. El sistema funciona como línea base; sin embargo, debe reforzarse antes de ingresar información real y utilizarlo como producto final del curso de Pruebas y Aseguramiento de la Calidad de Software.
+1. Autenticación JWT y sesión validada contra SQL Server.
+2. Protección de todas las rutas funcionales.
+3. Roles `usuario` y `admin` aplicados en backend y frontend.
+4. Validaciones centralizadas y normalización de datos.
+5. Respuestas 400, 401, 403, 404, 409, 413, 415 y 500.
+6. Integridad SQL, duplicados, relaciones y restricciones básicas.
+7. Ciclo de vida local de imágenes y validación de firma.
+8. Pruebas unitarias, integración HTTP, API y E2E.
+9. OpenAPI sincronizado con 70 operaciones reales.
+10. Evidencia, trazabilidad y puerta de despliegue.
 
-## 4. Decisiones obligatorias
+## 4. Actores
 
-### 4.1. Login obligatorio
-
-Toda persona debe registrarse o iniciar sesión antes de acceder al contenido de la plataforma.
-
-Las únicas operaciones funcionales públicas son:
-
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-
-Como excepción técnica de despliegue podrá existir `GET /api/health`, con una respuesta mínima que no revele datos de negocio ni detalles de infraestructura. Toda otra ruta debe exigir un token JWT válido.
-
-### 4.2. Autorización por rol
-
-- El rol `usuario` puede consultar información territorial, turística y gastronómica, y gestionar su propio perfil.
-- El rol `admin` puede realizar lo anterior y además gestionar usuarios y contenido.
-- El backend debe usar el rol vigente de la base de datos, no confiar únicamente en el rol incluido en un token antiguo.
-
-### 4.3. Conservación del frontend
-
-La estabilización no debe rediseñar la interfaz. Se conservarán la estructura visual, colores, componentes, sidebar, tarjetas y navegación actuales. Solo se añadirán estados de carga, validación, error o sesión expirada cuando sean necesarios.
-
-### 4.4. Cambios incrementales
-
-Cada corrección debe especificarse, implementarse, probarse y registrarse antes de iniciar la siguiente. No se permiten cambios masivos sin evidencia de regresión.
-
-## 5. Estado real de implementación al inicio del Bloque 1
-
-La auditoría del código estableció la siguiente línea base:
-
-- 69 operaciones declaradas en routers Express.
-- 41 operaciones usan JWT y rol administrador.
-- 18 operaciones usan JWT para usuario autenticado.
-- 10 operaciones de routers están públicas.
-- Solo registro y login cumplen la política pública objetivo.
-- Ocho GET territoriales constituyen una brecha de autenticación.
-- `/api/test-db` y `/api/debug-token` deben eliminarse.
-- El middleware JWT todavía no consulta el usuario ni el rol vigentes en SQL Server.
-- El frontend todavía no revalida la sesión mediante `/api/auth/profile`.
-- No existe todavía una suite automatizada activa.
-
-Estos puntos representan el estado observado, no una funcionalidad ya corregida. El detalle se mantiene en `route-inventory.md` y `traceability-matrix.md`.
-
-## 6. Actores
-
-| Actor | Descripción |
+| Actor | Capacidades |
 |---|---|
-| Visitante no autenticado | Solo puede registrarse o iniciar sesión. |
-| Usuario autenticado | Puede consultar el contenido y gestionar su perfil. |
-| Administrador autenticado | Puede consultar y gestionar usuarios, territorios y contenido. |
-| Sistema | Valida sesión, permisos, datos, relaciones y archivos. |
+| Usuario no autenticado | Registro, login y health check técnico. |
+| Usuario autenticado | Perfil y consulta territorial, turística y gastronómica. |
+| Administrador | Capacidades de usuario más CRUD y administración de usuarios. |
+| Equipo QA | Ejecución repetible con cuentas QA no personales. |
 
-## 7. Historias de usuario priorizadas
+## 5. Requisitos funcionales y estado
 
-### US-EST-001 — Acceso obligatorio mediante login (P1)
+| ID | Requisito | Estado pre-despliegue |
+|---|---|---|
+| RF-EST-001 | Solo registro y login son públicos como funciones de negocio. | Validado |
+| RF-EST-002 | Toda ruta funcional restante exige JWT válido. | Validado |
+| RF-EST-003 | El middleware comprueba que el usuario del token aún existe. | Validado |
+| RF-EST-004 | La autorización utiliza el rol actual de SQL Server. | Validado |
+| RF-EST-005 | El frontend valida sesión mediante `GET /auth/profile`. | Implementado; evidencia E2E debe archivarse |
+| RF-EST-006 | Una respuesta 401 limpia sesión y redirige al login. | Implementado; evidencia E2E debe archivarse |
+| RF-EST-007 | El usuario normal recibe 403 al administrar. | Validado |
+| RF-EST-008 | Login y registro tienen rate limit. | Implementado; prueba 429 pendiente |
+| RF-EST-009 | Datos validados y normalizados antes de SQL Server. | Validado |
+| RF-EST-010 | Los errores de validación identifican campos. | Validado |
+| RF-EST-011 | Estados HTTP diferenciados y predecibles. | Validado |
+| RF-EST-012 | Errores centralizados sin detalles internos. | Validado |
+| RF-EST-013 | Cambios de integridad versionados mediante migraciones. | Implementado; conservar evidencia SSMS |
+| RF-EST-014 | SQL Server rechaza áreas, poblaciones y coordenadas inválidas. | Implementado; conservar evidencia SSMS |
+| RF-EST-015 | Eliminaciones con relaciones producen conflicto controlado. | Validado en código/pruebas; evidencia SQL recomendada |
+| RF-EST-016 | Operaciones múltiples críticas usan transacciones. | Pendiente justificado; mejora posterior |
+| RF-EST-017 | Imágenes validadas por tamaño, MIME y firma. | Validado |
+| RF-EST-018 | Archivos nuevos se limpian cuando una operación falla. | Validado |
+| RF-EST-019 | Imágenes sustituidas o asociadas se retiran tras confirmar SQL. | Validado |
+| RF-EST-020 | Publicación local de imágenes centralizada. | Validado local; Cloudinary pendiente para producción |
+| RF-EST-021 | OpenAPI refleja rutas, parámetros, seguridad y respuestas. | Validado: 70/70 operaciones |
+| RF-EST-022 | Requisitos, código, endpoints y pruebas están trazados. | Validado documentalmente |
+| RF-EST-023 | Backend con pruebas unitarias e integración repetibles. | Validado: 14 suites, 376 casos en validación de referencia |
+| RF-EST-024 | Colección Postman ejecutable mediante Newman. | Implementado; archivar reporte local/producción |
+| RF-EST-025 | Frontend con pruebas Playwright de flujos críticos. | Implementado; archivar reporte local/producción |
+| RF-EST-026 | Listas extensas soportan paginación donde fue priorizado. | Parcial: distritos y ciudades |
+| RF-EST-027 | Multimedia optimizada sin cambio visual. | Pendiente antes del despliegue final |
+| RF-EST-028 | Endpoints de depuración eliminados; health restringido. | Validado |
 
-Como visitante, necesito autenticarme antes de acceder al sistema, para que la plataforma controle quién utiliza sus funcionalidades.
+## 6. Requisitos no funcionales
 
-**Escenarios de aceptación:**
+- **RNF-EST-001 Seguridad:** denegación por defecto y secretos fuera de Git.
+- **RNF-EST-002 Integridad:** claves, restricciones y conflictos preservan relaciones.
+- **RNF-EST-003 Mantenibilidad:** arquitectura por capas y validadores reutilizables.
+- **RNF-EST-004 Compatibilidad:** React/Vite en navegadores modernos.
+- **RNF-EST-005 Usabilidad:** errores visibles y sesión expirada comprensible.
+- **RNF-EST-006 Rendimiento:** build válido; optimización multimedia pendiente.
+- **RNF-EST-007 Trazabilidad:** matriz final y evidencias por bloque.
+- **RNF-EST-008 Regresión:** Jest, Supertest, Newman, Playwright, lint y build.
 
-1. Dado un visitante sin token, cuando intenta consultar cualquier ruta protegida, entonces recibe HTTP 401.
-2. Dado un visitante sin sesión, cuando escribe una URL interna en el navegador, entonces es dirigido a la pantalla de autenticación.
-3. Dado un usuario con credenciales válidas, cuando inicia sesión, entonces obtiene acceso según su rol.
-4. Dado un usuario con token expirado o inválido, cuando solicita un recurso, entonces la sesión se elimina y vuelve al login.
+## 7. Criterios de aceptación pre-despliegue
 
-### US-EST-002 — Permisos vigentes (P1)
+1. `npm run test:coverage` supera S80/B70/F85/L80.
+2. Los módulos principales forman parte de la medición global.
+3. `npm run lint` y `npm run build` finalizan correctamente.
+4. `node scripts/check-openapi-sync.mjs` informa 70/70 operaciones.
+5. No existen `.env`, respaldos o credenciales QA en el commit.
+6. Los pendientes de Cloudinary, Azure SQL, Render y Vercel están declarados.
 
-Como administrador, necesito que el sistema compruebe usuarios y roles actuales, para evitar que cuentas eliminadas o degradadas conserven privilegios.
+## 8. Fuera de alcance del cierre
 
-**Escenarios de aceptación:**
+- Rediseño visual completo.
+- Reservas, pagos o comercio electrónico.
+- Cobertura del 100% como requisito.
+- Carga de los 25 ámbitos departamentales antes de validar producción.
+- Sustitución del stack React/Express/SQL Server.
 
-1. Un usuario eliminado no puede continuar usando un token emitido anteriormente.
-2. Un administrador cambiado a `usuario` no puede continuar ejecutando operaciones administrativas.
-3. Un usuario normal recibe HTTP 403 al intentar crear, modificar o eliminar contenido.
+## 9. Resultado esperado
 
-### US-EST-003 — Datos válidos y errores claros (P1)
-
-Como usuario o administrador, necesito respuestas coherentes ante datos inválidos, para comprender y corregir el problema sin exponer información interna.
-
-**Escenarios de aceptación:**
-
-1. Datos inválidos producen HTTP 400 con detalle por campo.
-2. Duplicados producen HTTP 409.
-3. Recursos inexistentes producen HTTP 404.
-4. Relaciones que impiden eliminación producen HTTP 409.
-5. Los errores internos no revelan consultas, contraseñas, rutas del servidor ni detalles de SQL Server.
-
-### US-EST-004 — Integridad de información e imágenes (P1)
-
-Como administrador, necesito que los registros y archivos se mantengan sincronizados, para evitar información incompleta, imágenes huérfanas o eliminaciones accidentales.
-
-**Escenarios de aceptación:**
-
-1. Si falla la inserción en SQL Server, el archivo subido se elimina.
-2. Al reemplazar una imagen, la anterior se elimina solo después de confirmar la actualización.
-3. Al eliminar un contenido, se elimina su imagen asociada cuando corresponde.
-4. No se puede eliminar un territorio que tenga datos hijos sin una operación explícita de reasignación o eliminación previa.
-
-### US-EST-005 — Contrato y pruebas trazables (P2)
-
-Como equipo del proyecto, necesito que especificación, OpenAPI, código y pruebas coincidan, para demostrar cumplimiento bajo SDD y aseguramiento de calidad.
-
-**Escenarios de aceptación:**
-
-1. Cada endpoint real está documentado en OpenAPI.
-2. No existen endpoints documentados que no estén implementados, salvo que estén marcados como futuros.
-3. Cada requisito crítico tiene al menos un caso de prueba y evidencia.
-4. Lint, build y pruebas se ejecutan de forma repetible.
-
-### US-EST-006 — Rendimiento sin alterar diseño (P3)
-
-Como usuario, necesito que la plataforma cargue con mayor rapidez sin perder su apariencia, para usarla desde dispositivos y conexiones diferentes.
-
-**Escenarios de aceptación:**
-
-1. Las imágenes se sirven en tamaño y formato adecuados.
-2. Las páginas pesadas se cargan de forma diferida.
-3. La navegación y apariencia se mantienen equivalentes a la línea base aprobada.
-
-## 8. Requisitos funcionales
-
-### Autenticación y autorización
-
-- **RF-EST-001:** El sistema debe mantener públicas únicamente las operaciones de registro e inicio de sesión.
-- **RF-EST-002:** El backend debe exigir token válido en toda ruta distinta de registro e inicio de sesión.
-- **RF-EST-003:** El middleware de autenticación debe comprobar que el usuario del token existe actualmente en `Usuarios`.
-- **RF-EST-004:** El sistema debe utilizar el rol actual de SQL Server para autorizar operaciones.
-- **RF-EST-005:** El frontend debe validar la sesión mediante el endpoint de perfil al iniciar o recargar la aplicación.
-- **RF-EST-006:** El frontend debe cerrar la sesión ante HTTP 401 y redirigir al login.
-- **RF-EST-007:** Las operaciones administrativas deben devolver HTTP 403 a usuarios con rol `usuario`.
-- **RF-EST-008:** Login y registro deben aplicar un límite controlado de solicitudes.
-
-### Validación y errores
-
-- **RF-EST-009:** El backend debe validar y normalizar los datos antes de enviarlos a SQL Server.
-- **RF-EST-010:** Las respuestas de validación deben identificar los campos incorrectos.
-- **RF-EST-011:** El sistema debe diferenciar 400, 401, 403, 404, 409, 413, 415 y 500.
-- **RF-EST-012:** El backend debe centralizar el manejo de errores y no exponer detalles internos.
-
-### Base de datos
-
-- **RF-EST-013:** Las modificaciones estructurales deben almacenarse como migraciones SQL numeradas.
-- **RF-EST-014:** La base de datos debe rechazar áreas, poblaciones o coordenadas fuera de rangos permitidos.
-- **RF-EST-015:** El sistema debe impedir eliminaciones territoriales que rompan relaciones existentes.
-- **RF-EST-016:** Las operaciones múltiples críticas deben ejecutarse mediante transacciones.
-
-### Archivos e imágenes
-
-- **RF-EST-017:** El servidor debe validar tamaño, extensión, MIME y contenido permitido de las imágenes.
-- **RF-EST-018:** El sistema debe eliminar archivos temporales cuando falle una operación de base de datos.
-- **RF-EST-019:** El sistema debe retirar imágenes anteriores después de una actualización confirmada.
-- **RF-EST-020:** El backend debe publicar la carpeta de imágenes mediante una sola configuración controlada.
-
-### Contrato y pruebas
-
-- **RF-EST-021:** `openapi.yaml` debe reflejar rutas, parámetros, seguridad, cuerpos y respuestas reales.
-- **RF-EST-022:** La matriz de trazabilidad debe relacionar requisitos, código, endpoints y pruebas.
-- **RF-EST-023:** El backend debe disponer de pruebas unitarias o de integración repetibles.
-- **RF-EST-024:** La API debe contar con una colección ejecutable mediante Newman.
-- **RF-EST-025:** El frontend debe contar con pruebas de rutas y flujos críticos.
-
-### Rendimiento y mantenimiento
-
-- **RF-EST-026:** Las listas de usuarios y contenidos extensos deben soportar paginación.
-- **RF-EST-027:** Los recursos multimedia deben optimizarse sin cambiar la composición visual.
-- **RF-EST-028:** El código de depuración y los endpoints técnicos deben eliminarse o restringirse al entorno de desarrollo.
-
-## 9. Requisitos no funcionales
-
-- **RNF-EST-001 Seguridad:** ninguna información funcional debe ser accesible sin autenticación válida.
-- **RNF-EST-002 Integridad:** el sistema no debe dejar actualizaciones parciales en operaciones críticas.
-- **RNF-EST-003 Mantenibilidad:** los cambios deben conservar la arquitectura por capas existente.
-- **RNF-EST-004 Compatibilidad:** el frontend debe continuar funcionando en navegadores modernos de escritorio y móvil.
-- **RNF-EST-005 Usabilidad:** los mensajes deben indicar claramente el problema y la acción posible.
-- **RNF-EST-006 Rendimiento:** la optimización no debe degradar la calidad visual perceptible.
-- **RNF-EST-007 Trazabilidad:** cada requisito P1 debe tener código, prueba y evidencia asociada.
-- **RNF-EST-008 Regresión:** después de cada bloque deben ejecutarse sintaxis, lint, build y pruebas del módulo afectado.
-
-## 10. Fuera de alcance
-
-Esta especificación no incluye:
-
-- rediseño completo del frontend;
-- cambio de React, Express o SQL Server por otras tecnologías;
-- eliminación de módulos turísticos existentes;
-- reservas, pagos o comercio electrónico;
-- acceso público al contenido sin login;
-- migración inmediata a una arquitectura distinta;
-- carga masiva de todos los datos reales antes de estabilizar.
-
-## 11. Riesgos y mitigaciones
-
-| Riesgo | Mitigación |
-|---|---|
-| Una actualización rompe una función existente | Cambios pequeños, rama separada y pruebas de regresión. |
-| Cambios de autenticación bloquean usuarios válidos | Casos positivos y negativos antes de proteger todos los módulos. |
-| Migraciones afectan datos | Respaldo `.bak`, scripts versionados y prueba previa. |
-| Archivos quedan huérfanos | Flujo transaccional y limpieza ante error. |
-| Documentación se desvía del código | Revisión de OpenAPI y trazabilidad al cerrar cada módulo. |
-| Optimización cambia el diseño | Comparación con evidencia visual de Fase 0. |
-
-## 12. Criterios de éxito
-
-La estabilización será aceptada cuando:
-
-1. Sin token, toda ruta funcional distinta de registro y login responde 401; `/api/health` solo entrega estado técnico mínimo.
-2. Un usuario autenticado consulta contenido, pero no administra.
-3. Un administrador puede gestionar contenido con su rol vigente.
-4. Un usuario eliminado o degradado pierde acceso con su token anterior.
-5. Los errores HTTP son consistentes y no exponen información interna.
-6. Las relaciones de SQL Server protegen los datos reales.
-7. No quedan imágenes huérfanas en los flujos probados.
-8. OpenAPI coincide con las rutas implementadas.
-9. Las pruebas críticas son repetibles.
-10. El frontend conserva el diseño aprobado en la línea base.
+El cierre de SPEC-002 autoriza iniciar el despliegue controlado. El proyecto solo se declarará **aceptado en producción** después de validar Azure SQL, Cloudinary, Render y Vercel con pruebas de humo y evidencias públicas.

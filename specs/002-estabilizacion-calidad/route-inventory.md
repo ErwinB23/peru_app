@@ -1,152 +1,99 @@
-# Inventario Real de Rutas del Backend — SPEC-002
+# Inventario definitivo de rutas — PERU APP
 
-## 1. Identificación
+**Código:** ROUTES-002  
+**Fecha de corte:** 15 de julio de 2026  
+**Fuente:** `backend/src/app.js` y `backend/src/routes/*.js`  
+**Operaciones reales:** **70** (69 declaradas en routers + 1 health check en `app.js`)  
+**Contrato asociado:** `specs/001-peru-app/openapi.yaml` versión 2.0.0
 
-- **Artefacto:** ROUTES-002
-- **Fuente examinada:** `backend/src/app.js`, `backend/src/server.js` y `backend/src/routes/*.js`
-- **Fecha de corte:** 14 de julio de 2026
-- **Objetivo:** registrar el contrato de rutas después de implementar el Bloque 2 y antes de automatizar pruebas.
+## Convención de acceso
 
-## 2. Resumen verificable
+- **Público:** registro e inicio de sesión.
+- **Público técnico:** health check sin datos de negocio.
+- **Autenticado:** JWT válido y usuario vigente en SQL Server.
+- **Admin:** JWT válido, usuario vigente y rol actual `admin`.
 
-| Concepto | Cantidad |
-|---|---:|
-| Operaciones declaradas en routers Express | 69 |
-| GET | 28 |
-| POST | 14 |
-| PUT | 14 |
-| DELETE | 13 |
-| Operaciones con JWT y rol administrador | 41 |
-| Operaciones con JWT para usuario autenticado | 26 |
-| Operaciones actualmente públicas en routers | 2 |
-| Operaciones públicas funcionales permitidas por SPEC-002 | 2 |
-| Brechas de autenticación en routers | 0 |
+## Inventario
 
-`app.js` expone únicamente `GET /api/health` como excepción técnica pública. `/api/test-db`, `/api/debug-token` y la ruta raíz anterior fueron retiradas.
+| Método | Ruta | Acceso | Definición / controlador | Validación e integridad |
+|---|---|---|---|---|
+| POST | `/api/auth/login` | Público | `authRoutes.js` → `login` | loginLimiter, validateLoginBody |
+| GET | `/api/auth/profile` | Autenticado | `authRoutes.js` → `getProfile` | — |
+| PUT | `/api/auth/profile` | Autenticado | `authRoutes.js` → `updateProfile` | validateProfileBody |
+| POST | `/api/auth/register` | Público | `authRoutes.js` → `register` | registerLimiter, validateRegisterBody |
+| GET | `/api/ciudades` | Autenticado | `ciudadRoutes.js` → `getCiudades` | validateCiudadQuery |
+| POST | `/api/ciudades` | Admin | `ciudadRoutes.js` → `createCiudad` | uploadCiudadImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateCiudadBody, distritoExists, uniqueCiudad |
+| DELETE | `/api/ciudades/:id` | Admin | `ciudadRoutes.js` → `deleteCiudad` | validateIdParam, ciudadResourceExists |
+| GET | `/api/ciudades/:id` | Autenticado | `ciudadRoutes.js` → `getCiudadById` | validateIdParam |
+| PUT | `/api/ciudades/:id` | Admin | `ciudadRoutes.js` → `updateCiudad` | validateIdParam, ciudadResourceExists, uploadCiudadImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateCiudadBody, distritoExists, uniqueCiudad |
+| POST | `/api/comidas-tipicas` | Admin | `comidaTipicaRoutes.js` → `createComidaTipica` | uploadComidaTipicaImage.single('imagen'), verifyUploadedImageSignatures, validateComidaDepartamentoBody, departamentoExists, uniqueComida |
+| POST | `/api/comidas-tipicas-ciudades` | Admin | `comidaTipicaCiudadRoutes.js` → `createComida` | uploadComidaTipicaCiudadImage.single('imagen'), verifyUploadedImageSignatures, validateComidaCiudadBody, ciudadExists, uniqueComida |
+| DELETE | `/api/comidas-tipicas-ciudades/:id` | Admin | `comidaTipicaCiudadRoutes.js` → `deleteComida` | validateIdParam, comidaExists |
+| GET | `/api/comidas-tipicas-ciudades/:id` | Autenticado | `comidaTipicaCiudadRoutes.js` → `getComidaById` | validateIdParam |
+| PUT | `/api/comidas-tipicas-ciudades/:id` | Admin | `comidaTipicaCiudadRoutes.js` → `updateComida` | validateIdParam, comidaExists, uploadComidaTipicaCiudadImage.single('imagen'), verifyUploadedImageSignatures, validateComidaCiudadBody, ciudadExists, uniqueComida |
+| GET | `/api/comidas-tipicas-ciudades/ciudad/:ciudadId` | Autenticado | `comidaTipicaCiudadRoutes.js` → `getComidasByCiudadId` | validateCiudadIdParam |
+| POST | `/api/comidas-tipicas-distritos` | Admin | `comidaTipicaDistritoRoutes.js` → `createComida` | uploadComidaTipicaDistritoImage.single('imagen'), verifyUploadedImageSignatures, validateComidaDistritoBody, distritoExists, uniqueComida |
+| DELETE | `/api/comidas-tipicas-distritos/:id` | Admin | `comidaTipicaDistritoRoutes.js` → `deleteComida` | validateIdParam, comidaExists |
+| GET | `/api/comidas-tipicas-distritos/:id` | Autenticado | `comidaTipicaDistritoRoutes.js` → `getComidaById` | validateIdParam |
+| PUT | `/api/comidas-tipicas-distritos/:id` | Admin | `comidaTipicaDistritoRoutes.js` → `updateComida` | validateIdParam, comidaExists, uploadComidaTipicaDistritoImage.single('imagen'), verifyUploadedImageSignatures, validateComidaDistritoBody, distritoExists, uniqueComida |
+| GET | `/api/comidas-tipicas-distritos/distrito/:distritoId` | Autenticado | `comidaTipicaDistritoRoutes.js` → `getComidasByDistritoId` | validateDistritoIdParam |
+| POST | `/api/comidas-tipicas-provincias` | Admin | `comidaTipicaProvinciaRoutes.js` → `createComida` | uploadComidaTipicaProvinciaImage.single('imagen'), verifyUploadedImageSignatures, validateComidaProvinciaBody, provinciaExists, uniqueComida |
+| DELETE | `/api/comidas-tipicas-provincias/:id` | Admin | `comidaTipicaProvinciaRoutes.js` → `deleteComida` | validateIdParam, comidaExists |
+| GET | `/api/comidas-tipicas-provincias/:id` | Autenticado | `comidaTipicaProvinciaRoutes.js` → `getComidaById` | validateIdParam |
+| PUT | `/api/comidas-tipicas-provincias/:id` | Admin | `comidaTipicaProvinciaRoutes.js` → `updateComida` | validateIdParam, comidaExists, uploadComidaTipicaProvinciaImage.single('imagen'), verifyUploadedImageSignatures, validateComidaProvinciaBody, provinciaExists, uniqueComida |
+| GET | `/api/comidas-tipicas-provincias/provincia/:provinciaId` | Autenticado | `comidaTipicaProvinciaRoutes.js` → `getComidasByProvinciaId` | validateProvinciaIdParam |
+| DELETE | `/api/comidas-tipicas/:id` | Admin | `comidaTipicaRoutes.js` → `deleteComidaTipica` | validateIdParam, comidaExists |
+| GET | `/api/comidas-tipicas/:id` | Autenticado | `comidaTipicaRoutes.js` → `getComidaById` | validateIdParam |
+| PUT | `/api/comidas-tipicas/:id` | Admin | `comidaTipicaRoutes.js` → `updateComidaTipica` | validateIdParam, comidaExists, uploadComidaTipicaImage.single('imagen'), verifyUploadedImageSignatures, validateComidaDepartamentoBody, departamentoExists, uniqueComida |
+| GET | `/api/comidas-tipicas/departamento/:departamentoId` | Autenticado | `comidaTipicaRoutes.js` → `getComidasByDepartamentoId` | validateDepartamentoIdParam |
+| GET | `/api/departamentos` | Autenticado | `departamentoRoutes.js` → `getDepartamentos` | — |
+| POST | `/api/departamentos` | Admin | `departamentoRoutes.js` → `createDepartamento` | uploadDepartamentoImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateDepartamentoBody, uniqueDepartamento |
+| DELETE | `/api/departamentos/:id` | Admin | `departamentoRoutes.js` → `deleteDepartamento` | validateIdParam, departamentoExists |
+| GET | `/api/departamentos/:id` | Autenticado | `departamentoRoutes.js` → `getDepartamentoById` | validateIdParam |
+| PUT | `/api/departamentos/:id` | Admin | `departamentoRoutes.js` → `updateDepartamento` | validateIdParam, departamentoExists, uploadDepartamentoImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateDepartamentoBody, uniqueDepartamento |
+| GET | `/api/distritos` | Autenticado | `distritoRoutes.js` → `getDistritos` | validateDistritoQuery |
+| POST | `/api/distritos` | Admin | `distritoRoutes.js` → `createDistrito` | uploadDistritoImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateDistritoBody, provinciaExists, uniqueDistrito |
+| DELETE | `/api/distritos/:id` | Admin | `distritoRoutes.js` → `deleteDistrito` | validateIdParam, distritoResourceExists |
+| GET | `/api/distritos/:id` | Autenticado | `distritoRoutes.js` → `getDistritoById` | validateIdParam |
+| PUT | `/api/distritos/:id` | Admin | `distritoRoutes.js` → `updateDistrito` | validateIdParam, distritoResourceExists, uploadDistritoImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateDistritoBody, provinciaExists, uniqueDistrito |
+| GET | `/api/health` | Público técnico | `app.js` → `healthCheck` | — |
+| POST | `/api/lugares-turisticos` | Admin | `lugarTuristicoRoutes.js` → `createLugarTuristico` | uploadImages, verifyUploadedImageSignatures, validateLugarDepartamentoBody, departamentoExists, uniqueLugar |
+| POST | `/api/lugares-turisticos-ciudades` | Admin | `lugarTuristicoCiudadRoutes.js` → `createLugar` | uploadLugarTuristicoCiudadImage.single('imagen'), verifyUploadedImageSignatures, validateLugarCiudadBody, ciudadExists, uniqueLugar |
+| DELETE | `/api/lugares-turisticos-ciudades/:id` | Admin | `lugarTuristicoCiudadRoutes.js` → `deleteLugar` | validateIdParam, lugarExists |
+| GET | `/api/lugares-turisticos-ciudades/:id` | Autenticado | `lugarTuristicoCiudadRoutes.js` → `getLugarById` | validateIdParam |
+| PUT | `/api/lugares-turisticos-ciudades/:id` | Admin | `lugarTuristicoCiudadRoutes.js` → `updateLugar` | validateIdParam, lugarExists, uploadLugarTuristicoCiudadImage.single('imagen'), verifyUploadedImageSignatures, validateLugarCiudadBody, ciudadExists, uniqueLugar |
+| GET | `/api/lugares-turisticos-ciudades/ciudad/:ciudadId` | Autenticado | `lugarTuristicoCiudadRoutes.js` → `getLugaresByCiudadId` | validateCiudadIdParam |
+| POST | `/api/lugares-turisticos-distritos` | Admin | `lugarTuristicoDistritoRoutes.js` → `createLugar` | uploadLugarTuristicoDistritoImage.single('imagen'), verifyUploadedImageSignatures, validateLugarDistritoBody, distritoExists, uniqueLugar |
+| DELETE | `/api/lugares-turisticos-distritos/:id` | Admin | `lugarTuristicoDistritoRoutes.js` → `deleteLugar` | validateIdParam, lugarExists |
+| GET | `/api/lugares-turisticos-distritos/:id` | Autenticado | `lugarTuristicoDistritoRoutes.js` → `getLugarById` | validateIdParam |
+| PUT | `/api/lugares-turisticos-distritos/:id` | Admin | `lugarTuristicoDistritoRoutes.js` → `updateLugar` | validateIdParam, lugarExists, uploadLugarTuristicoDistritoImage.single('imagen'), verifyUploadedImageSignatures, validateLugarDistritoBody, distritoExists, uniqueLugar |
+| GET | `/api/lugares-turisticos-distritos/distrito/:distritoId` | Autenticado | `lugarTuristicoDistritoRoutes.js` → `getLugaresByDistritoId` | validateDistritoIdParam |
+| POST | `/api/lugares-turisticos-provincias` | Admin | `lugarTuristicoProvinciaRoutes.js` → `createLugar` | uploadLugarTuristicoProvinciaImage.single('imagen'), verifyUploadedImageSignatures, validateLugarProvinciaBody, provinciaExists, uniqueLugar |
+| DELETE | `/api/lugares-turisticos-provincias/:id` | Admin | `lugarTuristicoProvinciaRoutes.js` → `deleteLugar` | validateIdParam, lugarExists |
+| GET | `/api/lugares-turisticos-provincias/:id` | Autenticado | `lugarTuristicoProvinciaRoutes.js` → `getLugarById` | validateIdParam |
+| PUT | `/api/lugares-turisticos-provincias/:id` | Admin | `lugarTuristicoProvinciaRoutes.js` → `updateLugar` | validateIdParam, lugarExists, uploadLugarTuristicoProvinciaImage.single('imagen'), verifyUploadedImageSignatures, validateLugarProvinciaBody, provinciaExists, uniqueLugar |
+| GET | `/api/lugares-turisticos-provincias/provincia/:provinciaId` | Autenticado | `lugarTuristicoProvinciaRoutes.js` → `getLugaresByProvinciaId` | validateProvinciaIdParam |
+| DELETE | `/api/lugares-turisticos/:id` | Admin | `lugarTuristicoRoutes.js` → `deleteLugarTuristico` | validateIdParam, lugarExists |
+| GET | `/api/lugares-turisticos/:id` | Autenticado | `lugarTuristicoRoutes.js` → `getLugarById` | validateIdParam |
+| PUT | `/api/lugares-turisticos/:id` | Admin | `lugarTuristicoRoutes.js` → `updateLugarTuristico` | validateIdParam, lugarExists, uploadImages, verifyUploadedImageSignatures, validateLugarDepartamentoBody, departamentoExists, uniqueLugar |
+| GET | `/api/lugares-turisticos/departamento/:departamentoId` | Autenticado | `lugarTuristicoRoutes.js` → `getLugaresByDepartamentoId` | validateDepartamentoIdParam |
+| GET | `/api/provincias` | Autenticado | `provinciaRoutes.js` → `getProvincias` | validateProvinciaQuery |
+| POST | `/api/provincias` | Admin | `provinciaRoutes.js` → `createProvincia` | uploadProvinciaImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateProvinciaBody, departamentoExists, uniqueProvincia |
+| DELETE | `/api/provincias/:id` | Admin | `provinciaRoutes.js` → `deleteProvincia` | validateIdParam, provinciaResourceExists |
+| GET | `/api/provincias/:id` | Autenticado | `provinciaRoutes.js` → `getProvinciaById` | validateIdParam |
+| PUT | `/api/provincias/:id` | Admin | `provinciaRoutes.js` → `updateProvincia` | validateIdParam, provinciaResourceExists, uploadProvinciaImage.single('imagen_fondo'), verifyUploadedImageSignatures, validateProvinciaBody, departamentoExists, uniqueProvincia |
+| GET | `/api/users` | Admin | `userRoutes.js` → `getUsers` | — |
+| DELETE | `/api/users/:id` | Admin | `userRoutes.js` → `deleteUserAdmin` | validateIdParam |
+| GET | `/api/users/:id` | Admin | `userRoutes.js` → `getUserById` | validateIdParam |
+| PUT | `/api/users/:id` | Admin | `userRoutes.js` → `updateUserAdmin` | validateIdParam, validateAdminUserBody |
+| GET | `/api/users/search` | Admin | `userRoutes.js` → `searchUsersController` | validateSearchQuery |
 
-## 3. Regla objetivo
+## Resultado de sincronización
 
-- Públicas: `POST /api/auth/register`, `POST /api/auth/login`.
-- Excepción técnica prevista: `GET /api/health`, sin datos de negocio, credenciales, conteos internos ni detalles de SQL Server.
-- Usuario autenticado: perfil y todas las consultas territoriales, turísticas y gastronómicas.
-- Administrador autenticado: usuarios y operaciones de creación, actualización y eliminación.
-- Prohibidas en producción: `/api/test-db` y `/api/debug-token`.
+El contrato OpenAPI incluye las mismas 70 combinaciones método-ruta. La comprobación se automatiza mediante:
 
-## 4. Brechas críticas corregidas en Bloque 2
+```powershell
+node .\scripts\check-openapi-sync.mjs
+```
 
-| Método | Endpoint | Estado anterior | Estado implementado |
-|---|---|---|---|
-| GET | `/api/departamentos` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/departamentos/:id` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/provincias` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/provincias/:id` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/distritos` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/distritos/:id` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/ciudades` | Pública | JWT requerido mediante `verifyToken` |
-| GET | `/api/ciudades/:id` | Pública | JWT requerido mediante `verifyToken` |
-
-## 5. Inventario completo
-
-| Método | Endpoint real | Acceso actual | Acceso objetivo | Controlador | Archivo | Dictamen |
-|---|---|---|---|---|---|---|
-| `POST` | `/api/auth/login` | Pública | Pública | `login` | `authRoutes.js` | Correcta |
-| `GET` | `/api/auth/profile` | JWT | JWT | `getProfile` | `authRoutes.js` | Correcta |
-| `PUT` | `/api/auth/profile` | JWT | JWT | `updateProfile` | `authRoutes.js` | Correcta |
-| `POST` | `/api/auth/register` | Pública | Pública | `register` | `authRoutes.js` | Correcta |
-| `GET` | `/api/ciudades` | Pública | JWT requerido mediante `verifyToken` | `getCiudades` | `ciudadRoutes.js` | Brecha |
-| `POST` | `/api/ciudades` | JWT + admin | JWT + admin | `createCiudad` | `ciudadRoutes.js` | Correcta |
-| `DELETE` | `/api/ciudades/:id` | JWT + admin | JWT + admin | `deleteCiudad` | `ciudadRoutes.js` | Correcta |
-| `GET` | `/api/ciudades/:id` | Pública | JWT requerido mediante `verifyToken` | `getCiudadById` | `ciudadRoutes.js` | Brecha |
-| `PUT` | `/api/ciudades/:id` | JWT + admin | JWT + admin | `updateCiudad` | `ciudadRoutes.js` | Correcta |
-| `POST` | `/api/comidas-tipicas` | JWT + admin | JWT + admin | `createComidaTipica` | `comidaTipicaRoutes.js` | Correcta |
-| `POST` | `/api/comidas-tipicas-ciudades` | JWT + admin | JWT + admin | `createComida` | `comidaTipicaCiudadRoutes.js` | Correcta |
-| `DELETE` | `/api/comidas-tipicas-ciudades/:id` | JWT + admin | JWT + admin | `deleteComida` | `comidaTipicaCiudadRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-ciudades/:id` | JWT | JWT | `getComidaById` | `comidaTipicaCiudadRoutes.js` | Correcta |
-| `PUT` | `/api/comidas-tipicas-ciudades/:id` | JWT + admin | JWT + admin | `updateComida` | `comidaTipicaCiudadRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-ciudades/ciudad/:ciudadId` | JWT | JWT | `getComidasByCiudadId` | `comidaTipicaCiudadRoutes.js` | Correcta |
-| `POST` | `/api/comidas-tipicas-distritos` | JWT + admin | JWT + admin | `createComida` | `comidaTipicaDistritoRoutes.js` | Correcta |
-| `DELETE` | `/api/comidas-tipicas-distritos/:id` | JWT + admin | JWT + admin | `deleteComida` | `comidaTipicaDistritoRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-distritos/:id` | JWT | JWT | `getComidaById` | `comidaTipicaDistritoRoutes.js` | Correcta |
-| `PUT` | `/api/comidas-tipicas-distritos/:id` | JWT + admin | JWT + admin | `updateComida` | `comidaTipicaDistritoRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-distritos/distrito/:distritoId` | JWT | JWT | `getComidasByDistritoId` | `comidaTipicaDistritoRoutes.js` | Correcta |
-| `POST` | `/api/comidas-tipicas-provincias` | JWT + admin | JWT + admin | `createComida` | `comidaTipicaProvinciaRoutes.js` | Correcta |
-| `DELETE` | `/api/comidas-tipicas-provincias/:id` | JWT + admin | JWT + admin | `deleteComida` | `comidaTipicaProvinciaRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-provincias/:id` | JWT | JWT | `getComidaById` | `comidaTipicaProvinciaRoutes.js` | Correcta |
-| `PUT` | `/api/comidas-tipicas-provincias/:id` | JWT + admin | JWT + admin | `updateComida` | `comidaTipicaProvinciaRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas-provincias/provincia/:provinciaId` | JWT | JWT | `getComidasByProvinciaId` | `comidaTipicaProvinciaRoutes.js` | Correcta |
-| `DELETE` | `/api/comidas-tipicas/:id` | JWT + admin | JWT + admin | `deleteComidaTipica` | `comidaTipicaRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas/:id` | JWT | JWT | `getComidaById` | `comidaTipicaRoutes.js` | Correcta |
-| `PUT` | `/api/comidas-tipicas/:id` | JWT + admin | JWT + admin | `updateComidaTipica` | `comidaTipicaRoutes.js` | Correcta |
-| `GET` | `/api/comidas-tipicas/departamento/:departamentoId` | JWT | JWT | `getComidasByDepartamentoId` | `comidaTipicaRoutes.js` | Correcta |
-| `GET` | `/api/departamentos` | Pública | JWT requerido mediante `verifyToken` | `getDepartamentos` | `departamentoRoutes.js` | Brecha |
-| `POST` | `/api/departamentos` | JWT + admin | JWT + admin | `createDepartamento` | `departamentoRoutes.js` | Correcta |
-| `DELETE` | `/api/departamentos/:id` | JWT + admin | JWT + admin | `deleteDepartamento` | `departamentoRoutes.js` | Correcta |
-| `GET` | `/api/departamentos/:id` | Pública | JWT requerido mediante `verifyToken` | `getDepartamentoById` | `departamentoRoutes.js` | Brecha |
-| `PUT` | `/api/departamentos/:id` | JWT + admin | JWT + admin | `updateDepartamento` | `departamentoRoutes.js` | Correcta |
-| `GET` | `/api/distritos` | Pública | JWT requerido mediante `verifyToken` | `getDistritos` | `distritoRoutes.js` | Brecha |
-| `POST` | `/api/distritos` | JWT + admin | JWT + admin | `createDistrito` | `distritoRoutes.js` | Correcta |
-| `DELETE` | `/api/distritos/:id` | JWT + admin | JWT + admin | `deleteDistrito` | `distritoRoutes.js` | Correcta |
-| `GET` | `/api/distritos/:id` | Pública | JWT requerido mediante `verifyToken` | `getDistritoById` | `distritoRoutes.js` | Brecha |
-| `PUT` | `/api/distritos/:id` | JWT + admin | JWT + admin | `updateDistrito` | `distritoRoutes.js` | Correcta |
-| `POST` | `/api/lugares-turisticos` | JWT + admin | JWT + admin | `createLugarTuristico` | `lugarTuristicoRoutes.js` | Correcta |
-| `POST` | `/api/lugares-turisticos-ciudades` | JWT + admin | JWT + admin | `createLugar` | `lugarTuristicoCiudadRoutes.js` | Correcta |
-| `DELETE` | `/api/lugares-turisticos-ciudades/:id` | JWT + admin | JWT + admin | `deleteLugar` | `lugarTuristicoCiudadRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-ciudades/:id` | JWT | JWT | `getLugarById` | `lugarTuristicoCiudadRoutes.js` | Correcta |
-| `PUT` | `/api/lugares-turisticos-ciudades/:id` | JWT + admin | JWT + admin | `updateLugar` | `lugarTuristicoCiudadRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-ciudades/ciudad/:ciudadId` | JWT | JWT | `getLugaresByCiudadId` | `lugarTuristicoCiudadRoutes.js` | Correcta |
-| `POST` | `/api/lugares-turisticos-distritos` | JWT + admin | JWT + admin | `createLugar` | `lugarTuristicoDistritoRoutes.js` | Correcta |
-| `DELETE` | `/api/lugares-turisticos-distritos/:id` | JWT + admin | JWT + admin | `deleteLugar` | `lugarTuristicoDistritoRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-distritos/:id` | JWT | JWT | `getLugarById` | `lugarTuristicoDistritoRoutes.js` | Correcta |
-| `PUT` | `/api/lugares-turisticos-distritos/:id` | JWT + admin | JWT + admin | `updateLugar` | `lugarTuristicoDistritoRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-distritos/distrito/:distritoId` | JWT | JWT | `getLugaresByDistritoId` | `lugarTuristicoDistritoRoutes.js` | Correcta |
-| `POST` | `/api/lugares-turisticos-provincias` | JWT + admin | JWT + admin | `createLugar` | `lugarTuristicoProvinciaRoutes.js` | Correcta |
-| `DELETE` | `/api/lugares-turisticos-provincias/:id` | JWT + admin | JWT + admin | `deleteLugar` | `lugarTuristicoProvinciaRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-provincias/:id` | JWT | JWT | `getLugarById` | `lugarTuristicoProvinciaRoutes.js` | Correcta |
-| `PUT` | `/api/lugares-turisticos-provincias/:id` | JWT + admin | JWT + admin | `updateLugar` | `lugarTuristicoProvinciaRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos-provincias/provincia/:provinciaId` | JWT | JWT | `getLugaresByProvinciaId` | `lugarTuristicoProvinciaRoutes.js` | Correcta |
-| `DELETE` | `/api/lugares-turisticos/:id` | JWT + admin | JWT + admin | `deleteLugarTuristico` | `lugarTuristicoRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos/:id` | JWT | JWT | `getLugarById` | `lugarTuristicoRoutes.js` | Correcta |
-| `PUT` | `/api/lugares-turisticos/:id` | JWT + admin | JWT + admin | `updateLugarTuristico` | `lugarTuristicoRoutes.js` | Correcta |
-| `GET` | `/api/lugares-turisticos/departamento/:departamentoId` | JWT | JWT | `getLugaresByDepartamentoId` | `lugarTuristicoRoutes.js` | Correcta |
-| `GET` | `/api/provincias` | Pública | JWT requerido mediante `verifyToken` | `getProvincias` | `provinciaRoutes.js` | Brecha |
-| `POST` | `/api/provincias` | JWT + admin | JWT + admin | `createProvincia` | `provinciaRoutes.js` | Correcta |
-| `DELETE` | `/api/provincias/:id` | JWT + admin | JWT + admin | `deleteProvincia` | `provinciaRoutes.js` | Correcta |
-| `GET` | `/api/provincias/:id` | Pública | JWT requerido mediante `verifyToken` | `getProvinciaById` | `provinciaRoutes.js` | Brecha |
-| `PUT` | `/api/provincias/:id` | JWT + admin | JWT + admin | `updateProvincia` | `provinciaRoutes.js` | Correcta |
-| `GET` | `/api/users` | JWT + admin | JWT + admin | `getUsers` | `userRoutes.js` | Correcta |
-| `DELETE` | `/api/users/:id` | JWT + admin | JWT + admin | `deleteUserAdmin` | `userRoutes.js` | Correcta |
-| `GET` | `/api/users/:id` | JWT + admin | JWT + admin | `getUserById` | `userRoutes.js` | Correcta |
-| `PUT` | `/api/users/:id` | JWT + admin | JWT + admin | `updateUserAdmin` | `userRoutes.js` | Correcta |
-| `GET` | `/api/users/search` | JWT + admin | JWT + admin | `searchUsersController` | `userRoutes.js` | Correcta |
-
-## 6. Rutas técnicas y archivos estáticos definidos en `app.js`
-
-| Método | Endpoint | Estado implementado | Decisión SDD |
-|---|---|---|---|
-| GET | `/api/health` | Pública, respuesta mínima | Mantener para health checks y despliegue. |
-| GET | `/api/test-db` | Eliminada | Debe responder 404. |
-| GET | `/api/debug-token` | Eliminada | Debe responder 404. |
-| STATIC | `/uploads/*` | Pública | Mantener para recursos publicados; revisar persistencia en despliegue. |
-
-## 7. Uso de este inventario
-
-Este archivo es la línea base para:
-
-1. `T-EST-036` y `T-EST-037`: protección de consultas.
-2. `T-EST-053`: eliminación de rutas de depuración.
-3. `T-EST-081`: sincronización de `openapi.yaml`.
-4. `T-EST-040`, Postman/Newman y Supertest: generación de pruebas 401/403/200.
-5. La matriz de trazabilidad de `SPEC-002`.
-
-El inventario refleja la implementación del Bloque 2. La corrección permanece pendiente de validación mediante los casos 401, 403 y 200.
-
-
-## Middleware transversal incorporado en el Bloque 3
-
-Las rutas de escritura siguen el orden: autenticación → rol → ID existente (edición/eliminación) → carga de archivo → validación → relación → duplicado → controlador.
-
-- `validationMiddleware.js`: campos, tipos, rangos y normalización.
-- `dataIntegrityMiddleware.js`: existencia, relaciones y duplicados.
-- `uploadMiddleware.js`: extensión/MIME y máximo 5 MB.
-- `httpErrors.js`: traducción de errores SQL y de archivos.
-- `fileCleanup.js`: limpieza de archivos nuevos ante solicitudes fallidas.
+Una diferencia entre código y contrato provoca código de salida distinto de cero y bloquea el cierre SDD.

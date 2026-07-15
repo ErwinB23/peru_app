@@ -1,138 +1,52 @@
-# Casos de Prueba Iniciales — SPEC-002
+# Catálogo Final de Pruebas — SPEC-002
 
-Estos casos definen el comportamiento objetivo. Se ejecutarán cuando se implemente cada bloque.
+## 1. Resumen
 
-| ID | Prioridad | Escenario | Resultado esperado |
-|---|---|---|---|
-| CP-EST-AUTH-001 | P1 | Registrar usuario válido | HTTP 201, rol `usuario`, sin exponer contraseña. |
-| CP-EST-AUTH-002 | P1 | Login válido | HTTP 200, token válido y datos mínimos del usuario. |
-| CP-EST-AUTH-003 | P1 | Login inválido | HTTP 401 con mensaje genérico. |
-| CP-EST-AUTH-004 | P1 | Consultar departamento sin token | HTTP 401. |
-| CP-EST-AUTH-005 | P1 | Consultar departamento con token de usuario | HTTP 200. |
-| CP-EST-AUTH-006 | P1 | Crear departamento con token de usuario | HTTP 403. |
-| CP-EST-AUTH-007 | P1 | Crear departamento con token admin | Operación permitida. |
-| CP-EST-AUTH-008 | P1 | Usar token de usuario eliminado | HTTP 401. |
-| CP-EST-AUTH-009 | P1 | Usar token de admin degradado | Consulta permitida; administración HTTP 403. |
-| CP-EST-AUTH-010 | P1 | Recargar frontend con token expirado | Sesión limpiada y redirección al login. |
-| CP-EST-ERR-001 | P1 | Enviar datos inválidos | HTTP 400 con detalle por campo. |
-| CP-EST-ERR-002 | P1 | Crear duplicado | HTTP 409. |
-| CP-EST-ERR-003 | P1 | Consultar ID inexistente | HTTP 404. |
-| CP-EST-ERR-004 | P1 | Eliminar territorio con hijos | HTTP 409, sin pérdida de datos. |
-| CP-EST-IMG-001 | P1 | Fallar SQL después de subir imagen | Archivo temporal eliminado. |
-| CP-EST-IMG-002 | P1 | Reemplazar imagen correctamente | Imagen nueva activa e imagen anterior eliminada. |
-| CP-EST-IMG-003 | P1 | Subir tipo no permitido | HTTP 415. |
-| CP-EST-IMG-004 | P1 | Subir archivo demasiado grande | HTTP 413. |
-| CP-EST-SDD-001 | P2 | Comparar OpenAPI con rutas | Sin rutas faltantes o inventadas. |
-| CP-EST-REG-001 | P1 | Ejecutar lint y build | Ambos comandos aprobados. |
-| CP-EST-REG-002 | P1 | Comparar pantallas con línea base | Sin alteración visual no aprobada. |
+| Nivel | Cantidad de referencia | Herramienta |
+|---|---:|---|
+| Unitarias | 351 | Jest |
+| Integración HTTP | 25 | Jest + Supertest |
+| Total backend | 376 | Jest |
+| API encadenada | 11 solicitudes | Postman + Newman |
+| E2E frontend | 4 flujos | Playwright |
 
+Cobertura de referencia: **S 91.20% · B 87.01% · F 96.85% · L 91.08%**.
 
-## Casos detallados del Bloque 3
+## 2. Casos por capacidad
 
-| ID | Prioridad | Escenario | Resultado esperado |
-|---|---|---|---|
-| CP-EST-VAL-001 | P1 | Registrar correo con formato inválido | HTTP 400, `VALIDATION_ERROR`, detalle `email`. |
-| CP-EST-VAL-002 | P1 | Registrar fecha futura | HTTP 400 con detalle `fecha_nacimiento`. |
-| CP-EST-VAL-003 | P1 | Crear territorio con área cero o negativa | HTTP 400 con detalle `area_km2`. |
-| CP-EST-VAL-004 | P1 | Crear ciudad con latitud fuera de rango | HTTP 400 con detalle `latitud`. |
-| CP-EST-VAL-005 | P1 | Crear contenido sin nombre o descripción | HTTP 400 con detalle por campo. |
-| CP-EST-VAL-006 | P1 | Crear provincia con departamento inexistente | HTTP 404 `RELATED_RESOURCE_NOT_FOUND`. |
-| CP-EST-VAL-007 | P1 | Crear nombre repetido en el mismo ámbito | HTTP 409 `DUPLICATE_RESOURCE`. |
-| CP-EST-VAL-008 | P1 | Repetir nombre en otro ámbito permitido | Operación permitida. |
-| CP-EST-VAL-009 | P1 | Editar un ID inexistente enviando imagen | HTTP 404 y la imagen nueva no se almacena. |
-| CP-EST-VAL-010 | P1 | Error SQL después de cargar una imagen | Error controlado y archivo nuevo eliminado. |
-
-
-## Casos detallados del Bloque 4
-
-| ID | Prioridad | Escenario | Resultado esperado |
-|---|---|---|---|
-| CP-EST-DB-001 | P1 | Ejecutar auditoría previa | Todos los conteos son 0 y no aparecen duplicados. |
-| CP-EST-DB-002 | P1 | Ejecutar migración 005 | Commit correcto; restricciones e índices creados una sola vez. |
-| CP-EST-DB-003 | P1 | Eliminar departamento con provincias | HTTP 409 y ningún registro eliminado. |
-| CP-EST-DB-004 | P1 | Insertar población negativa directamente en SQL | SQL Server rechaza la operación por CHECK. |
-| CP-EST-IMG-005 | P1 | Eliminar contenido con imagen local | Registro e imagen se eliminan después de confirmar SQL Server. |
-| CP-EST-IMG-006 | P1 | Renombrar un archivo de texto como `.jpg` | HTTP 415 `INVALID_IMAGE_SIGNATURE`; no queda archivo. |
-| CP-EST-IMG-007 | P1 | Fallar eliminación por relación | HTTP 409 y la imagen vigente permanece intacta. |
-| CP-EST-FUN-001 | P1 | Ejecutar CRUD representativo por módulo | Listar, crear, editar y eliminar funcionan según rol. |
-
-
-## Casos automatizados del Bloque 5
-
-| ID | Nivel | Caso | Resultado esperado | Archivo |
+| ID | Nivel | Capacidad | Resultado principal | Evidencia |
 |---|---|---|---|---|
-| CP-AUTO-001 | Unitario | `isAdmin` sin usuario | 401 | `backend/tests/unit/roleMiddleware.test.js` |
-| CP-AUTO-002 | Unitario | `isAdmin` con usuario normal | 403 | `backend/tests/unit/roleMiddleware.test.js` |
-| CP-AUTO-003 | Unitario | Registro con correo invalido | 400 + detalles | `backend/tests/unit/validationMiddleware.test.js` |
-| CP-AUTO-004 | Unitario | Error SQL duplicado | 409 | `backend/tests/unit/httpErrors.test.js` |
-| CP-AUTO-005 | Integracion | Login correcto | 200 + token | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-006 | Integracion | Login incorrecto | 401 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-007 | Integracion | GET sin token | 401 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-008 | Integracion | Usuario administra | 403 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-009 | Integracion | Admin crea departamento | 201 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-010 | Integracion | Datos invalidos | 400 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-011 | Integracion | ID inexistente | 404 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-012 | Integracion | Nombre duplicado | 409 | `backend/tests/integration/api.integration.test.js` |
-| CP-AUTO-013 | E2E | URL privada sin sesion | Redireccion al login | `frontend/tests/e2e/auth.spec.js` |
-| CP-AUTO-014 | E2E | Login, navegacion y logout | Flujo completo | `frontend/tests/e2e/auth.spec.js` |
-| CP-AUTO-015 | E2E | CRUD admin temporal | Crear y eliminar | `frontend/tests/e2e/admin.spec.js` |
+| CP-AUTH-001 | Unit/Integración | Registro y login | 201/200; credenciales inválidas 401 | Jest |
+| CP-AUTH-002 | Unit/Integración | Token ausente, inválido o expirado | 401 | Jest/Supertest |
+| CP-AUTH-003 | Unit | Usuario eliminado o rol cambiado | 401/403 según caso | Jest |
+| CP-AUTH-004 | E2E | Sesión, recarga y logout | Redirección correcta | Playwright |
+| CP-ROLE-001 | Unit/Integración | Usuario intenta administrar | 403 | Jest/Newman |
+| CP-USER-001 | Unit | Listar, buscar, actualizar y eliminar usuario | 200/404/409 | Jest |
+| CP-USER-002 | Unit | Último admin y autoeliminación | 409 | Jest |
+| CP-TERR-001 | Unit/Integración | CRUD departamentos | 200/201/404/409 | Jest/Supertest |
+| CP-TERR-002 | Unit/Integración | CRUD provincias | relación, duplicado e imagen | Jest/Supertest |
+| CP-TERR-003 | Unit/Integración | CRUD distritos | paginación, catálogos y relación | Jest/Supertest |
+| CP-TERR-004 | Unit/Integración | CRUD ciudades | filtros, coordenadas y tipo | Jest/Supertest |
+| CP-CONT-001 | Unit/Integración | Lugares en cuatro ámbitos | listar/crear/editar/eliminar | Jest/Supertest |
+| CP-CONT-002 | Unit/Integración | Comidas en cuatro ámbitos | listar/crear/editar/eliminar | Jest/Supertest |
+| CP-VAL-001 | Unit | Campos obligatorios, email, fecha y números | 400 + detalles | Jest |
+| CP-INT-001 | Unit | Relación inexistente | 404 | Jest |
+| CP-INT-002 | Unit | Duplicado en mismo ámbito | 409 | Jest |
+| CP-IMG-001 | Unit | Firma JPEG/PNG/WEBP | aceptar archivo válido | Jest |
+| CP-IMG-002 | Unit/API | MIME/firma inválida o >5 MB | 415/413 | Jest/Newman |
+| CP-IMG-003 | Unit | Reemplazo, borrado y limpieza ante error | sin archivo huérfano | Jest |
+| CP-ERR-001 | Unit/Integración | Contrato de errores | 400/401/403/404/409/413/415/500 | Jest/Newman |
+| CP-SDD-001 | Calidad | Rutas Express vs OpenAPI | 70/70 | `check-openapi-sync.mjs` |
+| CP-BUILD-001 | Calidad | ESLint y Vite build | código de salida 0 | npm |
+| CP-DEPLOY-001 | Producción | Health, login, consulta y CRUD | pruebas de humo aprobadas | Newman/Playwright |
 
-## Casos automatizados del Bloque 5.1 — Cobertura crítica
+## 3. Cuentas QA
 
-| ID | Nivel | Caso | Resultado esperado |
-|---|---|---|---|
-| CP-COV-AUTH-001 | Unitario | Registro con campos ausentes | 400 |
-| CP-COV-AUTH-002 | Unitario | Registro con contraseña corta | 400 |
-| CP-COV-AUTH-003 | Unitario | Registro con correo duplicado | 409 |
-| CP-COV-AUTH-004 | Unitario | Registro exitoso y contraseña cifrada | 201 |
-| CP-COV-AUTH-005 | Unitario | Login sin credenciales completas | 400 |
-| CP-COV-AUTH-006 | Unitario | Login con usuario inexistente o clave incorrecta | 401 |
-| CP-COV-AUTH-007 | Unitario | Login exitoso y JWT seguro | 200 |
-| CP-COV-AUTH-008 | Unitario | Perfil existente, inexistente y error interno | 200/404/500 |
-| CP-COV-AUTH-009 | Unitario | Cambio de correo duplicado | 409 |
-| CP-COV-AUTH-010 | Unitario | Cambio de contraseña incompleto, corto o incorrecto | 400/401/404 |
-| CP-COV-AUTH-011 | Unitario | Actualización de perfil con y sin cambio de contraseña | 200 |
-| CP-COV-MW-001 | Unitario | Cabecera Authorization ausente o mal formada | 401 |
-| CP-COV-MW-002 | Unitario | JWT con identificador inválido | 401 |
-| CP-COV-MW-003 | Unitario | Usuario eliminado después de emitir el JWT | 401 |
-| CP-COV-MW-004 | Unitario | Token expirado, inválido o aún no vigente | 401 |
-| CP-COV-MW-005 | Unitario | Usuario y rol vigentes recuperados de SQL Server | Continúa |
-| CP-COV-DEP-001 | Unitario | Listado y consulta por ID | 200 |
-| CP-COV-DEP-002 | Unitario | ID inválido o departamento inexistente | 400/404 |
-| CP-COV-DEP-003 | Unitario | Creación con imagen local, URL o sin imagen | 201 |
-| CP-COV-DEP-004 | Unitario | Actualización conservando o reemplazando imagen | 200 |
-| CP-COV-DEP-005 | Unitario | Eliminación y limpieza de imagen | 200 |
-| CP-COV-DEP-006 | Unitario | Errores inesperados de cada operación CRUD | 500 controlado |
-| CP-COV-ERR-001 | Unitario | Duplicados SQL 2601/2627 | 409 |
-| CP-COV-ERR-002 | Unitario | FK, CHECK y valores SQL inválidos | 400/409 |
-| CP-COV-ERR-003 | Unitario | Límites y tipos de archivo | 400/413/415 |
-| CP-COV-ERR-004 | Unitario | Error HTTP controlado y error interno oculto | Payload uniforme |
-| CP-COV-GATE-001 | Calidad | Umbrales globales de cobertura | S80/B70/F85/L80 o superior |
+Las pruebas API/E2E utilizan `admin.qa` y `usuario.qa`, cargadas desde `tests/qa-credentials.local.ps1`. El archivo local está excluido de Git y las cuentas no sustituyen usuarios reales.
 
-## Casos automatizados del Bloque 5.2 — Módulos restantes
+## 4. Reglas de repetibilidad
 
-| ID | Nivel | Módulo o escenario | Resultado esperado |
-|---|---|---|---|
-| CP-MOD-PRO-001 | Unitario | Listar provincias con y sin filtro | Datos correctos o 400/404 controlado |
-| CP-MOD-PRO-002 | Unitario | CRUD de provincia con relación e imagen | 201/200/404 y limpieza de imagen |
-| CP-MOD-DIS-001 | Unitario | Paginación y filtro de distritos | 200 o 400 según parámetros |
-| CP-MOD-DIS-002 | Unitario | CRUD de distrito y catálogos | 201/200/404; valores inválidos rechazados |
-| CP-MOD-CIU-001 | Unitario | Filtros de ciudad por nivel territorial | 200/400/404 |
-| CP-MOD-CIU-002 | Unitario | CRUD de ciudad, tipo y coordenadas | 201/200/400/404 |
-| CP-MOD-USR-001 | Unitario | Listado, búsqueda y consulta de usuarios | 200/400/404 |
-| CP-MOD-USR-002 | Unitario | Email duplicado y cambio de rol | 409 o actualización permitida |
-| CP-MOD-USR-003 | Unitario | Último admin y autoeliminación | 409 `LAST_ADMIN_CONFLICT`/`ADMIN_CONFLICT` |
-| CP-MOD-CONT-001 | Unitario | Lugares turísticos en cuatro ámbitos | Listar, crear, actualizar y eliminar |
-| CP-MOD-CONT-002 | Unitario | Comidas típicas en cuatro ámbitos | Listar, crear, actualizar y eliminar |
-| CP-MOD-IMG-001 | Unitario | JPEG, PNG y WEBP con firma válida | Middleware continúa |
-| CP-MOD-IMG-002 | Unitario | Firma inválida o MIME inconsistente | 415 `INVALID_IMAGE_SIGNATURE` |
-| CP-MOD-IMG-003 | Unitario | Reemplazo, borrado y rutas inseguras | Solo archivos locales válidos son eliminados |
-| CP-MOD-INT-001 | Unitario | Relación asociada inexistente | 404 y limpieza de archivo temporal |
-| CP-MOD-INT-002 | Unitario | Recurso inexistente | 404 `RESOURCE_NOT_FOUND` |
-| CP-MOD-INT-003 | Unitario | Nombre duplicado en el mismo ámbito | 409 `DUPLICATE_RESOURCE` |
-| CP-MOD-API-001 | Integración | Consultas territoriales autenticadas | 200; sin token 401 |
-| CP-MOD-API-002 | Integración | Usuario normal intenta administrar | 403 |
-| CP-MOD-API-003 | Integración | Admin crea provincia, distrito y ciudad | 201 |
-| CP-MOD-API-004 | Integración | Admin consulta usuarios | 200; usuario normal 403 |
-| CP-MOD-API-005 | Integración | Admin crea contenido en varios ámbitos | 201 |
-| CP-MOD-GATE-001 | Calidad | Cobertura general ampliada | S>=80, B>=70, F>=85, L>=80 |
+- Las unitarias e integración local utilizan mocks y no alteran la base productiva.
+- Newman y Playwright crean datos temporales identificables y deben limpiarlos.
+- Los reportes se resumen en `docs/estabilizacion/evidencias`.
+- Una suite fallida bloquea el cierre o el despliegue.

@@ -1,8 +1,8 @@
 # Constitución del Proyecto PERU APP
 
-**Versión:** 1.2.0  
-**Fecha de actualización:** 14 de julio de 2026  
-**Cambio principal:** Se consolida la trazabilidad de SPEC-002, se distingue documentación de validación y se admite un health check técnico mínimo para el despliegue.  
+**Versión:** 1.3.0  
+**Fecha de actualización:** 15 de julio de 2026  
+**Cambio principal:** Se formaliza la puerta de cierre SDD, la medición global de pruebas y la separación entre cierre pre-despliegue y aceptación en producción.  
 
 ## 1. Nombre del proyecto
 
@@ -195,3 +195,31 @@ El sistema depende de la información registrada por el administrador. Las rutas
 ## 10. Declaración final
 
 Esta constitución guía el desarrollo, documentación, validación y mantenimiento de PERU APP. Cualquier especificación, plan, tarea, modelo de datos, contrato API o prueba funcional debe respetar los principios definidos en este documento.
+
+## 10. Puerta de cierre SDD y despliegue
+
+El cierre documental de una especificación exige, como mínimo:
+
+1. Constitución, especificación, plan y tareas coherentes.
+2. Contrato API sincronizado con las rutas reales.
+3. Matriz de trazabilidad con requisito, código, prueba y evidencia.
+4. Suite automatizada con umbrales explícitos.
+5. Lint y build aprobados.
+6. Riesgos y pendientes declarados sin marcarlos falsamente como completados.
+
+El estado **Aprobado para despliegue** no equivale a **Aceptado en producción**. La aceptación final requiere evidencias del frontend, backend, base de datos e imágenes funcionando desde sus URLs públicas.
+
+## 11. Política de métricas y evidencia
+
+- Los porcentajes de cobertura deben indicar el conjunto real de archivos medidos.
+- Las pruebas unitarias, de integración, API y E2E deben contabilizarse por separado.
+- Los reportes generados pueden permanecer fuera de Git; el resumen verificable debe copiarse a `docs/estabilizacion/evidencias`.
+- Toda cifra incorporada al SDD debe provenir de una ejecución o de una validación interna identificada como tal.
+
+## 12. Gobierno y control de cambios
+
+- La Constitución utiliza versionado semántico.
+- Cambios incompatibles en principios obligatorios incrementan la versión mayor.
+- Nuevas puertas de calidad incrementan la versión menor.
+- Correcciones editoriales incrementan la versión de parche.
+- Antes de fusionar la rama de estabilización se ejecutará `scripts/block6-sdd-closure.ps1 -RunQualityChecks`.
