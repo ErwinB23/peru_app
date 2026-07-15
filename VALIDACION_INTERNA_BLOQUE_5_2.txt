@@ -1,0 +1,9 @@
+BLOQUE 5.2 - VALIDACION INTERNA
+Suites: 14 passed / 14 total
+Tests: 376 passed / 376 total
+Unit tests: 351
+Integration tests: 25
+Statements: 91.20%
+Branches: 87.01%
+Functions: 96.85%
+Lines: 91.08%

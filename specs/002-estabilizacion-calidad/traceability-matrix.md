@@ -136,3 +136,16 @@ No debe usarse “completado” como sinónimo de “documentado”.
 | RNF-EST-008 | T-EST-096/097 | `block5-coverage-improvement.ps1` | Evidencia reproducible | Implementado, pendiente de ejecución local |
 
 **Puerta de calidad:** el Bloque 5.1 se considera validado únicamente cuando las pruebas pasan y Jest confirma simultáneamente statements >= 80%, branches >= 70%, functions >= 85% y lines >= 80%.
+
+## 11. Trazabilidad del Bloque 5.2 — Cobertura funcional general
+
+| Requisitos | Tareas | Código cubierto | Pruebas | Evidencia | Estado |
+|---|---|---|---|---|---|
+| RF-EST-001/002/007 | T-EST-098..105 | Rutas de provincias, distritos, ciudades, usuarios y contenido | `modules.integration.test.js` | Jest + Supertest | Implementado, pendiente de evidencia local |
+| RF-EST-009/010/011 | T-EST-098..104 | Controladores territoriales, usuarios y contenido | `territorialControllers.test.js`, `userController.test.js`, `contentControllers.test.js` | Cobertura HTML | Implementado, pendiente de evidencia local |
+| RF-EST-013/014/015 | T-EST-104 | `dataIntegrityMiddleware.js` | `dataIntegrityMiddleware.test.js` | Jest | Implementado, pendiente de evidencia local |
+| RF-EST-017/018/019 | T-EST-102/103 | `uploadMiddleware.js`, `imageLifecycle.js`, `fileCleanup.js` | `uploadSignature.test.js`, `imageLifecycle.test.js` | Jest | Implementado, pendiente de evidencia local |
+| RF-EST-023 | T-EST-098..107 | Todos los controladores funcionales y componentes críticos | 351 unitarias + 25 integración | `coverage-summary.json` | Validación interna aprobada |
+| RNF-EST-008 | T-EST-106/107 | `jest.config.js`, script de ejecución | Umbrales globales | Evidencia reproducible | Implementado, pendiente de ejecución local |
+
+**Resultado interno:** 14 suites, 376 pruebas aprobadas; cobertura general S 91.20%, B 87.01%, F 96.85%, L 91.08%.

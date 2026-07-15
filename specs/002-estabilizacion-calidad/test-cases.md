@@ -108,3 +108,31 @@ Estos casos definen el comportamiento objetivo. Se ejecutarán cuando se impleme
 | CP-COV-ERR-003 | Unitario | Límites y tipos de archivo | 400/413/415 |
 | CP-COV-ERR-004 | Unitario | Error HTTP controlado y error interno oculto | Payload uniforme |
 | CP-COV-GATE-001 | Calidad | Umbrales globales de cobertura | S80/B70/F85/L80 o superior |
+
+## Casos automatizados del Bloque 5.2 — Módulos restantes
+
+| ID | Nivel | Módulo o escenario | Resultado esperado |
+|---|---|---|---|
+| CP-MOD-PRO-001 | Unitario | Listar provincias con y sin filtro | Datos correctos o 400/404 controlado |
+| CP-MOD-PRO-002 | Unitario | CRUD de provincia con relación e imagen | 201/200/404 y limpieza de imagen |
+| CP-MOD-DIS-001 | Unitario | Paginación y filtro de distritos | 200 o 400 según parámetros |
+| CP-MOD-DIS-002 | Unitario | CRUD de distrito y catálogos | 201/200/404; valores inválidos rechazados |
+| CP-MOD-CIU-001 | Unitario | Filtros de ciudad por nivel territorial | 200/400/404 |
+| CP-MOD-CIU-002 | Unitario | CRUD de ciudad, tipo y coordenadas | 201/200/400/404 |
+| CP-MOD-USR-001 | Unitario | Listado, búsqueda y consulta de usuarios | 200/400/404 |
+| CP-MOD-USR-002 | Unitario | Email duplicado y cambio de rol | 409 o actualización permitida |
+| CP-MOD-USR-003 | Unitario | Último admin y autoeliminación | 409 `LAST_ADMIN_CONFLICT`/`ADMIN_CONFLICT` |
+| CP-MOD-CONT-001 | Unitario | Lugares turísticos en cuatro ámbitos | Listar, crear, actualizar y eliminar |
+| CP-MOD-CONT-002 | Unitario | Comidas típicas en cuatro ámbitos | Listar, crear, actualizar y eliminar |
+| CP-MOD-IMG-001 | Unitario | JPEG, PNG y WEBP con firma válida | Middleware continúa |
+| CP-MOD-IMG-002 | Unitario | Firma inválida o MIME inconsistente | 415 `INVALID_IMAGE_SIGNATURE` |
+| CP-MOD-IMG-003 | Unitario | Reemplazo, borrado y rutas inseguras | Solo archivos locales válidos son eliminados |
+| CP-MOD-INT-001 | Unitario | Relación asociada inexistente | 404 y limpieza de archivo temporal |
+| CP-MOD-INT-002 | Unitario | Recurso inexistente | 404 `RESOURCE_NOT_FOUND` |
+| CP-MOD-INT-003 | Unitario | Nombre duplicado en el mismo ámbito | 409 `DUPLICATE_RESOURCE` |
+| CP-MOD-API-001 | Integración | Consultas territoriales autenticadas | 200; sin token 401 |
+| CP-MOD-API-002 | Integración | Usuario normal intenta administrar | 403 |
+| CP-MOD-API-003 | Integración | Admin crea provincia, distrito y ciudad | 201 |
+| CP-MOD-API-004 | Integración | Admin consulta usuarios | 200; usuario normal 403 |
+| CP-MOD-API-005 | Integración | Admin crea contenido en varios ámbitos | 201 |
+| CP-MOD-GATE-001 | Calidad | Cobertura general ampliada | S>=80, B>=70, F>=85, L>=80 |

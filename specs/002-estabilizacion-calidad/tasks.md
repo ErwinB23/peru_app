@@ -234,3 +234,20 @@ Se incorporaron pruebas unitarias, integracion HTTP, Postman/Newman, Playwright 
 - [~] **T-EST-097** Generar reporte HTML, resumen JSON y evidencia reproducible del Bloque 5.1.
 
 Estas tareas cambian a `[x]` después de ejecutar `scripts/block5-coverage-improvement.ps1`, superar todos los umbrales y guardar la evidencia generada.
+
+## 18. Bloque 5.2 — Pruebas de módulos restantes
+
+- [~] **T-EST-098** Incorporar pruebas unitarias de provincias: listado, filtro, consulta, creación, actualización, eliminación, relaciones e imágenes.
+- [~] **T-EST-099** Incorporar pruebas unitarias de distritos: paginación, relaciones, catálogos, CRUD e imágenes.
+- [~] **T-EST-100** Incorporar pruebas unitarias de ciudades: filtros territoriales, coordenadas, tipo de ciudad, CRUD e imágenes.
+- [~] **T-EST-101** Incorporar pruebas unitarias de administración de usuarios, incluidos conflictos del último administrador y autoeliminación.
+- [~] **T-EST-102** Incorporar pruebas parametrizadas de lugares turísticos y comidas típicas en departamento, provincia, distrito y ciudad.
+- [~] **T-EST-103** Incorporar pruebas del ciclo de vida de archivos, firmas JPEG/PNG/WEBP y limpieza de imágenes.
+- [~] **T-EST-104** Incorporar pruebas del middleware de integridad para relaciones, existencia y nombres únicos.
+- [~] **T-EST-105** Incorporar pruebas de integración HTTP representativas para módulos territoriales, usuarios y contenido.
+- [~] **T-EST-106** Ampliar la medición de Jest a todos los controladores funcionales, seguridad, integridad, validadores y utilidades de imagen.
+- [~] **T-EST-107** Generar reporte HTML y evidencia reproducible del Bloque 5.2.
+
+Validación interna del paquete: 14 suites y 376 casos aprobados, compuestos por 351 pruebas unitarias y 25 pruebas de integración. Cobertura general medida: 91.20% statements, 87.01% branches, 96.85% functions y 91.08% lines.
+
+Las tareas cambian a `[x]` durante el cierre SDD después de ejecutar `scripts/block5-2-module-tests.ps1` en el proyecto real, conservar el reporte y registrar el commit correspondiente.

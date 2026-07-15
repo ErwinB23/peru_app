@@ -4,12 +4,13 @@ export default {
   setupFiles: ['<rootDir>/tests/setupEnv.js'],
   clearMocks: true,
   collectCoverageFrom: [
+    'src/controllers/**/*.js',
     'src/middlewares/authMiddleware.js',
     'src/middlewares/roleMiddleware.js',
+    'src/middlewares/dataIntegrityMiddleware.js',
+    'src/middlewares/uploadMiddleware.js',
     'src/validators/validationMiddleware.js',
-    'src/utils/httpErrors.js',
-    'src/controllers/authController.js',
-    'src/controllers/departamentoController.js'
+    'src/utils/**/*.js'
   ],
   coverageDirectory: 'reports/jest/coverage',
   coverageReporters: ['text', 'html', 'lcov', 'json-summary'],
