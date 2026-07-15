@@ -3,17 +3,25 @@ import { Navigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const AdminRoute = ({ children }) => {
-    const { user, token } = useContext(AuthContext);
+  const { user, token, loading } = useContext(AuthContext);
 
-    if (!token) {
-        return <Navigate to="/" replace />;
-    }
+  if (loading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px', color: '#666' }}>
+        Validando permisos...
+      </div>
+    );
+  }
 
-    if (user?.rol !== 'admin') {
-        return <Navigate to="/home" replace />;
-    }
+  if (!user || !token) {
+    return <Navigate to="/" replace />;
+  }
 
-    return children;
+  if (user.rol !== 'admin') {
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
 };
 
 export default AdminRoute;

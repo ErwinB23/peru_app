@@ -66,25 +66,25 @@
 
 ## 6. Autenticación, sesión y rutas
 
-- [ ] **T-EST-030** Modificar middleware JWT para consultar el usuario actual en SQL Server.
-- [ ] **T-EST-031** Usar el rol vigente de la base de datos.
-- [ ] **T-EST-032** Rechazar token asociado a usuario inexistente.
-- [ ] **T-EST-033** Diferenciar token ausente, inválido y expirado.
-- [ ] **T-EST-034** Validar sesión desde `AuthContext` al iniciar el frontend.
-- [ ] **T-EST-035** Crear interceptor Axios para HTTP 401.
-- [ ] **T-EST-036** Proteger todos los GET territoriales con autenticación.
-- [ ] **T-EST-037** Proteger todos los GET turísticos y gastronómicos con autenticación.
-- [ ] **T-EST-038** Verificar CRUD administrativo mediante `isAdmin`.
-- [ ] **T-EST-039** Agregar rate limit a login y registro.
+- [~] **T-EST-030** Modificar middleware JWT para consultar el usuario actual en SQL Server.
+- [~] **T-EST-031** Usar el rol vigente de la base de datos.
+- [~] **T-EST-032** Rechazar token asociado a usuario inexistente.
+- [~] **T-EST-033** Diferenciar token ausente, inválido y expirado.
+- [~] **T-EST-034** Validar sesión desde `AuthContext` al iniciar el frontend.
+- [~] **T-EST-035** Crear interceptor Axios para HTTP 401.
+- [~] **T-EST-036** Proteger todos los GET territoriales con autenticación.
+- [~] **T-EST-037** Proteger todos los GET turísticos y gastronómicos con autenticación.
+- [~] **T-EST-038** Verificar CRUD administrativo mediante `isAdmin`.
+- [~] **T-EST-039** Agregar rate limit a login y registro.
 - [ ] **T-EST-040** Automatizar matriz de acceso 401/403/200.
 
 ## 7. Seguridad, validación y errores
 
-- [ ] **T-EST-050** Configurar cabeceras HTTP seguras.
-- [ ] **T-EST-051** Restringir CORS al origen autorizado.
-- [ ] **T-EST-052** Limitar tamaño de JSON y formularios.
-- [ ] **T-EST-053** Retirar o restringir endpoints de depuración.
-- [ ] **T-EST-054** Crear middleware global de errores.
+- [~] **T-EST-050** Configurar cabeceras HTTP seguras.
+- [~] **T-EST-051** Restringir CORS al origen autorizado.
+- [~] **T-EST-052** Limitar tamaño de JSON y formularios.
+- [~] **T-EST-053** Retirar o restringir endpoints de depuración.
+- [~] **T-EST-054** Crear middleware global de errores.
 - [ ] **T-EST-055** Mapear errores SQL a HTTP 409/400/404 según el caso.
 - [ ] **T-EST-056** Mapear errores de Multer a HTTP 413/415.
 - [ ] **T-EST-057** Implementar validación centralizada de usuarios.
@@ -151,7 +151,7 @@
 
 ## 13. Próxima puerta de calidad
 
-El siguiente bloque de código es autenticación, sesión, protección de rutas y seguridad HTTP esencial. Para cerrarlo deberán existir:
+El Bloque 2 fue implementado en código y queda pendiente de validación manual y automatizada. Para cerrarlo deberán existir:
 
 1. Middleware JWT que consulte usuario y rol vigentes en SQL Server.
 2. Ocho GET territoriales protegidos.
@@ -164,3 +164,22 @@ El siguiente bloque de código es autenticación, sesión, protección de rutas 
 9. Backend sin errores de sintaxis; frontend con lint y build aprobados.
 
 Los pendientes de respaldo SQL Server permanecen obligatorios antes del despliegue final, pero no bloquean la preparación documental del Bloque 1.
+
+
+## 14. Estado del Bloque 2 — Implementado, pendiente de validación
+
+Se incorporaron los siguientes cambios:
+
+- JWT validado con `env.jwt.secret`.
+- Usuario y rol vigente consultados en SQL Server en cada ruta protegida.
+- Ocho GET territoriales protegidos con `verifyToken`.
+- GET turísticos y gastronómicos confirmados como protegidos.
+- CRUD administrativo confirmado con `isAdmin`.
+- Validación de sesión al cargar React mediante `GET /api/auth/profile`.
+- Interceptor Axios para limpiar sesión ante HTTP 401.
+- Helmet, CORS restringido, límites de cuerpo y rate limit de autenticación.
+- Eliminación de `/api/test-db` y `/api/debug-token`.
+- Incorporación de `GET /api/health`.
+- Separación `app.js` / `server.js` para facilitar pruebas de integración posteriores.
+
+Las tareas permanecen `[~]` hasta ejecutar los casos 401, 403, 200, expiración, usuario eliminado, cambio de rol, lint y build.

@@ -7,7 +7,7 @@
 - **Plan:** `PLAN-002`
 - **Tareas:** `TASKS-002`
 - **Estado:** activa; se actualiza con cada bloque
-- **Fecha de corte:** 14 de julio de 2026
+- **Fecha de corte:** 14 de julio de 2026 — Bloque 2 implementado
 
 ## 2. Convención de estados
 
@@ -21,18 +21,18 @@
 
 | Requisito | Prioridad | Tareas | Código o artefacto objetivo | Endpoint/flujo | Caso de prueba | Evidencia esperada | Estado real |
 |---|---|---|---|---|---|---|---|
-| RF-EST-001 | P1 | T-EST-012, T-EST-036, T-EST-037 | `backend/src/routes/*.js` | Solo registro/login públicos | CP-EST-AUTH-004/005 | Supertest + Newman | **Brecha:** 8 GET territoriales públicos |
-| RF-EST-002 | P1 | T-EST-030, T-EST-033, T-EST-036, T-EST-037 | `authMiddleware.js`, rutas | Toda ruta funcional protegida | CP-EST-AUTH-004 | Reporte 401 | Pendiente |
-| RF-EST-003 | P1 | T-EST-030, T-EST-032 | `authMiddleware.js`, `userModel.js` | Token de usuario eliminado | CP-EST-AUTH-008 | Prueba integración | Pendiente |
-| RF-EST-004 | P1 | T-EST-031, T-EST-038 | `authMiddleware.js`, `roleMiddleware.js` | Administración por rol vigente | CP-EST-AUTH-006/007/009 | Reporte 403/éxito | Pendiente |
-| RF-EST-005 | P1 | T-EST-034 | `frontend/src/context/AuthContext.jsx`, `authService.js` | Recarga con sesión | CP-EST-AUTH-010 | Playwright | Pendiente |
-| RF-EST-006 | P1 | T-EST-035 | Cliente Axios central | Respuesta 401 global | CP-EST-AUTH-010 | Playwright | Pendiente |
-| RF-EST-007 | P1 | T-EST-038, T-EST-040 | `roleMiddleware.js`, routers CRUD | Usuario intenta administrar | CP-EST-AUTH-006 | Supertest/Newman | Implementado parcialmente; falta validar rol vigente |
-| RF-EST-008 | P1 | T-EST-039 | `server.js` o middleware rate limit | Login/registro abusivo | Caso por crear | Reporte 429 | Pendiente |
+| RF-EST-001 | P1 | T-EST-012, T-EST-036, T-EST-037 | `backend/src/routes/*.js` | Solo registro/login públicos | CP-EST-AUTH-004/005 | Supertest + Newman | Implementado, pendiente de validación |
+| RF-EST-002 | P1 | T-EST-030, T-EST-033, T-EST-036, T-EST-037 | `authMiddleware.js`, rutas | Toda ruta funcional protegida | CP-EST-AUTH-004 | Reporte 401 | Implementado, pendiente de validación |
+| RF-EST-003 | P1 | T-EST-030, T-EST-032 | `authMiddleware.js`, `userModel.js` | Token de usuario eliminado | CP-EST-AUTH-008 | Prueba integración | Implementado, pendiente de validación |
+| RF-EST-004 | P1 | T-EST-031, T-EST-038 | `authMiddleware.js`, `roleMiddleware.js` | Administración por rol vigente | CP-EST-AUTH-006/007/009 | Reporte 403/éxito | Implementado, pendiente de validación |
+| RF-EST-005 | P1 | T-EST-034 | `frontend/src/context/AuthContext.jsx`, `authService.js` | Recarga con sesión | CP-EST-AUTH-010 | Playwright | Implementado, pendiente de validación |
+| RF-EST-006 | P1 | T-EST-035 | Cliente Axios central | Respuesta 401 global | CP-EST-AUTH-010 | Playwright | Implementado, pendiente de validación |
+| RF-EST-007 | P1 | T-EST-038, T-EST-040 | `roleMiddleware.js`, routers CRUD | Usuario intenta administrar | CP-EST-AUTH-006 | Supertest/Newman | Implementado, pendiente de validación |
+| RF-EST-008 | P1 | T-EST-039 | `authRateLimiter.js`, `authRoutes.js` | Login/registro abusivo | Caso por crear | Reporte 429 | Implementado, pendiente de validación |
 | RF-EST-009 | P1 | T-EST-057/058/059 | Validadores y controladores | CRUD principal | CP-EST-ERR-001 | Unitarias/integración | Implementado de forma dispersa |
 | RF-EST-010 | P1 | T-EST-057/058/059 | Middleware de validación | Errores por campo | CP-EST-ERR-001 | JSON de respuesta | Pendiente |
 | RF-EST-011 | P1 | T-EST-054/055/056 | Error handler global | 400/401/403/404/409/413/415/500 | CP-EST-ERR-001..004, IMG-003/004 | Newman | Pendiente |
-| RF-EST-012 | P1 | T-EST-053/054 | `server.js`, error handler | Error inesperado | Caso por crear | Sin datos internos | **Brecha:** rutas debug exponen detalles |
+| RF-EST-012 | P1 | T-EST-053/054 | `app.js`, `errorMiddleware.js` | Error inesperado | Caso por crear | Sin datos internos | Implementado parcialmente; validación pendiente |
 | RF-EST-013 | P2 | T-EST-060 | `database/migrations/` | Evolución SQL | Caso revisión | Scripts versionados | Pendiente |
 | RF-EST-014 | P1 | T-EST-061 | Migración SQL | Área/población/coordenadas | Caso BD | Evidencia SSMS | Pendiente |
 | RF-EST-015 | P1 | T-EST-062 | Modelos/controladores/SQL | Eliminación con hijos | CP-EST-ERR-004 | HTTP 409 | Integridad FK existente; mapeo HTTP pendiente |
@@ -48,7 +48,7 @@
 | RF-EST-025 | P1 | T-EST-086/087 | RTL/Playwright | Login, navegación, admin, logout | CP-EST-AUTH-010 y E2E | Reporte Playwright | Pendiente |
 | RF-EST-026 | P3 | T-EST-089/090 | Listados/frontend | Paginación | Caso rendimiento | Evidencia comparativa | Postergado |
 | RF-EST-027 | P3 | T-EST-089/090/091 | Frontend/assets | Multimedia | CP-EST-REG-002 | Comparación visual | Postergado |
-| RF-EST-028 | P1 | T-EST-053 | `server.js` | Debug y health | Caso seguridad | `/api/test-db` y `/api/debug-token` ausentes | **Brecha** |
+| RF-EST-028 | P1 | T-EST-053 | `app.js` | Debug y health | Caso seguridad | `/api/test-db` y `/api/debug-token` ausentes | Implementado, pendiente de validación |
 
 ## 4. Trazabilidad del Bloque 1
 
@@ -71,3 +71,14 @@ Una fila solo cambia a **Validado** cuando se cumplen simultáneamente:
 5. `spec.md`, `tasks.md`, OpenAPI y esta matriz son coherentes.
 
 No debe usarse “completado” como sinónimo de “documentado”.
+
+
+## 6. Trazabilidad del Bloque 2
+
+| Entregable | Requisitos | Archivos principales | Validación pendiente |
+|---|---|---|---|
+| Sesión revocable | RF-EST-002/003/004 | `authMiddleware.js`, `userModel.js`, `roleMiddleware.js` | Usuario eliminado y cambio de rol |
+| Protección integral | RF-EST-001/002/007 | Rutas territoriales y rutas de contenido | Matriz 401/403/200 |
+| Sesión frontend | RF-EST-005/006 | `AuthContext.jsx`, `api.js`, rutas privadas | Recarga y expiración |
+| Seguridad HTTP | RF-EST-008/012/028 | `app.js`, rate limit, error handler | CORS, 429 y ausencia de debug |
+| Preparación de tests | RF-EST-023 | `app.js` separado de `server.js` | Supertest en Bloque 6 |

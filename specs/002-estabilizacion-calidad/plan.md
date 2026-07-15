@@ -5,7 +5,7 @@
 - **Código:** PLAN-002
 - **Especificación:** SPEC-002
 - **Rama:** `002-estabilizacion-calidad`
-- **Estado:** En ejecución — Bloque 1 documental cerrado
+- **Estado:** En ejecución — Bloque 2 implementado, pendiente de validación
 - **Fecha:** 14 de julio de 2026
 
 ## 2. Estrategia
@@ -41,7 +41,7 @@ La ejecución se concentra en ocho bloques obligatorios. Las optimizaciones avan
 | 7 | Documentación final y despliegue | OpenAPI sincronizado y sistema público funcional |
 | 8 | Verificación final | audit, lint, build, tests y smoke tests aprobados |
 
-### 4.1. Estado del Bloque 1
+### 4.1. Estado de los Bloques 1 y 2
 
 Se consideran cerrados documentalmente:
 
@@ -52,7 +52,7 @@ Se consideran cerrados documentalmente:
 - clasificación de brechas;
 - reglas de limpieza y entrega.
 
-El Bloque 1 no modifica todavía el comportamiento de la aplicación.
+El Bloque 1 no modificó el comportamiento de la aplicación. El Bloque 2 incorpora autenticación contra SQL Server, protección de rutas y seguridad HTTP esencial; su cierre depende de ejecutar las verificaciones incluidas en el paquete.
 
 ## 5. Subfases técnicas de referencia
 

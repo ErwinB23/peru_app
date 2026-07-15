@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { env } from '../config/env.js';
 import {
   findUserByEmail,
   createUser,
@@ -89,20 +90,15 @@ export const login = async (req, res) => {
     }
 
     // Verificar configuración del JWT
-    if (!process.env.JWT_SECRET) {
-      return res.status(500).json({ error: 'JWT_SECRET no está configurado en el servidor' });
-    }
-
     // Generar token JWT
     const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
-        rol: user.rol
       },
-      process.env.JWT_SECRET,
+      env.jwt.secret,
       {
-        expiresIn: process.env.JWT_EXPIRE || '1d'
+        expiresIn: env.jwt.expiresIn
       }
     );
 
