@@ -10,7 +10,8 @@ import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
 import {
   uploadCiudadImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
@@ -37,6 +38,7 @@ router.post(
   isAdmin,
   uploadCiudadImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateCiudadBody,
   distritoExists,
   uniqueCiudad,
@@ -50,6 +52,7 @@ router.put(
   ciudadResourceExists,
   uploadCiudadImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateCiudadBody,
   distritoExists,
   uniqueCiudad,

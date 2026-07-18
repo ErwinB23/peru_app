@@ -52,9 +52,39 @@ const parseAllowedOrigins = () => {
   return origins;
 };
 
+
+const parseImageStorage = () => {
+  const value = (process.env.IMAGE_STORAGE || 'local').trim().toLowerCase();
+
+  if (!['local', 'cloudinary'].includes(value)) {
+    throw new Error('IMAGE_STORAGE debe ser local o cloudinary');
+  }
+
+  if (value === 'cloudinary') {
+    const requiredCloudinary = [
+      'CLOUDINARY_CLOUD_NAME',
+      'CLOUDINARY_API_KEY',
+      'CLOUDINARY_API_SECRET'
+    ];
+
+    const missingCloudinary = requiredCloudinary.filter(
+      (name) => !process.env[name] || process.env[name].trim() === ''
+    );
+
+    if (missingCloudinary.length > 0) {
+      throw new Error(
+        `Faltan variables de Cloudinary: ${missingCloudinary.join(', ')}`
+      );
+    }
+  }
+
+  return value;
+};
+
 const port = parseOptionalInteger(process.env.PORT || '5000', 'PORT');
 const dbPort = parseOptionalInteger(process.env.DB_PORT, 'DB_PORT');
 const frontendUrls = parseAllowedOrigins();
+const imageStorage = parseImageStorage();
 
 export const env = Object.freeze({
   nodeEnv: process.env.NODE_ENV || 'development',
@@ -62,6 +92,7 @@ export const env = Object.freeze({
   frontendUrl: frontendUrls[0],
   frontendUrls: Object.freeze(frontendUrls),
   requestBodyLimit: process.env.REQUEST_BODY_LIMIT || '1mb',
+  imageStorage,
   db: Object.freeze({
     server: process.env.DB_SERVER,
     database: process.env.DB_DATABASE,
@@ -73,5 +104,12 @@ export const env = Object.freeze({
   jwt: Object.freeze({
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRE || '1d'
+  }),
+  cloudinary: Object.freeze({
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
+    apiKey: process.env.CLOUDINARY_API_KEY || '',
+    apiSecret: process.env.CLOUDINARY_API_SECRET || '',
+    folder: (process.env.CLOUDINARY_FOLDER || `peru-app/${process.env.NODE_ENV || 'development'}`)
+      .replace(/^\/+|\/+$/g, '')
   })
 });

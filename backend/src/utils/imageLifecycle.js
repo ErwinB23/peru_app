@@ -1,5 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
+import {
+  deleteCloudinaryAssetByUrl,
+  getCloudinaryPublicIdFromUrl
+} from '../services/cloudinaryService.js';
 
 const uploadsRoot = path.resolve(process.cwd(), 'uploads');
 
@@ -30,6 +34,17 @@ const toLocalAbsolutePath = (storedPath) => {
 };
 
 export const deleteStoredImage = async (storedPath) => {
+  const cloudinaryPublicId = getCloudinaryPublicIdFromUrl(storedPath);
+
+  if (cloudinaryPublicId) {
+    try {
+      return await deleteCloudinaryAssetByUrl(storedPath);
+    } catch (error) {
+      console.error(`No se pudo eliminar la imagen Cloudinary ${storedPath}:`, error.message);
+      return false;
+    }
+  }
+
   const absolutePath = toLocalAbsolutePath(storedPath);
 
   if (!absolutePath) {

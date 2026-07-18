@@ -10,7 +10,8 @@ import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
 import {
   uploadLugarTuristicoCiudadImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
@@ -34,6 +35,7 @@ router.post(
   '/', verifyToken, isAdmin,
   uploadLugarTuristicoCiudadImage.single('imagen'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateLugarCiudadBody, ciudadExists, uniqueLugar, createLugar
 );
 router.put(
@@ -41,6 +43,7 @@ router.put(
   lugarExists,
   uploadLugarTuristicoCiudadImage.single('imagen'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateLugarCiudadBody, ciudadExists, uniqueLugar, updateLugar
 );
 router.delete('/:id', verifyToken, isAdmin, validateIdParam, lugarExists, deleteLugar);

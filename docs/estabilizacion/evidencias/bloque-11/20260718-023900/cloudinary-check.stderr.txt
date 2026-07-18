@@ -1,0 +1,1 @@
+[ERROR] No se pudo conectar con Cloudinary: undefined

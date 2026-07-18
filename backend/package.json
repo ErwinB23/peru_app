@@ -14,7 +14,10 @@
     "test:api": "node scripts/runNewman.js",
     "qa:seed": "node scripts/createQaUsers.js",
     "pretest:coverage": "node scripts/ensureReportDirs.js",
-    "pretest:api": "node scripts/ensureReportDirs.js"
+    "pretest:api": "node scripts/ensureReportDirs.js",
+    "cloudinary:check": "node scripts/checkCloudinary.js",
+    "cloudinary:migrate:dry": "node scripts/migrateLocalImagesToCloudinary.js --dry-run",
+    "cloudinary:migrate": "node scripts/migrateLocalImagesToCloudinary.js --apply"
   },
   "keywords": [
     "api",
@@ -25,6 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

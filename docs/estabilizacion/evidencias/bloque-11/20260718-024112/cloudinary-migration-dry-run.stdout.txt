@@ -1,0 +1,12 @@
+
+> backend-peru-departamentos@1.0.0 cloudinary:migrate:dry
+> node scripts/migrateLocalImagesToCloudinary.js --dry-run
+
+✅ Conexión a SQL Server establecida
+🔌 Conexión a SQL Server cerrada
+Modo: dry-run
+Registros revisados: 0
+Campos migrados: 0
+Archivos faltantes: 0
+Errores: 0
+Reporte: C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\backend\reports\cloudinary\migration-2026-07-18T07-41-13-521Z.json

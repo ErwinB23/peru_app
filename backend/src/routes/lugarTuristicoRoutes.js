@@ -10,7 +10,8 @@ import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
 import {
   uploadLugarTuristicoImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
@@ -48,6 +49,7 @@ router.post(
   isAdmin,
   uploadImages,
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateLugarDepartamentoBody,
   departamentoExists,
   uniqueLugar,
@@ -62,6 +64,7 @@ router.put(
   lugarExists,
   uploadImages,
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateLugarDepartamentoBody,
   departamentoExists,
   uniqueLugar,

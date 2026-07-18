@@ -10,7 +10,8 @@ import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
 import {
   uploadComidaTipicaImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   ensureRelationExists,
@@ -42,6 +43,7 @@ router.post(
   isAdmin,
   uploadComidaTipicaImage.single('imagen'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateComidaDepartamentoBody,
   departamentoExists,
   uniqueComida,
@@ -56,6 +58,7 @@ router.put(
   comidaExists,
   uploadComidaTipicaImage.single('imagen'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateComidaDepartamentoBody,
   departamentoExists,
   uniqueComida,
