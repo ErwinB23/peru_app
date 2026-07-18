@@ -1,5 +1,7 @@
 import * as comidaModel from '../models/comidaTipicaCiudadModel.js';
 import * as ciudadModel from '../models/ciudadModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getComidasByCiudadId = async (req, res) => {
     try {
@@ -12,8 +14,7 @@ export const getComidasByCiudadId = async (req, res) => {
         const comidas = await comidaModel.getComidasByCiudadId(ciudadId);
         res.json(comidas);
     } catch (error) {
-        console.error('Error en getComidasByCiudadId:', error);
-        res.status(500).json({ error: 'Error al obtener comidas típicas de la ciudad' });
+      return handleControllerError(error, req, res, 'Error al obtener comidas típicas de la ciudad');
     }
 };
 
@@ -33,8 +34,7 @@ export const getComidaById = async (req, res) => {
 
         res.json(comida);
     } catch (error) {
-        console.error('Error en getComidaById:', error);
-        res.status(500).json({ error: 'Error al obtener comida típica' });
+      return handleControllerError(error, req, res, 'Error al obtener comida típica');
     }
 };
 
@@ -67,8 +67,7 @@ export const createComida = async (req, res) => {
             comida: nuevaComida
         });
     } catch (error) {
-        console.error('Error en createComida:', error);
-        res.status(500).json({ error: 'Error al crear comida típica de ciudad' });
+      return handleControllerError(error, req, res, 'Error al crear comida típica de ciudad');
     }
 };
 
@@ -95,13 +94,14 @@ export const updateComida = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(comidaActual, comidaActualizada, ['imagen']);
+
         res.json({
             message: 'Comida típica de ciudad actualizada exitosamente',
             comida: comidaActualizada
         });
     } catch (error) {
-        console.error('Error en updateComida:', error);
-        res.status(500).json({ error: 'Error al actualizar comida típica de ciudad' });
+      return handleControllerError(error, req, res, 'Error al actualizar comida típica de ciudad');
     }
 };
 
@@ -119,12 +119,13 @@ export const deleteComida = async (req, res) => {
             return res.status(404).json({ error: 'Comida típica no encontrada' });
         }
 
+        await cleanupResourceImages(comidaEliminada, ['imagen']);
+
         res.json({
             message: 'Comida típica de ciudad eliminada exitosamente',
             comida: comidaEliminada
         });
     } catch (error) {
-        console.error('Error en deleteComida:', error);
-        res.status(500).json({ error: 'Error al eliminar comida típica de ciudad' });
+      return handleControllerError(error, req, res, 'Error al eliminar comida típica de ciudad');
     }
 };

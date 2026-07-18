@@ -1,4 +1,6 @@
 import * as comidaTipicaModel from "../models/comidaTipicaModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getComidasByDepartamentoId = async (req, res) => {
     try {
@@ -13,8 +15,7 @@ export const getComidasByDepartamentoId = async (req, res) => {
 
         res.json(comidas);
     } catch (error) {
-        console.error("Error en getComidasByDepartamentoId:", error);
-        res.status(500).json({ error: "Error al obtener comidas típicas" });
+      return handleControllerError(error, req, res, 'Error al obtener comidas típicas');
     }
 };
 
@@ -34,8 +35,7 @@ export const getComidaById = async (req, res) => {
 
         res.json(comida);
     } catch (error) {
-        console.error("Error en getComidaById:", error);
-        res.status(500).json({ error: "Error al obtener comida típica" });
+      return handleControllerError(error, req, res, 'Error al obtener comida típica');
     }
 };
 
@@ -56,8 +56,7 @@ export const createComidaTipica = async (req, res) => {
             comida: nuevaComida,
         });
     } catch (error) {
-        console.error("Error en createComidaTipica:", error);
-        res.status(500).json({ error: "Error al crear comida típica" });
+      return handleControllerError(error, req, res, 'Error al crear comida típica');
     }
 };
 
@@ -84,13 +83,14 @@ export const updateComidaTipica = async (req, res) => {
             imagen,
         });
 
+        await cleanupReplacedImages(comidaActual, comidaActualizada, ['imagen']);
+
         res.json({
             message: "Comida típica actualizada exitosamente",
             comida: comidaActualizada,
         });
     } catch (error) {
-        console.error("Error en updateComidaTipica:", error);
-        res.status(500).json({ error: "Error al actualizar comida típica" });
+      return handleControllerError(error, req, res, 'Error al actualizar comida típica');
     }
 };
 
@@ -108,12 +108,13 @@ export const deleteComidaTipica = async (req, res) => {
             return res.status(404).json({ error: "Comida típica no encontrada" });
         }
 
+        await cleanupResourceImages(comidaEliminada, ['imagen']);
+
         res.json({
             message: "Comida típica eliminada exitosamente",
             comida: comidaEliminada,
         });
     } catch (error) {
-        console.error("Error en deleteComidaTipica:", error);
-        res.status(500).json({ error: "Error al eliminar comida típica" });
+      return handleControllerError(error, req, res, 'Error al eliminar comida típica');
     }
 };

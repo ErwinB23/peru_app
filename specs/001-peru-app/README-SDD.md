@@ -208,3 +208,8 @@ También servirá para sustentar la aplicación de Spec-Driven Development media
 ## 11. Consideración final
 
 Este SDD representa la base documental del proyecto PERU APP. Su finalidad es demostrar que el sistema fue especificado, planificado, diseñado e implementado de forma ordenada, manteniendo trazabilidad y permitiendo la posterior validación funcional mediante el TDD.
+
+
+## Cierre de calidad 2026
+
+La especificación funcional se mantiene como fuente del alcance. La seguridad, pruebas, integridad y despliegue se cierran en `../002-estabilizacion-calidad/`. El contrato API fue actualizado a versión 2.0.0 y contiene 70 operaciones reales.

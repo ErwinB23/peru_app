@@ -1,4 +1,6 @@
 import * as departamentoModel from '../models/departamentoModel.js';
+import { AppError, handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 //OBTENER TODOS LOS DEPARTAMENTOS
 export const getDepartamentos = async (req, res) => {
@@ -7,8 +9,7 @@ export const getDepartamentos = async (req, res) => {
         res.json(departamentos);
     }
     catch (error) {
-        console.error('Error al obtener departamentos:', error);
-        res.status(500).json({ message: 'Error al obtener departamentos' });
+      return handleControllerError(error, req, res, 'Error al obtener departamentos');
     }
 };
 
@@ -24,14 +25,17 @@ export const getDepartamentoById = async (req, res) => {
         const departamento = await departamentoModel.getDepartamentoById(id);
 
         if (!departamento) {
-            return res.status(404).json({ error: 'Departamento no encontrado' });
+            throw new AppError(
+                'Departamento no encontrado',
+                404,
+                'RESOURCE_NOT_FOUND'
+            );
         }
 
         res.json(departamento);
     }
     catch (error) {
-        console.error('Error en getDepartamentoById:', error);
-        res.status(500).json({ error: 'Error al obtener departamento' });
+      return handleControllerError(error, req, res, 'Error al obtener departamento');
     }
 };
 
@@ -53,8 +57,7 @@ export const createDepartamento = async (req, res) => {
             departamento: newDepartamento,
         });
     } catch (error) {
-        console.error("Error en createDepartamento:", error);
-        res.status(500).json({ error: "Error al crear departamento" });
+      return handleControllerError(error, req, res, 'Error al crear departamento');
     }
 };
 
@@ -88,13 +91,14 @@ export const updateDepartamento = async (req, res) => {
                     : departamentoActual.introduccion || null,
         });
 
+        await cleanupReplacedImages(departamentoActual, updatedDepartamento, ['imagen_fondo']);
+
         res.json({
             message: "Departamento actualizado exitosamente",
             departamento: updatedDepartamento,
         });
     } catch (error) {
-        console.error("Error en updateDepartamento:", error);
-        res.status(500).json({ error: "Error al actualizar departamento" });
+      return handleControllerError(error, req, res, 'Error al actualizar departamento');
     }
 };
 // ELIMINAR DEPARTAMENTO (solo admin)
@@ -112,13 +116,14 @@ export const deleteDepartamento = async (req, res) => {
             return res.status(404).json({ error: 'Departamento no encontrado' });
         }
 
+        await cleanupResourceImages(deletedDepartamento, ['imagen_fondo']);
+
         res.json({
             message: 'Departamento eliminado exitosamente',
             departamento: deletedDepartamento
         });
     }
     catch (error) {
-        console.error('Error en deleteDepartamento:', error);
-        res.status(500).json({ error: 'Error al eliminar departamento' });
+      return handleControllerError(error, req, res, 'Error al eliminar departamento');
     }
 };

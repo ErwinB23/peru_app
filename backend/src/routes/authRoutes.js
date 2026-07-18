@@ -1,15 +1,20 @@
 import express from 'express';
 import { register, login, getProfile, updateProfile } from '../controllers/authController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
+import { loginLimiter, registerLimiter } from '../middlewares/authRateLimiter.js';
+import {
+  validateLoginBody,
+  validateProfileBody,
+  validateRegisterBody
+} from '../validators/validationMiddleware.js';
 
 const router = express.Router();
 
-// Rutas públicas (no requieren autenticación)
-router.post('/register', register);  // POST /api/auth/register
-router.post('/login', login);        // POST /api/auth/login
+// Únicas funciones públicas de negocio.
+router.post('/register', registerLimiter, validateRegisterBody, register);
+router.post('/login', loginLimiter, validateLoginBody, login);
 
-// Rutas protegidas (requieren token)
-router.get('/profile', verifyToken, getProfile);      // GET /api/auth/profile
-router.put('/profile', verifyToken, updateProfile);   // PUT /api/auth/profile
+router.get('/profile', verifyToken, getProfile);
+router.put('/profile', verifyToken, validateProfileBody, updateProfile);
 
 export default router;

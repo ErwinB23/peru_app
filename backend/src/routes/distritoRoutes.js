@@ -1,24 +1,60 @@
 import express from 'express';
 import {
-    getDistritos,
-    getDistritoById,
-    createDistrito,
-    updateDistrito,
-    deleteDistrito
+  getDistritos,
+  getDistritoById,
+  createDistrito,
+  updateDistrito,
+  deleteDistrito
 } from '../controllers/distritoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadDistritoImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadDistritoImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
+import {
+  ensureRelationExists,
+  ensureResourceExists,
+  ensureUniqueName
+} from '../middlewares/dataIntegrityMiddleware.js';
+import {
+  validateDistritoBody,
+  validateDistritoQuery,
+  validateIdParam
+} from '../validators/validationMiddleware.js';
 
 const router = express.Router();
+const distritoResourceExists = ensureResourceExists('Distritos');
+const provinciaExists = ensureRelationExists('provincias', 'provincia_id');
+const uniqueDistrito = ensureUniqueName('Distritos');
 
-// Rutas públicas
-router.get('/', getDistritos);           // GET /api/distritos?provincia_id=1
-router.get('/:id', getDistritoById);     // GET /api/distritos/:id
+router.get('/', verifyToken, validateDistritoQuery, getDistritos);
+router.get('/:id', verifyToken, validateIdParam, getDistritoById);
 
-// Rutas protegidas (solo admin)
-router.post('/',verifyToken,isAdmin,uploadDistritoImage.single('imagen_fondo'),createDistrito);  // POST /api/distritos
-router.put('/:id',verifyToken,isAdmin,uploadDistritoImage.single('imagen_fondo'),updateDistrito);   // PUT /api/distritos/:id
-router.delete('/:id', verifyToken, isAdmin, deleteDistrito);  // DELETE /api/distritos/:id
+router.post(
+  '/',
+  verifyToken,
+  isAdmin,
+  uploadDistritoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
+  validateDistritoBody,
+  provinciaExists,
+  uniqueDistrito,
+  createDistrito
+);
+router.put(
+  '/:id',
+  verifyToken,
+  isAdmin,
+  validateIdParam,
+  distritoResourceExists,
+  uploadDistritoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
+  validateDistritoBody,
+  provinciaExists,
+  uniqueDistrito,
+  updateDistrito
+);
+router.delete('/:id', verifyToken, isAdmin, validateIdParam, distritoResourceExists, deleteDistrito);
 
 export default router;

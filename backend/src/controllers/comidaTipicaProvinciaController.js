@@ -1,5 +1,7 @@
 import * as comidaModel from '../models/comidaTipicaProvinciaModel.js';
 import * as provinciaModel from '../models/provinciaModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getComidasByProvinciaId = async (req, res) => {
     try {
@@ -13,8 +15,7 @@ export const getComidasByProvinciaId = async (req, res) => {
 
         res.json(comidas);
     } catch (error) {
-        console.error('Error en getComidasByProvinciaId:', error);
-        res.status(500).json({ error: 'Error al obtener comidas típicas de la provincia' });
+      return handleControllerError(error, req, res, 'Error al obtener comidas típicas de la provincia');
     }
 };
 
@@ -34,8 +35,7 @@ export const getComidaById = async (req, res) => {
 
         res.json(comida);
     } catch (error) {
-        console.error('Error en getComidaById:', error);
-        res.status(500).json({ error: 'Error al obtener comida típica' });
+      return handleControllerError(error, req, res, 'Error al obtener comida típica');
     }
 };
 
@@ -68,8 +68,7 @@ export const createComida = async (req, res) => {
             comida: nuevaComida
         });
     } catch (error) {
-        console.error('Error en createComida:', error);
-        res.status(500).json({ error: 'Error al crear comida típica de provincia' });
+      return handleControllerError(error, req, res, 'Error al crear comida típica de provincia');
     }
 };
 
@@ -96,13 +95,14 @@ export const updateComida = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(comidaActual, comidaActualizada, ['imagen']);
+
         res.json({
             message: 'Comida típica de provincia actualizada exitosamente',
             comida: comidaActualizada
         });
     } catch (error) {
-        console.error('Error en updateComida:', error);
-        res.status(500).json({ error: 'Error al actualizar comida típica de provincia' });
+      return handleControllerError(error, req, res, 'Error al actualizar comida típica de provincia');
     }
 };
 
@@ -120,12 +120,13 @@ export const deleteComida = async (req, res) => {
             return res.status(404).json({ error: 'Comida típica no encontrada' });
         }
 
+        await cleanupResourceImages(comidaEliminada, ['imagen']);
+
         res.json({
             message: 'Comida típica de provincia eliminada exitosamente',
             comida: comidaEliminada
         });
     } catch (error) {
-        console.error('Error en deleteComida:', error);
-        res.status(500).json({ error: 'Error al eliminar comida típica de provincia' });
+      return handleControllerError(error, req, res, 'Error al eliminar comida típica de provincia');
     }
 };

@@ -1,0 +1,5 @@
+﻿Cache verified and compressed (~\AppData\Local\npm-cache\_cacache)
+Content verified: 706 (99232976 bytes)
+Content garbage-collected: 17 (12108427 bytes)
+Index entries: 706
+Finished in 4.702s

@@ -1,5 +1,9 @@
 # Constitución del Proyecto PERU APP
 
+**Versión:** 1.3.0  
+**Fecha de actualización:** 15 de julio de 2026  
+**Cambio principal:** Se formaliza la puerta de cierre SDD, la medición global de pruebas y la separación entre cierre pre-despliegue y aceptación en producción.  
+
 ## 1. Nombre del proyecto
 
 PERU APP: Plataforma web turístico-educativa basada en Spec-Driven Development para la difusión turística del Perú, 2026.
@@ -51,6 +55,19 @@ La comunicación entre frontend y backend debe realizarse mediante una API REST 
 
 El sistema debe implementar autenticación, protección de rutas y control de acceso por roles. Las funcionalidades administrativas deben estar disponibles únicamente para usuarios con rol administrador.
 
+### 3.8.1. Autenticación obligatoria para el acceso al sistema
+
+El acceso a PERU APP requiere una sesión autenticada. Las únicas operaciones funcionales públicas permitidas son el registro y el inicio de sesión. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública, siempre que devuelva únicamente el estado general del servicio y no exponga datos de negocio, credenciales, conteos, servidor, base de datos ni detalles internos.
+
+La protección visual del frontend no sustituye la protección del backend. Cada endpoint protegido debe validar el token, comprobar que el usuario aún existe en la base de datos y utilizar el rol vigente almacenado en SQL Server. Un usuario eliminado, un token expirado o un administrador cuyo rol haya cambiado no debe conservar acceso mediante información antigua contenida en el token.
+
+Política de acceso oficial:
+
+- Público funcional: `POST /api/auth/register` y `POST /api/auth/login`.
+- Público técnico: `GET /api/health`, exclusivamente con una respuesta mínima y no sensible.
+- Usuario autenticado: consultas territoriales, turísticas y gastronómicas, perfil y cierre de sesión.
+- Administrador autenticado: gestión de usuarios y operaciones de creación, actualización y eliminación de contenido.
+
 ### 3.9. Roles del sistema
 
 PERU APP maneja dos roles principales:
@@ -81,6 +98,14 @@ Todo cambio relevante del sistema debe registrarse mediante Git y GitHub. Las me
 ### 3.15. Validación mediante pruebas
 
 Toda funcionalidad implementada debe poder verificarse mediante pruebas funcionales documentadas. El TDD debe derivarse del SDD y debe validar los módulos principales del sistema.
+
+### 3.16. Evidencia antes de cierre
+
+Una tarea no se considera terminada solo porque exista documentación o código. Para declararla validada debe existir una prueba ejecutada y una evidencia verificable. Los artefactos SDD deben distinguir como mínimo los estados `Pendiente`, `Brecha`, `Implementado, pendiente de validación` y `Validado`.
+
+### 3.17. Coherencia entre especificación, código y pruebas
+
+La Constitución, `spec.md`, `plan.md`, `tasks.md`, OpenAPI, rutas, pruebas y matriz de trazabilidad deben describir el mismo comportamiento. Cuando se detecte una contradicción, el estado se registra como brecha y no se oculta mediante una marca de tarea completada.
 
 ## 4. Tecnologías oficiales del proyecto
 
@@ -125,7 +150,9 @@ El sistema debe cumplir las siguientes reglas de calidad:
 
 - Adecuación funcional: las funcionalidades deben cumplir su propósito.
 - Usabilidad: la interfaz debe ser fácil de comprender y utilizar.
-- Seguridad: las rutas protegidas deben requerir autenticación.
+- Seguridad: toda ruta funcional, excepto registro e inicio de sesión, debe requerir autenticación válida; el health check técnico se limita a información no sensible.
+- Autorización vigente: los permisos deben comprobarse con el usuario y rol actuales almacenados en la base de datos.
+- Denegación por defecto: una solicitud sin token, con token inválido, expirado o asociado a un usuario inexistente debe ser rechazada.
 - Mantenibilidad: el código debe organizarse por módulos, capas y responsabilidades.
 - Consistencia visual: los componentes deben mantener una línea gráfica uniforme.
 - Disponibilidad de información: los datos deben mostrarse de forma clara y ordenada.
@@ -168,3 +195,31 @@ El sistema depende de la información registrada por el administrador. Las rutas
 ## 10. Declaración final
 
 Esta constitución guía el desarrollo, documentación, validación y mantenimiento de PERU APP. Cualquier especificación, plan, tarea, modelo de datos, contrato API o prueba funcional debe respetar los principios definidos en este documento.
+
+## 10. Puerta de cierre SDD y despliegue
+
+El cierre documental de una especificación exige, como mínimo:
+
+1. Constitución, especificación, plan y tareas coherentes.
+2. Contrato API sincronizado con las rutas reales.
+3. Matriz de trazabilidad con requisito, código, prueba y evidencia.
+4. Suite automatizada con umbrales explícitos.
+5. Lint y build aprobados.
+6. Riesgos y pendientes declarados sin marcarlos falsamente como completados.
+
+El estado **Aprobado para despliegue** no equivale a **Aceptado en producción**. La aceptación final requiere evidencias del frontend, backend, base de datos e imágenes funcionando desde sus URLs públicas.
+
+## 11. Política de métricas y evidencia
+
+- Los porcentajes de cobertura deben indicar el conjunto real de archivos medidos.
+- Las pruebas unitarias, de integración, API y E2E deben contabilizarse por separado.
+- Los reportes generados pueden permanecer fuera de Git; el resumen verificable debe copiarse a `docs/estabilizacion/evidencias`.
+- Toda cifra incorporada al SDD debe provenir de una ejecución o de una validación interna identificada como tal.
+
+## 12. Gobierno y control de cambios
+
+- La Constitución utiliza versionado semántico.
+- Cambios incompatibles en principios obligatorios incrementan la versión mayor.
+- Nuevas puertas de calidad incrementan la versión menor.
+- Correcciones editoriales incrementan la versión de parche.
+- Antes de fusionar la rama de estabilización se ejecutará `scripts/block6-sdd-closure.ps1 -RunQualityChecks`.

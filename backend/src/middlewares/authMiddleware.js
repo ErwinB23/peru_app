@@ -1,31 +1,62 @@
 import jwt from 'jsonwebtoken';
+import { env } from '../config/env.js';
+import { findUserById } from '../models/userModel.js';
 
-// Verificar si el usuario está autenticado (tiene token válido)
-export const verifyToken = (req, res, next) => {
-    try {
-    // Obtener token del header Authorization
-        const authHeader = req.headers['authorization'];
-        const token = authHeader && authHeader.split(' ')[1]; // "Bearer TOKEN"
+const unauthorized = (res, message) => {
+  return res.status(401).json({ error: message });
+};
 
-    if (!token) {
-        return res.status(401).json({ error: 'Acceso denegado. No se proporcionó token' });
+// Verifica el JWT y recupera el usuario y su rol vigente desde SQL Server.
+export const verifyToken = async (req, res, next) => {
+  try {
+    const authHeader = req.get('authorization');
+
+    if (!authHeader) {
+      return unauthorized(res, 'Acceso denegado. No se proporcionó token');
     }
 
-    // Verificar token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Agregar información del usuario a la petición
-    req.user = decoded;
-    
-    next(); // Continuar con el siguiente middleware o controller
-    } 
-    catch (error) {
-        if (error.name === 'TokenExpiredError') {
-            return res.status(401).json({ error: 'Token expirado' });
+    const [scheme, token] = authHeader.trim().split(/\s+/);
+
+    if (scheme?.toLowerCase() !== 'bearer' || !token) {
+      return unauthorized(res, 'Formato de autorización inválido');
     }
-        if (error.name === 'JsonWebTokenError') {
-        return res.status(401).json({ error: 'Token inválido' });
+
+    const decoded = jwt.verify(token, env.jwt.secret);
+    const userId = Number(decoded.id ?? decoded.sub);
+
+    if (!Number.isInteger(userId) || userId <= 0) {
+      return unauthorized(res, 'Token inválido');
     }
-    res.status(500).json({ error: 'Error al verificar token' });
+
+    const currentUser = await findUserById(userId);
+
+    if (!currentUser) {
+      return unauthorized(
+        res,
+        'La sesión ya no es válida porque el usuario no existe'
+      );
     }
+
+    // Nunca se confía en el rol contenido en el token. El rol vigente viene de SQL Server.
+    req.user = currentUser;
+    req.auth = {
+      tokenIssuedAt: decoded.iat,
+      tokenExpiresAt: decoded.exp
+    };
+
+    return next();
+  } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return unauthorized(res, 'Token expirado');
+    }
+
+    if (error.name === 'JsonWebTokenError' || error.name === 'NotBeforeError') {
+      return unauthorized(res, 'Token inválido');
+    }
+
+    console.error('Error al validar la sesión:', error);
+    return res.status(500).json({
+      error: 'No fue posible validar la sesión en este momento'
+    });
+  }
 };

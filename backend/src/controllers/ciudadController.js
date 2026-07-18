@@ -1,5 +1,7 @@
 import * as ciudadModel from "../models/ciudadModel.js";
 import * as distritoModel from "../models/distritoModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 // OBTENER TODAS LAS CIUDADES CON PAGINACIÓN
 export const getCiudades = async (req, res) => {
@@ -84,8 +86,7 @@ export const getCiudades = async (req, res) => {
         const result = await ciudadModel.getAllCiudades(pageNum, limitNum);
         res.json(result);
     } catch (error) {
-        console.error("Error en getCiudades:", error);
-        res.status(500).json({ error: "Error al obtener ciudades" });
+      return handleControllerError(error, req, res, 'Error al obtener ciudades');
     }
 };
 
@@ -106,8 +107,7 @@ export const getCiudadById = async (req, res) => {
 
         res.json(ciudad);
     } catch (error) {
-        console.error("Error en getCiudadById:", error);
-        res.status(500).json({ error: "Error al obtener ciudad" });
+      return handleControllerError(error, req, res, 'Error al obtener ciudad');
     }
 };
 
@@ -178,8 +178,7 @@ export const createCiudad = async (req, res) => {
             ciudad: newCiudad,
         });
     } catch (error) {
-        console.error("Error en createCiudad:", error);
-        res.status(500).json({ error: "Error al crear ciudad" });
+      return handleControllerError(error, req, res, 'Error al crear ciudad');
     }
 };
 
@@ -257,13 +256,14 @@ export const updateCiudad = async (req, res) => {
             imagen_fondo,
         });
 
+        await cleanupReplacedImages(ciudad, updatedCiudad, ['imagen_fondo']);
+
         res.json({
             message: "Ciudad actualizada exitosamente",
             ciudad: updatedCiudad,
         });
     } catch (error) {
-        console.error("Error en updateCiudad:", error);
-        res.status(500).json({ error: "Error al actualizar ciudad" });
+      return handleControllerError(error, req, res, 'Error al actualizar ciudad');
     }
 };
 
@@ -282,12 +282,13 @@ export const deleteCiudad = async (req, res) => {
             return res.status(404).json({ error: "Ciudad no encontrada" });
         }
 
+        await cleanupResourceImages(deletedCiudad, ['imagen_fondo']);
+
         res.json({
             message: "Ciudad eliminada exitosamente",
             ciudad: deletedCiudad,
         });
     } catch (error) {
-        console.error("Error en deleteCiudad:", error);
-        res.status(500).json({ error: "Error al eliminar ciudad" });
+      return handleControllerError(error, req, res, 'Error al eliminar ciudad');
     }
 };

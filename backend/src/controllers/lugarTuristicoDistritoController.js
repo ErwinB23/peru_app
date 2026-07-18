@@ -1,5 +1,7 @@
 import * as lugarModel from '../models/lugarTuristicoDistritoModel.js';
 import * as distritoModel from '../models/distritoModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getLugaresByDistritoId = async (req, res) => {
     try {
@@ -13,8 +15,7 @@ export const getLugaresByDistritoId = async (req, res) => {
 
         res.json(lugares);
     } catch (error) {
-        console.error('Error en getLugaresByDistritoId:', error);
-        res.status(500).json({ error: 'Error al obtener lugares turísticos del distrito' });
+      return handleControllerError(error, req, res, 'Error al obtener lugares turísticos del distrito');
     }
 };
 
@@ -34,8 +35,7 @@ export const getLugarById = async (req, res) => {
 
         res.json(lugar);
     } catch (error) {
-        console.error('Error en getLugarById:', error);
-        res.status(500).json({ error: 'Error al obtener lugar turístico' });
+      return handleControllerError(error, req, res, 'Error al obtener lugar turístico');
     }
 };
 
@@ -68,8 +68,7 @@ export const createLugar = async (req, res) => {
             lugar: nuevoLugar
         });
     } catch (error) {
-        console.error('Error en createLugar:', error);
-        res.status(500).json({ error: 'Error al crear lugar turístico de distrito' });
+      return handleControllerError(error, req, res, 'Error al crear lugar turístico de distrito');
     }
 };
 
@@ -96,13 +95,14 @@ export const updateLugar = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(lugarActual, lugarActualizado, ['imagen']);
+
         res.json({
             message: 'Lugar turístico de distrito actualizado exitosamente',
             lugar: lugarActualizado
         });
     } catch (error) {
-        console.error('Error en updateLugar:', error);
-        res.status(500).json({ error: 'Error al actualizar lugar turístico de distrito' });
+      return handleControllerError(error, req, res, 'Error al actualizar lugar turístico de distrito');
     }
 };
 
@@ -120,12 +120,13 @@ export const deleteLugar = async (req, res) => {
             return res.status(404).json({ error: 'Lugar turístico no encontrado' });
         }
 
+        await cleanupResourceImages(lugarEliminado, ['imagen']);
+
         res.json({
             message: 'Lugar turístico de distrito eliminado exitosamente',
             lugar: lugarEliminado
         });
     } catch (error) {
-        console.error('Error en deleteLugar:', error);
-        res.status(500).json({ error: 'Error al eliminar lugar turístico de distrito' });
+      return handleControllerError(error, req, res, 'Error al eliminar lugar turístico de distrito');
     }
 };

@@ -1,5 +1,7 @@
 import * as lugarModel from '../models/lugarTuristicoProvinciaModel.js';
 import * as provinciaModel from '../models/provinciaModel.js';
+import { handleControllerError } from '../utils/httpErrors.js';
+import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
 
 export const getLugaresByProvinciaId = async (req, res) => {
     try {
@@ -13,8 +15,7 @@ export const getLugaresByProvinciaId = async (req, res) => {
 
         res.json(lugares);
     } catch (error) {
-        console.error('Error en getLugaresByProvinciaId:', error);
-        res.status(500).json({ error: 'Error al obtener lugares turísticos de la provincia' });
+      return handleControllerError(error, req, res, 'Error al obtener lugares turísticos de la provincia');
     }
 };
 
@@ -34,8 +35,7 @@ export const getLugarById = async (req, res) => {
 
         res.json(lugar);
     } catch (error) {
-        console.error('Error en getLugarById:', error);
-        res.status(500).json({ error: 'Error al obtener lugar turístico' });
+      return handleControllerError(error, req, res, 'Error al obtener lugar turístico');
     }
 };
 
@@ -68,12 +68,7 @@ export const createLugar = async (req, res) => {
             lugar: nuevoLugar
         });
     } catch (error) {
-        console.error('Error en createLugar:', error);
-
-        res.status(500).json({
-            error: 'Error al crear lugar turístico de provincia',
-            detalle: error.message
-        });
+      return handleControllerError(error, req, res, 'Error al crear lugar turístico de provincia');
     }
 };
 
@@ -100,13 +95,14 @@ export const updateLugar = async (req, res) => {
             imagen
         });
 
+        await cleanupReplacedImages(lugarActual, lugarActualizado, ['imagen']);
+
         res.json({
             message: 'Lugar turístico de provincia actualizado exitosamente',
             lugar: lugarActualizado
         });
     } catch (error) {
-        console.error('Error en updateLugar:', error);
-        res.status(500).json({ error: 'Error al actualizar lugar turístico de provincia' });
+      return handleControllerError(error, req, res, 'Error al actualizar lugar turístico de provincia');
     }
 };
 
@@ -124,12 +120,13 @@ export const deleteLugar = async (req, res) => {
             return res.status(404).json({ error: 'Lugar turístico no encontrado' });
         }
 
+        await cleanupResourceImages(lugarEliminado, ['imagen']);
+
         res.json({
             message: 'Lugar turístico de provincia eliminado exitosamente',
             lugar: lugarEliminado
         });
     } catch (error) {
-        console.error('Error en deleteLugar:', error);
-        res.status(500).json({ error: 'Error al eliminar lugar turístico de provincia' });
+      return handleControllerError(error, req, res, 'Error al eliminar lugar turístico de provincia');
     }
 };

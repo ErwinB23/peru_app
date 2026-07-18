@@ -7,6 +7,7 @@ import {
     deleteUser,
     countAdmins,
 } from "../models/userModel.js";
+import { handleControllerError } from '../utils/httpErrors.js';
 
 // LISTAR USUARIOS
 export const getUsers = async (req, res) => {
@@ -14,8 +15,7 @@ export const getUsers = async (req, res) => {
         const users = await getAllUsers();
         res.json(users);
     } catch (error) {
-        console.error("Error en getUsers:", error);
-        res.status(500).json({ error: "Error al listar usuarios" });
+      return handleControllerError(error, req, res, 'Error al listar usuarios');
     }
 };
 
@@ -33,8 +33,7 @@ export const searchUsersController = async (req, res) => {
         const users = await searchUsers(q.trim());
         res.json(users);
     } catch (error) {
-        console.error("Error en searchUsersController:", error);
-        res.status(500).json({ error: "Error al buscar usuarios" });
+      return handleControllerError(error, req, res, 'Error al buscar usuarios');
     }
 };
 
@@ -55,8 +54,7 @@ export const getUserById = async (req, res) => {
 
         res.json(user);
     } catch (error) {
-        console.error("Error en getUserById:", error);
-        res.status(500).json({ error: "Error al obtener usuario" });
+      return handleControllerError(error, req, res, 'Error al obtener usuario');
     }
 };
 
@@ -94,14 +92,15 @@ export const updateUserAdmin = async (req, res) => {
 
         if (existingUser && existingUser.id !== id) {
             return res
-                .status(400)
-                .json({ error: "El email ya está en uso por otro usuario" });
+                .status(409)
+                .json({ error: "El email ya está en uso por otro usuario", code: "DUPLICATE_RESOURCE" });
         }
 
         // Evitar que el admin actual se quite su propio rol de admin
         if (id === req.user.id && rol !== "admin") {
-            return res.status(400).json({
+            return res.status(409).json({
                 error: "No puedes quitarte tu propio rol de administrador",
+                code: "ADMIN_CONFLICT",
             });
         }
 
@@ -110,8 +109,9 @@ export const updateUserAdmin = async (req, res) => {
             const totalAdmins = await countAdmins();
 
             if (totalAdmins <= 1) {
-                return res.status(400).json({
+                return res.status(409).json({
                     error: "No se puede cambiar el rol del último administrador",
+                    code: "LAST_ADMIN_CONFLICT",
                 });
             }
         }
@@ -129,8 +129,7 @@ export const updateUserAdmin = async (req, res) => {
             user: updatedUser,
         });
     } catch (error) {
-        console.error("Error en updateUserAdmin:", error);
-        res.status(500).json({ error: "Error al actualizar usuario" });
+      return handleControllerError(error, req, res, 'Error al actualizar usuario');
     }
 };
 
@@ -144,8 +143,9 @@ export const deleteUserAdmin = async (req, res) => {
         }
 
         if (id === req.user.id) {
-            return res.status(400).json({
+            return res.status(409).json({
                 error: "No puedes eliminar tu propio usuario administrador",
+                code: "ADMIN_CONFLICT",
             });
         }
 
@@ -159,8 +159,9 @@ export const deleteUserAdmin = async (req, res) => {
             const totalAdmins = await countAdmins();
 
             if (totalAdmins <= 1) {
-                return res.status(400).json({
+                return res.status(409).json({
                     error: "No se puede eliminar el último administrador",
+                    code: "LAST_ADMIN_CONFLICT",
                 });
             }
         }
@@ -172,7 +173,6 @@ export const deleteUserAdmin = async (req, res) => {
             user: deletedUser,
         });
     } catch (error) {
-        console.error("Error en deleteUserAdmin:", error);
-        res.status(500).json({ error: "Error al eliminar usuario" });
+      return handleControllerError(error, req, res, 'Error al eliminar usuario');
     }
 };

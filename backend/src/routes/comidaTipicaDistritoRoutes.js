@@ -1,36 +1,48 @@
 import express from 'express';
 import {
-    getComidasByDistritoId,
-    getComidaById,
-    createComida,
-    updateComida,
-    deleteComida
+  getComidasByDistritoId,
+  getComidaById,
+  createComida,
+  updateComida,
+  deleteComida
 } from '../controllers/comidaTipicaDistritoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
-import { uploadComidaTipicaDistritoImage } from '../middlewares/uploadMiddleware.js';
+import {
+  uploadComidaTipicaDistritoImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
+import {
+  ensureRelationExists,
+  ensureResourceExists,
+  ensureUniqueName
+} from '../middlewares/dataIntegrityMiddleware.js';
+import {
+  validateComidaDistritoBody,
+  validateDistritoIdParam,
+  validateIdParam
+} from '../validators/validationMiddleware.js';
 
 const router = express.Router();
+const comidaExists = ensureResourceExists('ComidasTipicasDistritos');
+const distritoExists = ensureRelationExists('distritos', 'distrito_id');
+const uniqueComida = ensureUniqueName('ComidasTipicasDistritos');
 
-router.get('/distrito/:distritoId', verifyToken, getComidasByDistritoId);
-router.get('/:id', verifyToken, getComidaById);
-
+router.get('/distrito/:distritoId', verifyToken, validateDistritoIdParam, getComidasByDistritoId);
+router.get('/:id', verifyToken, validateIdParam, getComidaById);
 router.post(
-    '/',
-    verifyToken,
-    isAdmin,
-    uploadComidaTipicaDistritoImage.single('imagen'),
-    createComida
+  '/', verifyToken, isAdmin,
+  uploadComidaTipicaDistritoImage.single('imagen'),
+  verifyUploadedImageSignatures,
+  validateComidaDistritoBody, distritoExists, uniqueComida, createComida
 );
-
 router.put(
-    '/:id',
-    verifyToken,
-    isAdmin,
-    uploadComidaTipicaDistritoImage.single('imagen'),
-    updateComida
+  '/:id', verifyToken, isAdmin, validateIdParam,
+  comidaExists,
+  uploadComidaTipicaDistritoImage.single('imagen'),
+  verifyUploadedImageSignatures,
+  validateComidaDistritoBody, distritoExists, uniqueComida, updateComida
 );
-
-router.delete('/:id', verifyToken, isAdmin, deleteComida);
+router.delete('/:id', verifyToken, isAdmin, validateIdParam, comidaExists, deleteComida);
 
 export default router;

@@ -1,26 +1,52 @@
 import express from 'express';
-import { uploadDepartamentoImage } from "../middlewares/uploadMiddleware.js";
-
 import {
-    getDepartamentos,
-    getDepartamentoById,
-    createDepartamento,
-    updateDepartamento,
-    deleteDepartamento
+  uploadDepartamentoImage,
+  verifyUploadedImageSignatures
+} from '../middlewares/uploadMiddleware.js';
+import {
+  getDepartamentos,
+  getDepartamentoById,
+  createDepartamento,
+  updateDepartamento,
+  deleteDepartamento
 } from '../controllers/departamentoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { isAdmin } from '../middlewares/roleMiddleware.js';
+import { ensureResourceExists, ensureUniqueName } from '../middlewares/dataIntegrityMiddleware.js';
+import {
+  validateDepartamentoBody,
+  validateIdParam
+} from '../validators/validationMiddleware.js';
 
 const router = express.Router();
+const departamentoExists = ensureResourceExists('Departamentos');
+const uniqueDepartamento = ensureUniqueName('Departamentos');
 
-// Rutas públicas (pueden verlas usuarios y visitantes)
-router.get('/', getDepartamentos);           // GET /api/departamentos
-router.get('/:id', getDepartamentoById);     // GET /api/departamentos/:id
+router.get('/', verifyToken, getDepartamentos);
+router.get('/:id', verifyToken, validateIdParam, getDepartamentoById);
 
-// Rutas protegidas (solo admin)
-router.post("/", verifyToken, isAdmin, uploadDepartamentoImage.single("imagen_fondo"),createDepartamento,); 
-router.put("/:id", verifyToken, isAdmin, uploadDepartamentoImage.single("imagen_fondo"), updateDepartamento,);
-router.delete('/:id', verifyToken, isAdmin, deleteDepartamento);  // DELETE /api/departamentos/:id
-
+router.post(
+  '/',
+  verifyToken,
+  isAdmin,
+  uploadDepartamentoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
+  validateDepartamentoBody,
+  uniqueDepartamento,
+  createDepartamento
+);
+router.put(
+  '/:id',
+  verifyToken,
+  isAdmin,
+  validateIdParam,
+  departamentoExists,
+  uploadDepartamentoImage.single('imagen_fondo'),
+  verifyUploadedImageSignatures,
+  validateDepartamentoBody,
+  uniqueDepartamento,
+  updateDepartamento
+);
+router.delete('/:id', verifyToken, isAdmin, validateIdParam, departamentoExists, deleteDepartamento);
 
 export default router;
