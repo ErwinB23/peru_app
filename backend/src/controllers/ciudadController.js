@@ -2,6 +2,7 @@ import * as ciudadModel from "../models/ciudadModel.js";
 import * as distritoModel from "../models/distritoModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 // OBTENER TODAS LAS CIUDADES CON PAGINACIÓN
 export const getCiudades = async (req, res) => {
@@ -155,9 +156,8 @@ export const createCiudad = async (req, res) => {
             });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/ciudades/${req.file.filename}`
-            : req.body.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'ciudades')
+            || req.body.imagen_fondo || null;
 
         const newCiudad = await ciudadModel.createCiudad({
             nombre: nombre.trim(),
@@ -238,9 +238,8 @@ export const updateCiudad = async (req, res) => {
             });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/ciudades/${req.file.filename}`
-            : req.body.imagen_fondo || ciudad.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'ciudades')
+            || req.body.imagen_fondo || ciudad.imagen_fondo || null;
 
         const updatedCiudad = await ciudadModel.updateCiudad(id, {
             nombre: nombre.trim(),

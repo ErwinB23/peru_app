@@ -71,6 +71,7 @@ app.get('/api/health', async (req, res) => {
       status: 'ok',
       service: 'peru-app-api',
       database: 'connected',
+      imageStorage: env.imageStorage,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -79,6 +80,7 @@ app.get('/api/health', async (req, res) => {
       status: 'degraded',
       service: 'peru-app-api',
       database: 'unavailable',
+      imageStorage: env.imageStorage,
       timestamp: new Date().toISOString()
     });
   }

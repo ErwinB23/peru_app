@@ -1,9 +1,10 @@
 import fs from 'fs/promises';
+import { deleteCloudinaryAsset } from '../services/cloudinaryService.js';
 
 const collectFiles = (req) => {
   const files = [];
 
-  if (req?.file?.path) {
+  if (req?.file) {
     files.push(req.file);
   }
 
@@ -17,7 +18,7 @@ const collectFiles = (req) => {
     }
   }
 
-  return files.filter((file) => file?.path);
+  return files;
 };
 
 export const cleanupRequestFiles = async (req) => {
@@ -25,6 +26,21 @@ export const cleanupRequestFiles = async (req) => {
 
   await Promise.all(
     files.map(async (file) => {
+      if (file?.cloudinaryPublicId) {
+        try {
+          await deleteCloudinaryAsset(file.cloudinaryPublicId);
+        } catch (error) {
+          console.error(
+            `No se pudo eliminar el recurso temporal Cloudinary ${file.cloudinaryPublicId}:`,
+            error.message
+          );
+        }
+      }
+
+      if (!file?.path || /^https?:\/\//i.test(file.path)) {
+        return;
+      }
+
       try {
         await fs.unlink(file.path);
       } catch (error) {

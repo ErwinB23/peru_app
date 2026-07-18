@@ -1,0 +1,23 @@
+(node:884) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/integration/modules.integration.test.js (5.042 s)
+PASS tests/integration/api.integration.test.js
+PASS tests/unit/contentControllers.test.js
+PASS tests/unit/httpErrors.test.js
+PASS tests/unit/uploadSignature.test.js
+PASS tests/unit/authController.test.js
+PASS tests/unit/validationMiddleware.test.js
+PASS tests/unit/departamentoController.test.js
+PASS tests/unit/userController.test.js
+PASS tests/unit/authMiddleware.test.js
+PASS tests/unit/imageLifecycle.test.js
+PASS tests/unit/territorialControllers.test.js
+PASS tests/unit/dataIntegrityMiddleware.test.js
+PASS tests/unit/roleMiddleware.test.js
+
+Test Suites: 14 passed, 14 total
+Tests:       376 passed, 376 total
+Snapshots:   0 total
+Time:        8.37 s
+Ran all test suites.
+Test results written to: reports\jest\results.json

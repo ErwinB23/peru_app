@@ -2,6 +2,7 @@ import * as lugarModel from '../models/lugarTuristicoDistritoModel.js';
 import * as distritoModel from '../models/distritoModel.js';
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 export const getLugaresByDistritoId = async (req, res) => {
     try {
@@ -53,9 +54,8 @@ export const createLugar = async (req, res) => {
             return res.status(404).json({ error: 'Distrito asociado no encontrado' });
         }
 
-        const imagen = req.file
-            ? `/uploads/lugares-turisticos-distritos/${req.file.filename}`
-            : req.body.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'lugares-turisticos-distritos')
+            || req.body.imagen || null;
 
         const nuevoLugar = await lugarModel.createLugar({
             ...req.body,
@@ -86,9 +86,8 @@ export const updateLugar = async (req, res) => {
             return res.status(404).json({ error: 'Lugar turístico no encontrado' });
         }
 
-        const imagen = req.file
-            ? `/uploads/lugares-turisticos-distritos/${req.file.filename}`
-            : req.body.imagen || lugarActual.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'lugares-turisticos-distritos')
+            || req.body.imagen || lugarActual.imagen || null;
 
         const lugarActualizado = await lugarModel.updateLugar(id, {
             ...req.body,

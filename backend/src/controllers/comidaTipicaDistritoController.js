@@ -2,6 +2,7 @@ import * as comidaModel from '../models/comidaTipicaDistritoModel.js';
 import * as distritoModel from '../models/distritoModel.js';
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 export const getComidasByDistritoId = async (req, res) => {
     try {
@@ -53,9 +54,8 @@ export const createComida = async (req, res) => {
             return res.status(404).json({ error: 'Distrito asociado no encontrado' });
         }
 
-        const imagen = req.file
-            ? `/uploads/comidas-tipicas-distritos/${req.file.filename}`
-            : req.body.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'comidas-tipicas-distritos')
+            || req.body.imagen || null;
 
         const nuevaComida = await comidaModel.createComida({
             ...req.body,
@@ -86,9 +86,8 @@ export const updateComida = async (req, res) => {
             return res.status(404).json({ error: 'Comida típica no encontrada' });
         }
 
-        const imagen = req.file
-            ? `/uploads/comidas-tipicas-distritos/${req.file.filename}`
-            : req.body.imagen || comidaActual.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'comidas-tipicas-distritos')
+            || req.body.imagen || comidaActual.imagen || null;
 
         const comidaActualizada = await comidaModel.updateComida(id, {
             ...req.body,

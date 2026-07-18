@@ -54,3 +54,10 @@ VITE_API_URL=https://<backend>.onrender.com/api
 - Carga, reemplazo y borrado de imagen en Cloudinary.
 - Logout y token inválido: 401.
 - Navegación desde otro equipo y vista móvil básica.
+
+## Optimizacion multimedia
+
+- Implementacion preparada: imagenes Home y login convertidas a WebP.
+- Implementacion preparada: video de autenticacion reducido a 720p H.264 sin audio.
+- Reduccion medida del conjunto critico: 78.33 MB a 3.99 MB (94.90 %).
+- Validacion local pendiente: ejecutar `scripts/block8-media-check.ps1 -Apply -RunBuild`.

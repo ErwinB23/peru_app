@@ -1,6 +1,7 @@
 import * as comidaTipicaModel from "../models/comidaTipicaModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 export const getComidasByDepartamentoId = async (req, res) => {
     try {
@@ -41,9 +42,8 @@ export const getComidaById = async (req, res) => {
 
 export const createComidaTipica = async (req, res) => {
     try {
-        const imagen = req.file
-            ? `/uploads/comidas-tipicas/${req.file.filename}`
-            : req.body.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'comidas-tipicas')
+            || req.body.imagen || null;
 
         const nuevaComida = await comidaTipicaModel.createComidaTipica({
             ...req.body,
@@ -74,9 +74,8 @@ export const updateComidaTipica = async (req, res) => {
             return res.status(404).json({ error: "Comida típica no encontrada" });
         }
 
-        const imagen = req.file
-            ? `/uploads/comidas-tipicas/${req.file.filename}`
-            : req.body.imagen || comidaActual.imagen || null;
+        const imagen = getUploadedFileUrl(req.file, 'comidas-tipicas')
+            || req.body.imagen || comidaActual.imagen || null;
 
         const comidaActualizada = await comidaTipicaModel.updateComidaTipica(id, {
             ...req.body,

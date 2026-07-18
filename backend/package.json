@@ -14,7 +14,10 @@
     "test:api": "node scripts/runNewman.js",
     "qa:seed": "node scripts/createQaUsers.js",
     "pretest:coverage": "node scripts/ensureReportDirs.js",
-    "pretest:api": "node scripts/ensureReportDirs.js"
+    "pretest:api": "node scripts/ensureReportDirs.js",
+    "cloudinary:check": "node scripts/checkCloudinary.js",
+    "cloudinary:migrate:dry": "node scripts/migrateLocalImagesToCloudinary.js --dry-run",
+    "cloudinary:migrate": "node scripts/migrateLocalImagesToCloudinary.js --apply"
   },
   "keywords": [
     "api",
@@ -24,21 +27,27 @@
   "author": "ERWIN BRAYAM INCA PAUCCARA",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.2",
-    "mssql": "^10.0.1",
+    "mssql": "^12.7.0",
     "multer": "^2.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11",
     "jest": "^30.4.2",
-    "newman": "^6.2.2",
-    "newman-reporter-htmlextra": "^1.23.1",
+    "nodemon": "^3.1.11",
     "supertest": "^7.2.2"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "allowScripts": {
+    "bcrypt@6.0.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }

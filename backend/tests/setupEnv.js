@@ -8,3 +8,4 @@ process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret-only-for-automat
 process.env.JWT_EXPIRE = process.env.JWT_EXPIRE || '1h';
 process.env.FRONTEND_URLS = process.env.FRONTEND_URLS || 'http://localhost:5173';
 process.env.REQUEST_BODY_LIMIT = process.env.REQUEST_BODY_LIMIT || '1mb';
+process.env.IMAGE_STORAGE = 'local';

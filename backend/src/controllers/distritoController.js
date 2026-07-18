@@ -2,6 +2,7 @@ import * as distritoModel from "../models/distritoModel.js";
 import * as provinciaModel from "../models/provinciaModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 // OBTENER TODOS LOS DISTRITOS CON PAGINACIÓN
 export const getDistritos = async (req, res) => {
@@ -123,9 +124,8 @@ export const createDistrito = async (req, res) => {
             });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/distritos/${req.file.filename}`
-            : req.body.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'distritos')
+            || req.body.imagen_fondo || null;
 
         const newDistrito = await distritoModel.createDistrito({
             nombre: nombre.trim(),
@@ -211,9 +211,8 @@ export const updateDistrito = async (req, res) => {
             });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/distritos/${req.file.filename}`
-            : req.body.imagen_fondo || distrito.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'distritos')
+            || req.body.imagen_fondo || distrito.imagen_fondo || null;
 
         const updatedDistrito = await distritoModel.updateDistrito(id, {
             nombre: nombre.trim(),

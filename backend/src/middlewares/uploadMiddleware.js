@@ -3,7 +3,12 @@ import path from 'path';
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import crypto from 'crypto';
+import { env } from '../config/env.js';
 import { AppError } from '../utils/httpErrors.js';
+import {
+  deleteCloudinaryAsset,
+  uploadBufferToCloudinary
+} from '../services/cloudinaryService.js';
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = Object.freeze({
@@ -22,7 +27,7 @@ const createUploadPath = (folderName) => {
   return uploadPath;
 };
 
-const createStorage = (folderName) => {
+const createLocalStorage = (folderName) => {
   const uploadPath = createUploadPath(folderName);
 
   return multer.diskStorage({
@@ -44,9 +49,11 @@ const createStorage = (folderName) => {
   });
 };
 
-const fileFilter = (req, file, cb) => {
+const fileFilterForFolder = (folderName) => (req, file, cb) => {
   const extension = path.extname(file.originalname).toLowerCase();
   const allowedExtensions = ALLOWED_IMAGE_TYPES[file.mimetype];
+
+  file.storageFolder = folderName;
 
   if (!allowedExtensions || !allowedExtensions.includes(extension)) {
     const error = new Error('Solo se permiten imágenes JPG, JPEG, PNG o WEBP');
@@ -58,17 +65,16 @@ const fileFilter = (req, file, cb) => {
   return cb(null, true);
 };
 
-
-const getRequestFiles = (req) => {
+export const getRequestFiles = (req) => {
   const files = [];
 
-  if (req.file) {
+  if (req?.file) {
     files.push(req.file);
   }
 
-  if (Array.isArray(req.files)) {
+  if (Array.isArray(req?.files)) {
     files.push(...req.files);
-  } else if (req.files && typeof req.files === 'object') {
+  } else if (req?.files && typeof req.files === 'object') {
     for (const fieldFiles of Object.values(req.files)) {
       if (Array.isArray(fieldFiles)) {
         files.push(...fieldFiles);
@@ -107,20 +113,29 @@ const detectImageType = (buffer) => {
   return null;
 };
 
+const readSignature = async (file) => {
+  if (Buffer.isBuffer(file.buffer)) {
+    return file.buffer.subarray(0, 16);
+  }
+
+  const handle = await fsPromises.open(file.path, 'r');
+  const buffer = Buffer.alloc(16);
+
+  try {
+    await handle.read(buffer, 0, buffer.length, 0);
+  } finally {
+    await handle.close();
+  }
+
+  return buffer;
+};
+
 export const verifyUploadedImageSignatures = async (req, res, next) => {
   try {
     const files = getRequestFiles(req);
 
     for (const file of files) {
-      const handle = await fsPromises.open(file.path, 'r');
-      const buffer = Buffer.alloc(16);
-
-      try {
-        await handle.read(buffer, 0, buffer.length, 0);
-      } finally {
-        await handle.close();
-      }
-
+      const buffer = await readSignature(file);
       const detectedType = detectImageType(buffer);
 
       if (!detectedType || detectedType !== file.mimetype) {
@@ -138,9 +153,53 @@ export const verifyUploadedImageSignatures = async (req, res, next) => {
   }
 };
 
+export const persistUploadedImages = async (req, res, next) => {
+  const files = getRequestFiles(req);
+
+  if (files.length === 0) {
+    return next();
+  }
+
+  if (env.imageStorage === 'local') {
+    for (const file of files) {
+      file.storageUrl = `/uploads/${file.storageFolder}/${file.filename}`;
+    }
+    return next();
+  }
+
+  const uploadedPublicIds = [];
+
+  try {
+    for (const file of files) {
+      const result = await uploadBufferToCloudinary(file.buffer, {
+        folder: file.storageFolder,
+        originalName: file.originalname
+      });
+
+      file.storageUrl = result.secure_url;
+      file.cloudinaryPublicId = result.public_id;
+      uploadedPublicIds.push(result.public_id);
+    }
+
+    return next();
+  } catch (error) {
+    await Promise.allSettled(
+      uploadedPublicIds.map((publicId) => deleteCloudinaryAsset(publicId))
+    );
+
+    return next(new AppError(
+      'No se pudo almacenar la imagen en Cloudinary',
+      502,
+      'CLOUDINARY_UPLOAD_FAILED'
+    ));
+  }
+};
+
 const createImageUpload = (folderName) => multer({
-  storage: createStorage(folderName),
-  fileFilter,
+  storage: env.imageStorage === 'cloudinary'
+    ? multer.memoryStorage()
+    : createLocalStorage(folderName),
+  fileFilter: fileFilterForFolder(folderName),
   limits: {
     fileSize: MAX_IMAGE_SIZE,
     files: 4

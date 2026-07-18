@@ -3,11 +3,11 @@ import '../styles/Home.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
 import logoBandera from '../assets/ImagenLogin/logoBanderita.png';
-import arequipaImg from '../assets/ImagenHome/Arequipa.png';
-import ayacuchoImg from '../assets/ImagenHome/Ayacucho.png';
-import cuscoImg from '../assets/ImagenHome/Cusco.png';
-import limaImg from '../assets/ImagenHome/Lima.png';
-import pascoImg from '../assets/ImagenHome/Pasco.png';
+import arequipaImg from '../assets/ImagenHome/Arequipa.webp';
+import ayacuchoImg from '../assets/ImagenHome/Ayacucho.webp';
+import cuscoImg from '../assets/ImagenHome/Cusco.webp';
+import limaImg from '../assets/ImagenHome/Lima.webp';
+import pascoImg from '../assets/ImagenHome/Pasco.webp';
 import {
   MapPinned,
   Mountain,

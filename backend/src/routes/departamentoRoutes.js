@@ -1,7 +1,8 @@
 import express from 'express';
 import {
   uploadDepartamentoImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   getDepartamentos,
@@ -31,6 +32,7 @@ router.post(
   isAdmin,
   uploadDepartamentoImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateDepartamentoBody,
   uniqueDepartamento,
   createDepartamento
@@ -43,6 +45,7 @@ router.put(
   departamentoExists,
   uploadDepartamentoImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateDepartamentoBody,
   uniqueDepartamento,
   updateDepartamento

@@ -1,7 +1,8 @@
 import express from 'express';
 import {
   uploadProvinciaImage,
-  verifyUploadedImageSignatures
+  verifyUploadedImageSignatures,
+  persistUploadedImages
 } from '../middlewares/uploadMiddleware.js';
 import {
   getProvincias,
@@ -37,6 +38,7 @@ router.post(
   isAdmin,
   uploadProvinciaImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateProvinciaBody,
   departamentoExists,
   uniqueProvincia,
@@ -50,6 +52,7 @@ router.put(
   provinciaResourceExists,
   uploadProvinciaImage.single('imagen_fondo'),
   verifyUploadedImageSignatures,
+  persistUploadedImages,
   validateProvinciaBody,
   departamentoExists,
   uniqueProvincia,

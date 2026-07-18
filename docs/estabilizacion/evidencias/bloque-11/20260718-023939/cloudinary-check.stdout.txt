@@ -1,0 +1,9 @@
+
+> backend-peru-departamentos@1.0.0 cloudinary:check
+> node scripts/checkCloudinary.js
+
+[OK] Conexión con Cloudinary verificada.
+{
+  "status": "ok",
+  "cloudName": "d5kmueer"
+}

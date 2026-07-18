@@ -1,6 +1,7 @@
 import * as departamentoModel from '../models/departamentoModel.js';
 import { AppError, handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 //OBTENER TODOS LOS DEPARTAMENTOS
 export const getDepartamentos = async (req, res) => {
@@ -42,9 +43,8 @@ export const getDepartamentoById = async (req, res) => {
 // CREAR DEPARTAMENTO (solo admin)
 export const createDepartamento = async (req, res) => {
     try {
-        const imagen_fondo = req.file
-            ? `/uploads/departamentos/${req.file.filename}`
-            : req.body.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'departamentos')
+            || req.body.imagen_fondo || null;
 
         const newDepartamento = await departamentoModel.createDepartamento({
             ...req.body,
@@ -77,9 +77,8 @@ export const updateDepartamento = async (req, res) => {
             return res.status(404).json({ error: "Departamento no encontrado" });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/departamentos/${req.file.filename}`
-            : req.body.imagen_fondo || departamentoActual.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'departamentos')
+            || req.body.imagen_fondo || departamentoActual.imagen_fondo || null;
 
         const updatedDepartamento = await departamentoModel.updateDepartamento(id, {
             ...departamentoActual,

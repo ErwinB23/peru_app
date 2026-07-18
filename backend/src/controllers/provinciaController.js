@@ -2,6 +2,7 @@ import * as provinciaModel from "../models/provinciaModel.js";
 import * as departamentoModel from "../models/departamentoModel.js";
 import { handleControllerError } from '../utils/httpErrors.js';
 import { cleanupReplacedImages, cleanupResourceImages } from '../utils/imageLifecycle.js';
+import { getUploadedFileUrl } from '../utils/uploadedFile.js';
 
 // OBTENER TODAS LAS PROVINCIAS
 export const getProvincias = async (req, res) => {
@@ -97,9 +98,8 @@ export const createProvincia = async (req, res) => {
                 .json({ error: "Departamento asociado no encontrado" });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/provincias/${req.file.filename}`
-            : req.body.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'provincias')
+            || req.body.imagen_fondo || null;
 
         const newProvincia = await provinciaModel.createProvincia({
             nombre: nombre.trim(),
@@ -176,9 +176,8 @@ export const updateProvincia = async (req, res) => {
                 .json({ error: "Departamento asociado no encontrado" });
         }
 
-        const imagen_fondo = req.file
-            ? `/uploads/provincias/${req.file.filename}`
-            : req.body.imagen_fondo || provincia.imagen_fondo || null;
+        const imagen_fondo = getUploadedFileUrl(req.file, 'provincias')
+            || req.body.imagen_fondo || provincia.imagen_fondo || null;
 
         const updatedProvincia = await provinciaModel.updateProvincia(id, {
             nombre: nombre.trim(),
