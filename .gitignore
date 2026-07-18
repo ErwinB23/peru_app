@@ -69,3 +69,5 @@ tests/qa-credentials.local.ps1
 tests/postman/*.runtime.json
 playwright-report/
 test-results/
+
+database/deployment/PeruDepartamentosDB_RDS*.sql
