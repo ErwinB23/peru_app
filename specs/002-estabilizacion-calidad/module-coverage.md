@@ -1,4 +1,4 @@
-# Bloque 5.2 — Cobertura de módulos funcionales
+﻿# Bloque 5.2 — Cobertura de módulos funcionales
 
 ## Objetivo
 
@@ -18,14 +18,14 @@ Ampliar la medición desde los componentes críticos del Bloque 5.1 hacia los m�
 
 | Indicador | Resultado |
 |---|---:|
-| Suites Jest | 14 aprobadas |
-| Pruebas unitarias | 351 aprobadas |
+| Suites Jest | 15 aprobadas |
+| Pruebas unitarias | 363 aprobadas |
 | Pruebas de integración | 25 aprobadas |
-| Total | 376 aprobadas |
-| Statements | 91.20% |
-| Branches | 87.01% |
-| Functions | 96.85% |
-| Lines | 91.08% |
+| Total | 388 aprobadas |
+| Statements | 89.98% |
+| Branches | 87.48% |
+| Functions | 96.18% |
+| Lines | 89.85% |
 
 ## Interpretación
 
@@ -35,7 +35,7 @@ La cobertura ahora incluye todos los controladores funcionales del backend, adem
 
 El Bloque 5.2 se valida en el proyecto real cuando:
 
-1. Las 14 suites y 376 pruebas finalizan sin fallos.
+1. Las 15 suites y 388 pruebas finalizan sin fallos.
 2. Los cuatro umbrales globales se mantienen.
 3. Se conserva `backend/reports/jest/coverage/index.html`.
 4. Se conserva la evidencia del script en `docs/estabilizacion/evidencias/bloque-5-2/`.

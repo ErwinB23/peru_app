@@ -1,0 +1,8 @@
+﻿npm.cmd : [33m
+En C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\scripts\block12-post-cloudinary-sdd.ps1: 47 Carácter: 9
++         & $Executable @CommandArguments 2>&1 |
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([33m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+

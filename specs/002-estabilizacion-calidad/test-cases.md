@@ -1,16 +1,16 @@
-# Catálogo Final de Pruebas — SPEC-002
+﻿# Catálogo Final de Pruebas — SPEC-002
 
 ## 1. Resumen
 
 | Nivel | Cantidad de referencia | Herramienta |
 |---|---:|---|
-| Unitarias | 351 | Jest |
+| Unitarias | 363 | Jest |
 | Integración HTTP | 25 | Jest + Supertest |
-| Total backend | 376 | Jest |
+| Total backend | 388 | Jest |
 | API encadenada | 11 solicitudes | Postman + Newman |
 | E2E frontend | 4 flujos | Playwright |
 
-Cobertura de referencia: **S 91.20% · B 87.01% · F 96.85% · L 91.08%**.
+Cobertura de referencia: **S 89.98% · B 87.48% · F 96.18% · L 89.85%**.
 
 ## 2. Casos por capacidad
 

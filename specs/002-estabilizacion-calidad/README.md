@@ -1,6 +1,6 @@
 # SPEC-002 — Estabilización, Calidad y Seguridad
 
-Esta especificación complementa `001-peru-app` y registra la estabilización previa al despliegue.
+Esta especificación complementa `001-peru-app` y registra la estabilización, pruebas, Cloudinary y preparación de infraestructura.
 
 ## Fuente de verdad
 
@@ -13,15 +13,17 @@ Esta especificación complementa `001-peru-app` y registra la estabilización pr
 7. `../001-peru-app/openapi.yaml`
 8. `test-cases.md`
 9. `traceability-matrix.md`
-10. `final-review.md`
+10. `implementation-summary.md`
+11. `final-review.md`
+12. `deployment-readiness.md`
 
 ## Estado
 
-**Aprobado para iniciar despliegue con condiciones.** La producción todavía requiere Cloudinary, Azure SQL, Render, Vercel y pruebas públicas.
+**Cierre local aprobado.** Cloudinary está integrado y la base local quedó limpia. Permanecen pendientes Azure SQL, Render, Vercel y pruebas públicas.
 
 ## Validación
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\scripts\block6-sdd-closure.ps1 -RunQualityChecks -OpenReports
+.\scripts\block12-post-cloudinary-sdd.ps1 -RunQualityChecks -OpenReports
 ```

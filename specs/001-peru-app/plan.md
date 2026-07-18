@@ -1,4 +1,4 @@
-# Plan Técnico - PERU APP
+﻿# Plan Técnico - PERU APP
 
 ## 1. Identificación del plan
 
@@ -249,7 +249,8 @@ La estructura general del backend considera:
 - `src/models`: consultas y operaciones con SQL Server.
 - `src/middlewares`: autenticación, autorización y carga de archivos.
 - `src/config`: configuración de base de datos.
-- `uploads`: almacenamiento de imágenes cargadas.
+- `src/services/cloudinaryService.js`: almacenamiento persistente remoto.
+- `uploads`: almacenamiento local opcional para desarrollo.
 
 ### 8.2. Responsabilidades del backend
 
@@ -437,7 +438,7 @@ El detalle de lugar turístico puede mostrar imagen principal y hasta tres imág
 
 ### 13.3. Almacenamiento
 
-Las imágenes cargadas se almacenan en el backend dentro de carpetas de uploads y se referencian mediante rutas accesibles desde el frontend.
+El backend admite almacenamiento dual. En desarrollo puede guardar rutas `/uploads/...`; en producción sube los archivos a Cloudinary y SQL Server conserva la URL HTTPS. El API secret permanece únicamente en el backend.
 
 ---
 

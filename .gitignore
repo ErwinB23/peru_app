@@ -43,8 +43,10 @@ Thumbs.db
 .idea/
 
 # Archivos subidos localmente
-# No borrar si la BD referencia estas imágenes; resolver persistencia antes del despliegue.
-backend/uploads/
+# Produccion usa Cloudinary. Se conservan solo las carpetas vacias mediante .gitkeep.
+backend/uploads/**
+!backend/uploads/**/
+!backend/uploads/**/.gitkeep
 
 # Respaldos y paquetes locales
 phase0-backups/

@@ -1,40 +1,46 @@
-# Revisión Final SDD — SPEC-002
+﻿# Revisión Final SDD — SPEC-002
 
 ## Dictamen
 
-**APROBADO PARA INICIAR DESPLIEGUE CON CONDICIONES.**
+**APROBADO LOCALMENTE PARA INICIAR AZURE SQL Y DESPLIEGUE CLOUD.**
 
-La fuente de verdad SDD está consolidada, el contrato API refleja el código y existe una suite automatizada representativa. La aceptación final permanece pendiente hasta ejecutar la puerta en el proyecto real y completar el despliegue público.
+La fuente de verdad SDD está consolidada, el contrato API refleja el código, las suites están aprobadas y Cloudinary fue integrado localmente. La aceptación definitiva sigue pendiente hasta validar la infraestructura pública.
 
 ## Evaluación
 
 | Área | Estado | Observación |
 |---|---|---|
-| Constitución | Conforme | v1.3.0 con gobierno y puertas de calidad. |
-| Especificación | Conforme | Alcance y pendientes explícitos. |
-| Plan | Conforme | Incluye ruta de despliegue y rollback. |
-| Tareas | Conforme | IDs únicos y estados honestos. |
-| Diseño | Conforme | Seguridad, capas, imágenes y producción. |
-| Datos | Conforme | Modelo base + delta de integridad. |
-| OpenAPI | Conforme | 70/70 operaciones. |
-| Pruebas backend | Conforme | 14 suites, 376 casos de referencia. |
-| Newman/Playwright | Condicionado | Implementados; archivar reportes del ambiente real. |
-| Cobertura | Conforme | Supera umbrales definidos. |
-| Evidencias | Condicionado | Ejecutar script de cierre y conservar SSMS/QA. |
-| Despliegue | Pendiente | Cloudinary, Azure SQL, Render y Vercel. |
+| Constitución | Conforme | v1.4.0. |
+| Especificaciones | Conforme | SPEC-001 y SPEC-002 sincronizadas. |
+| Plan y tareas | Conforme | Estados locales y públicos separados. |
+| Arquitectura | Conforme | React/Vite/CSS, Express, SQL Server y Cloudinary. |
+| OpenAPI | Conforme | 70/70. |
+| Pruebas backend | Conforme | 15 suites y 388 casos. |
+| Newman | Conforme local | 11 solicitudes y 0 fallos. |
+| Playwright | Conforme local | 4 flujos y 0 fallos. |
+| Cobertura | Conforme | S89.98/B87.48/F96.18/L89.85. |
+| Dependencias | Conforme | 0 vulnerabilidades reportadas. |
+| Multimedia | Conforme | Recursos críticos optimizados. |
+| Cloudinary | Conforme local | Conexión y carga verificadas; repetir en Render. |
+| Datos locales | Conforme | Registros limpiados e identidades reiniciadas. |
+| Azure SQL | Pendiente | Requiere cifrado configurable e importación. |
+| Render/Vercel | Pendiente | Sin URLs públicas todavía. |
+| Producción | Pendiente | Faltan pruebas públicas. |
 
-## Riesgos abiertos aceptados temporalmente
+## Riesgos abiertos
 
-1. Vulnerabilidades npm deben revisarse por dependencia de producción.
-2. `backend/uploads` no es persistente en Render gratuito.
-3. El arranque en frío de Render puede retrasar la primera solicitud.
-4. Azure SQL requiere reglas de red y cifrado correctas.
-5. El contenido real debe conservar fuentes y licencias cuando se amplíe.
+1. `database.js` aún debe parametrizar cifrado y certificado para Azure.
+2. Render gratuito puede presentar arranque en frío.
+3. CORS debe cerrarse con la URL definitiva de Vercel.
+4. Las credenciales de Cloudinary y SQL deben existir solo en variables del proveedor.
+5. Se debe conservar un respaldo local/BACPAC antes de importar Azure.
 
 ## Condiciones para aceptación final
 
-- Puerta Bloque 6 aprobada.
-- Newman y Playwright aprobados en producción.
-- Imágenes persistentes en Cloudinary.
-- Base migrada y respaldada en Azure SQL.
-- Frontend y backend comunicados por HTTPS y CORS definitivo.
+- Azure SQL conectado mediante cifrado.
+- Health, login y CRUD funcionando en Render.
+- Frontend funcionando en Vercel.
+- Cloudinary validado desde Render.
+- Newman y Playwright ejecutados contra producción.
+- URLs, capturas y logs archivados.
+- GitHub Actions en verde.
