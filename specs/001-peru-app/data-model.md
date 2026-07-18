@@ -1,4 +1,4 @@
-# Modelo de Datos - PERU APP
+﻿# Modelo de Datos - PERU APP
 
 ## 1. Identificación del documento
 
@@ -116,7 +116,7 @@ Almacena la información general de los departamentos del Perú.
 | capital | VARCHAR(120) | Capital del departamento. | NULL |
 | region | VARCHAR(80) | Región natural o geográfica. | NULL |
 | descripcion | VARCHAR(MAX) | Descripción general. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen del departamento. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local de desarrollo. | NULL |
 | introduccion | VARCHAR(MAX) | Introducción turística administrable. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación del registro. | DEFAULT GETDATE() |
 
@@ -155,7 +155,7 @@ Almacena provincias asociadas a un departamento.
 | poblacion | VARCHAR(80) | Información poblacional referencial. | NULL |
 | festividad | VARCHAR(180) | Festividad representativa. | NULL |
 | actividad_economica | VARCHAR(180) | Actividad económica principal. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen de la provincia. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local de desarrollo. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación del registro. | DEFAULT GETDATE() |
 
 #### Reglas
@@ -187,7 +187,7 @@ Almacena distritos asociados a una provincia.
 | tipo_zona | VARCHAR(120) | Tipo de zona. | NULL |
 | nivel_desarrollo | VARCHAR(120) | Nivel de desarrollo referencial. | NULL |
 | descripcion | VARCHAR(MAX) | Descripción del distrito. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen del distrito. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local de desarrollo. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación del registro. | DEFAULT GETDATE() |
 
 #### Reglas
@@ -219,7 +219,7 @@ Almacena ciudades asociadas a departamentos.
 | atractivo_turistico | VARCHAR(180) | Atractivo turístico destacado. | NULL |
 | clima | VARCHAR(120) | Clima referencial. | NULL |
 | descripcion | VARCHAR(MAX) | Descripción de la ciudad. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen de la ciudad. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local de desarrollo. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación del registro. | DEFAULT GETDATE() |
 
 #### Reglas
@@ -248,7 +248,7 @@ Almacena lugares turísticos asociados a departamentos. Esta entidad incluye inf
 | departamento_id | INT | Departamento asociado. | FK |
 | nombre | VARCHAR(160) | Nombre del lugar turístico. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción breve. | NULL |
-| imagen | VARCHAR(255) | Imagen principal. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS o ruta local de la imagen principal. | NULL |
 | ubicacion_referencial | VARCHAR(255) | Ubicación textual referencial. | NULL |
 | acerca | VARCHAR(MAX) | Información ampliada del lugar. | NULL |
 | recomendaciones_antes | VARCHAR(MAX) | Recomendaciones antes del viaje. | NULL |
@@ -261,9 +261,9 @@ Almacena lugares turísticos asociados a departamentos. Esta entidad incluye inf
 | origen_busqueda | VARCHAR(255) | Texto usado para buscar coordenadas del origen. | NULL |
 | destino_nombre | VARCHAR(180) | Nombre del destino. | NULL |
 | destino_busqueda | VARCHAR(255) | Texto usado para buscar coordenadas del destino. | NULL |
-| imagen_2 | VARCHAR(255) | Imagen adicional 1. | NULL |
-| imagen_3 | VARCHAR(255) | Imagen adicional 2. | NULL |
-| imagen_4 | VARCHAR(255) | Imagen adicional 3. | NULL |
+| imagen_2 | VARCHAR(255) | URL HTTPS o ruta local de imagen adicional 1. | NULL |
+| imagen_3 | VARCHAR(255) | URL HTTPS o ruta local de imagen adicional 2. | NULL |
+| imagen_4 | VARCHAR(255) | URL HTTPS o ruta local de imagen adicional 3. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
 #### Reglas
@@ -298,7 +298,7 @@ Almacena comidas típicas asociadas a departamentos.
 | departamento_id | INT | Departamento asociado. | FK |
 | nombre | VARCHAR(160) | Nombre de la comida típica. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción de la comida. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | origen_descripcion | VARCHAR(MAX) | Descripción de origen o tradición. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -329,7 +329,7 @@ Almacena lugares turísticos asociados a provincias.
 | provincia_id | INT | Provincia asociada. | FK |
 | nombre | VARCHAR(160) | Nombre del lugar turístico. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | ubicacion_referencial | VARCHAR(255) | Ubicación referencial. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -359,7 +359,7 @@ Almacena comidas típicas asociadas a provincias.
 | provincia_id | INT | Provincia asociada. | FK |
 | nombre | VARCHAR(160) | Nombre de la comida típica. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | origen_descripcion | VARCHAR(MAX) | Origen o tradición. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -389,7 +389,7 @@ Almacena lugares turísticos asociados a distritos.
 | distrito_id | INT | Distrito asociado. | FK |
 | nombre | VARCHAR(160) | Nombre del lugar turístico. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | ubicacion_referencial | VARCHAR(255) | Ubicación referencial. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -419,7 +419,7 @@ Almacena comidas típicas asociadas a distritos.
 | distrito_id | INT | Distrito asociado. | FK |
 | nombre | VARCHAR(160) | Nombre de la comida típica. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | origen_descripcion | VARCHAR(MAX) | Origen o tradición. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -449,7 +449,7 @@ Almacena lugares turísticos asociados a ciudades.
 | ciudad_id | INT | Ciudad asociada. | FK |
 | nombre | VARCHAR(160) | Nombre del lugar turístico. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | ubicacion_referencial | VARCHAR(255) | Ubicación referencial. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 
@@ -479,7 +479,7 @@ Almacena comidas típicas asociadas a ciudades.
 | ciudad_id | INT | Ciudad asociada. | FK |
 | nombre | VARCHAR(160) | Nombre de la comida típica. | NOT NULL |
 | descripcion | VARCHAR(MAX) | Descripción. | NULL |
-| imagen | VARCHAR(255) | Ruta de imagen. | NULL |
+| imagen | VARCHAR(255) | URL HTTPS de Cloudinary o ruta local. | NULL |
 | origen_descripcion | VARCHAR(MAX) | Origen o tradición. | NULL |
 | fecha_creacion | DATETIME | Fecha de creación. | DEFAULT GETDATE() |
 

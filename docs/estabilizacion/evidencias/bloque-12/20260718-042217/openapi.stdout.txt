@@ -1,0 +1,3 @@
+﻿Rutas reales: 70
+Operaciones OpenAPI: 70
+[OK] OpenAPI sincronizado 70/70.

@@ -34,6 +34,24 @@ const parseOptionalInteger = (value, variableName) => {
   return parsedValue;
 };
 
+const parseOptionalBoolean = (value, variableName, defaultValue) => {
+  if (value === undefined || value === null || value.trim() === '') {
+    return defaultValue;
+  }
+
+  const normalizedValue = value.trim().toLowerCase();
+
+  if (['true', '1', 'yes', 'on'].includes(normalizedValue)) {
+    return true;
+  }
+
+  if (['false', '0', 'no', 'off'].includes(normalizedValue)) {
+    return false;
+  }
+
+  throw new Error(`${variableName} debe ser true o false`);
+};
+
 const parseAllowedOrigins = () => {
   const rawOrigins =
     process.env.FRONTEND_URLS ||
@@ -83,6 +101,16 @@ const parseImageStorage = () => {
 
 const port = parseOptionalInteger(process.env.PORT || '5000', 'PORT');
 const dbPort = parseOptionalInteger(process.env.DB_PORT, 'DB_PORT');
+const dbEncrypt = parseOptionalBoolean(
+  process.env.DB_ENCRYPT,
+  'DB_ENCRYPT',
+  false
+);
+const dbTrustServerCertificate = parseOptionalBoolean(
+  process.env.DB_TRUST_SERVER_CERTIFICATE,
+  'DB_TRUST_SERVER_CERTIFICATE',
+  true
+);
 const frontendUrls = parseAllowedOrigins();
 const imageStorage = parseImageStorage();
 
@@ -99,7 +127,9 @@ export const env = Object.freeze({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     instance: process.env.DB_INSTANCE || undefined,
-    port: dbPort
+    port: dbPort,
+    encrypt: dbEncrypt,
+    trustServerCertificate: dbTrustServerCertificate
   }),
   jwt: Object.freeze({
     secret: process.env.JWT_SECRET,

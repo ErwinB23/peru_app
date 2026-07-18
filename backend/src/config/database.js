@@ -17,8 +17,8 @@ const config = {
   user: env.db.user,
   password: env.db.password,
   options: {
-    encrypt: false,
-    trustServerCertificate: true,
+    encrypt: env.db.encrypt,
+    trustServerCertificate: env.db.trustServerCertificate,
     enableArithAbort: true
   },
   pool: {

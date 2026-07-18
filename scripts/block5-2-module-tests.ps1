@@ -1,4 +1,4 @@
-param(
+﻿param(
     [switch]$OpenReport
 )
 
@@ -60,8 +60,8 @@ foreach ($suite in $results.testResults) {
 
 $checks = @(
     @{ Name = 'Suites'; Value = [int]$results.numPassedTestSuites; Minimum = 14 },
-    @{ Name = 'Pruebas totales'; Value = [int]$results.numPassedTests; Minimum = 376 },
-    @{ Name = 'Pruebas unitarias'; Value = $unit; Minimum = 351 },
+    @{ Name = 'Pruebas totales'; Value = [int]$results.numPassedTests; Minimum = 388 },
+    @{ Name = 'Pruebas unitarias'; Value = $unit; Minimum = 363 },
     @{ Name = 'Pruebas de integracion'; Value = $integration; Minimum = 25 },
     @{ Name = 'Statements'; Value = [double]$total.statements.pct; Minimum = 80 },
     @{ Name = 'Branches'; Value = [double]$total.branches.pct; Minimum = 70 },

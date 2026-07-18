@@ -1,52 +1,60 @@
 # Estructura final del repositorio PERU APP
 
-## Directorios obligatorios
+## Estructura obligatoria
 
 ```text
 PERU_APP_FINAL/
-├── .github/                 # Integracion continua
-├── .specify/                # Plantillas y memoria de Spec Kit
-├── .speckit/                # Comandos de Spec Kit
-├── backend/                 # API Node.js y pruebas
-├── database/                # Migraciones y mantenimiento SQL Server
-├── docs/                    # Evidencias y documentacion complementaria
-├── frontend/                # React y pruebas E2E
-├── scripts/                 # Automatizacion de calidad y despliegue
-├── specs/                   # Especificaciones SDD 001 y 002
-├── tests/                   # Postman y credenciales QA de ejemplo
+├── .github/
+├── .specify/
+├── .speckit/
+├── backend/
+│   ├── scripts/
+│   ├── src/
+│   ├── tests/
+│   └── uploads/       # Solo carpetas y .gitkeep
+├── database/
+├── docs/
+├── frontend/
+├── scripts/
+├── specs/
+├── tests/
 ├── .gitignore
 └── README.md
 ```
 
-## Elementos que deben salir de la raiz
+## Estado de almacenamiento
 
-- `phase0-backups/`: contiene copias ZIP completas anteriores a la estabilizacion. Se conserva fuera del proyecto como respaldo historico.
-- `CIERRE_FASES_0_A_3_SDD/`: paquete antiguo de aplicacion; sus artefactos vigentes ya existen en `docs/` y `specs/`.
-- `backup-documentacion-sdd-*`: copia antigua de documentos ya incorporados.
-- `LEEME_BLOQUE_*.md`, manifiestos y validaciones internas: instrucciones temporales de los paquetes aplicados.
+- Cloudinary es el almacenamiento persistente.
+- `backend/uploads` queda disponible solo para modo local.
+- Git conserva la estructura mediante `.gitkeep`.
+- Las imágenes reales están excluidas.
+- No se debe borrar `.gitkeep`.
 
-## Elementos regenerables
+## No deben estar en la raíz
 
-Pueden eliminarse antes de crear un ZIP o desplegar:
+- `LEEME_BLOQUE_*.md`.
+- Manifiestos temporales.
+- ZIP, BAK o respaldos.
+- `node_modules`.
+- `dist` o `.vite`.
+- `.env`.
+- reportes regenerables.
 
-- `frontend/dist/`
-- `frontend/.vite/`
-- `backend/reports/`
-- `frontend/reports/`
+## Directorios esenciales
 
-Los reportes finales relevantes se preservan en `docs/evidencias/pruebas-finales/`.
+- `.specify`, `.speckit` y `specs`: SDD con Spec Kit.
+- `.github`: integración continua.
+- `database`: scripts SQL.
+- `docs`: evidencias.
+- `tests`: Postman y ejemplos QA.
+- `scripts`: puertas de calidad y despliegue.
 
-## Elementos locales que no deben subirse
+## Archivos locales
 
-- `.env` reales.
-- `node_modules/`.
-- `backend/uploads/` mientras se migra a Cloudinary.
-- Credenciales QA locales.
-- ZIP, BAK y respaldos.
+`.git` permanece en la carpeta de trabajo, pero se excluye de cualquier ZIP compartido.
 
-## Elementos que no se deben borrar todavía
+Los `.env` permanecen localmente y están ignorados por Git.
 
-- `.git/`: necesario para continuar trabajando localmente; se excluye solo de los ZIP compartidos.
-- `backend/uploads/`: puede estar referenciado por la base de datos local. Se retirara despues de migrar todas las imagenes a Cloudinary.
-- `docs/estabilizacion/evidencias/`: demuestra pruebas, cobertura y cierre SDD.
-- `.specify/`, `.speckit/` y `specs/`: demuestran el proceso SDD con Spec Kit.
+## Estado previo a Azure
+
+La raíz está ordenada, Cloudinary está integrado, la base local está limpia y la siguiente modificación funcional corresponde al cifrado de Azure SQL.

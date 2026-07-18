@@ -17,7 +17,8 @@
     "pretest:api": "node scripts/ensureReportDirs.js",
     "cloudinary:check": "node scripts/checkCloudinary.js",
     "cloudinary:migrate:dry": "node scripts/migrateLocalImagesToCloudinary.js --dry-run",
-    "cloudinary:migrate": "node scripts/migrateLocalImagesToCloudinary.js --apply"
+    "cloudinary:migrate": "node scripts/migrateLocalImagesToCloudinary.js --apply",
+    "db:config:check": "node scripts/checkDatabaseConfig.js"
   },
   "keywords": [
     "api",

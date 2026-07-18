@@ -126,7 +126,7 @@ body{font-family:Arial,sans-serif;margin:32px;color:#1f2937}h1{margin-bottom:4px
 </html>`;
 };
 
-const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+const npxCommand = 'npx';
 const newmanVersion = process.env.NEWMAN_VERSION || '6.2.2';
 const args = [
   '--yes',
@@ -148,7 +148,10 @@ try {
     cwd: process.cwd(),
     env: process.env,
     encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe']
+    stdio: ['ignore', 'pipe', 'pipe'],
+    // En Windows, npx es un archivo .cmd y necesita ejecutarse mediante cmd.exe.
+    shell: process.platform === 'win32',
+    windowsHide: true
   });
 
   if (result.stdout) process.stdout.write(result.stdout);

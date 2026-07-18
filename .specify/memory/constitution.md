@@ -1,8 +1,8 @@
-# Constitución del Proyecto PERU APP
+﻿# Constitución del Proyecto PERU APP
 
-**Versión:** 1.3.0  
-**Fecha de actualización:** 15 de julio de 2026  
-**Cambio principal:** Se formaliza la puerta de cierre SDD, la medición global de pruebas y la separación entre cierre pre-despliegue y aceptación en producción.  
+**Versión:** 1.4.0  
+**Fecha de actualización:** 18 de julio de 2026  
+**Cambio principal:** Se formaliza Cloudinary como almacenamiento persistente de imágenes, la línea base de datos limpia y la puerta documental previa a Azure SQL.  
 
 ## 1. Nombre del proyecto
 
@@ -107,6 +107,10 @@ Una tarea no se considera terminada solo porque exista documentación o código.
 
 La Constitución, `spec.md`, `plan.md`, `tasks.md`, OpenAPI, rutas, pruebas y matriz de trazabilidad deben describir el mismo comportamiento. Cuando se detecte una contradicción, el estado se registra como brecha y no se oculta mediante una marca de tarea completada.
 
+### 3.18. Persistencia de imágenes en producción
+
+Las imágenes cargadas por los administradores deben almacenarse en un servicio persistente externo cuando la aplicación se despliegue. Cloudinary es el proveedor oficial de producción. SQL Server almacena la URL HTTPS y el backend conserva el control de carga, validación, reemplazo y eliminación. El modo local de `backend/uploads` se admite únicamente para desarrollo o contingencia y no constituye almacenamiento permanente en Render.
+
 ## 4. Tecnologías oficiales del proyecto
 
 Las tecnologías definidas para PERU APP son:
@@ -122,6 +126,8 @@ Las tecnologías definidas para PERU APP son:
 - Documentación SDD: GitHub Spec Kit.
 - Editor de desarrollo: Visual Studio Code.
 - Gestor de paquetes: npm.
+- Almacenamiento de imágenes en producción: Cloudinary.
+- Despliegue objetivo: Vercel, Render y Azure SQL.
 
 ## 5. Módulos principales del sistema
 
