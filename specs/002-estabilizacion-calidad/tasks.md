@@ -1,4 +1,4 @@
-# Tareas de Estabilización y Cierre — TASKS-002
+﻿# Tareas de Estabilización y Cierre — TASKS-002
 
 ## Leyenda
 
@@ -77,7 +77,7 @@
 
 ## G. Despliegue
 
-- [ ] **T-EST-070** Revisar y corregir vulnerabilidades de producción sin `--force`.
+- [x] **T-EST-070** Revisar y corregir vulnerabilidades de produccion sin `--force`.
 - [ ] **T-EST-071** Integrar Cloudinary y probar ciclo remoto de imágenes.
 - [ ] **T-EST-072** Crear Azure SQL y migrar esquema/datos.
 - [ ] **T-EST-073** Desplegar backend en Render.
@@ -86,3 +86,4 @@
 - [ ] **T-EST-076** Ejecutar Newman y Playwright contra producción.
 - [ ] **T-EST-077** Registrar URLs, capturas y logs.
 - [ ] **T-EST-078** Marcar aceptación final de producción.
+

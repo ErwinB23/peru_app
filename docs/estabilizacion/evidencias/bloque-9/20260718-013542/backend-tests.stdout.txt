@@ -1,0 +1,39 @@
+
+> backend-peru-departamentos@1.0.0 pretest:coverage
+> node scripts/ensureReportDirs.js
+
+
+> backend-peru-departamentos@1.0.0 test:coverage
+> node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --coverage --json --outputFile=reports/jest/results.json
+
+---------------------------------------|---------|----------|---------|---------|-------------------------------------------------------
+File                                   | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                     
+---------------------------------------|---------|----------|---------|---------|-------------------------------------------------------
+All files                              |    91.2 |    87.01 |   96.85 |   91.08 |                                                       
+ controllers                           |   90.73 |    87.92 |     100 |   90.73 |                                                       
+  authController.js                    |     100 |      100 |     100 |     100 |                                                       
+  ciudadController.js                  |   86.02 |    79.82 |     100 |   86.02 | 99,110,139,181,191,208,222,228,235,266,276,282,292    
+  comidaTipicaCiudadController.js      |   90.74 |    91.89 |     100 |   90.74 | 37,70,79,104,113                                      
+  comidaTipicaController.js            |   89.58 |    87.09 |     100 |   89.58 | 38,59,68,93,102                                       
+  comidaTipicaDistritoController.js    |   90.74 |    89.18 |     100 |   90.74 | 38,71,80,105,114                                      
+  comidaTipicaProvinciaController.js   |   90.74 |    91.89 |     100 |   90.74 | 38,71,80,105,114                                      
+  departamentoController.js            |     100 |    93.93 |     100 |     100 | 82,91                                                 
+  distritoController.js                |   83.52 |     79.8 |     100 |   83.52 | 60,71,100,148,157,173,188,194,200,209,238,248,254,264 
+  lugarTuristicoCiudadController.js    |   90.74 |    89.18 |     100 |   90.74 | 37,70,79,104,113                                      
+  lugarTuristicoController.js          |   90.74 |    82.25 |     100 |   90.74 | 38,76,85,131,140                                      
+  lugarTuristicoDistritoController.js  |   90.74 |    91.89 |     100 |   90.74 | 38,71,80,105,114                                      
+  lugarTuristicoProvinciaController.js |   90.74 |    89.18 |     100 |   90.74 | 38,71,80,105,114                                      
+  provinciaController.js               |   87.67 |    90.16 |     100 |   87.67 | 54,121,131,152,167,174,202,212,228                    
+  userController.js                    |   95.45 |      100 |     100 |   95.45 | 36,57,132                                             
+ middlewares                           |   91.41 |    89.01 |   84.21 |   91.35 |                                                       
+  authMiddleware.js                    |     100 |      100 |     100 |     100 |                                                       
+  dataIntegrityMiddleware.js           |   98.27 |    93.33 |     100 |   98.27 | 90                                                    
+  roleMiddleware.js                    |     100 |      100 |     100 |     100 |                                                       
+  uploadMiddleware.js                  |   81.42 |    78.37 |   66.66 |   81.15 | 19,29-42,48-58                                        
+ utils                                 |     100 |    92.59 |     100 |     100 |                                                       
+  fileCleanup.js                       |     100 |    91.66 |     100 |     100 | 14                                                    
+  httpErrors.js                        |     100 |    92.45 |     100 |     100 | 4,121,148                                             
+  imageLifecycle.js                    |     100 |    93.75 |     100 |     100 | 50                                                    
+ validators                            |   86.82 |       74 |   94.44 |   85.34 |                                                       
+  validationMiddleware.js              |   86.82 |       74 |   94.44 |   85.34 | 42,50,54,82,92-93,98-99,118,136-137,191-202           
+---------------------------------------|---------|----------|---------|---------|-------------------------------------------------------
