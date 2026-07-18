@@ -1,0 +1,11 @@
+333ea500ad7548e801e33f2161d4b8c0ec450294aca8d322997561097ba9cb32  ./.github/workflows/quality.yml
+ad83df0d8e1fe644c6876c6d014dae6d5a7965514965ee2462a84633032cd534  ./backend/package-lock.json
+d5831fffa011900ad11325ab9c9063c3c208d93f8ff8bb89d580ab7d0c3f2a38  ./backend/package.json
+b57707b4ebcd49d3d9e57d311f4c1fd399a5643165b79a9381a93417815c87b1  ./backend/scripts/runNewman.js
+bfaed388c4069326010d0797aada0ff9430758b72ad0e5aa27b3dee8aac77f50  ./docs/estabilizacion/bloque-9/MANIFEST-SHA256.txt
+6a5f2a16fa1a47c035221593959c98edac150cb01c33d0ea4e5e6f9e0e4ecbd1  ./docs/estabilizacion/bloque-9/README.md
+64a22cb72da7766a9595d696fe5982085ffa2ff8f98895a3c7b87227dc0dec0d  ./docs/estabilizacion/bloque-9/VALIDACION.md
+db74dbb40f4376a455d4078bcf8f12602e4dceb62539cdd75589a76f772c9824  ./frontend/package-lock.json
+4e11fa4e4ffd9d05e0dc50dd03371701919a682f6af4950dafc8dfd1eb4f9437  ./frontend/package.json
+e6f1e3b666ead11fcbe7a395400e317c134615fe2a0dc8cb19248088ebda35a5  ./scripts/block9-dependency-security.ps1
+ee070ace849ffa970c68efedc3c0242339293c45cfca8b9ed67e578025cc1a30  ./specs/002-estabilizacion-calidad/checklists/dependency-security-checklist.md

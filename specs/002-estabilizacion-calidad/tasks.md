@@ -72,6 +72,8 @@
 - [x] **T-EST-065** Crear revisión final y checklist de cierre.
 - [x] **T-EST-066** Crear puerta automática `block6-sdd-closure.ps1`.
 - [~] **T-EST-067** Ejecutar la puerta en la computadora del desarrollador y archivar evidencia.
+- [x] **T-EST-068** Optimizar imagenes estaticas y video del frontend para despliegue.
+- [~] **T-EST-069** Ejecutar build, revision visual y archivar evidencia de optimizacion.
 
 ## G. Despliegue
 
