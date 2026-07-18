@@ -62,3 +62,21 @@ BEGIN CATCH
     THROW;
 END CATCH;
 GO
+
+
+
+USE PeruDepartamentosDB;
+GO
+
+UPDATE Usuarios
+SET rol = 'admin'
+WHERE email = 'brayam231000@gmail.com';
+GO
+
+SELECT id, nombres, apellidos, email, rol
+FROM Usuarios;
+GO
+
+
+
+select * from Usuarios

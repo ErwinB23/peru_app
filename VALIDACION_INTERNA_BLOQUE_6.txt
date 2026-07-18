@@ -1,6 +1,0 @@
-BLOQUE 6 - VALIDACION DE PAQUETE
-- OpenAPI generado: 70 operaciones.
-- Rutas Express inventariadas: 70 operaciones.
-- Pruebas de referencia Bloque 5.2: 14 suites / 376 casos.
-- Cobertura de referencia: S91.20 B87.01 F96.85 L91.08.
-- El resultado definitivo debe generarse con block6-sdd-closure.ps1 en el proyecto real.

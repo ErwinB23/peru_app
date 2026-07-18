@@ -1,0 +1,14 @@
+<testsuites id="" name="" tests="4" failures="0" skipped="0" errors="0" time="23.458188999999997">
+<testsuite name="admin.spec.js" timestamp="2026-07-15T05:38:54.226Z" hostname="chromium" tests="1" failures="0" skipped="0" time="7.659" errors="0">
+<testcase name="administrador crea y elimina un departamento temporal" classname="admin.spec.js" time="7.659">
+</testcase>
+</testsuite>
+<testsuite name="auth.spec.js" timestamp="2026-07-15T05:38:54.226Z" hostname="chromium" tests="3" failures="0" skipped="0" time="13.603" errors="0">
+<testcase name="una URL protegida redirige al login sin sesion" classname="auth.spec.js" time="1.19">
+</testcase>
+<testcase name="login invalido muestra un mensaje controlado" classname="auth.spec.js" time="5.56">
+</testcase>
+<testcase name="usuario inicia sesion, navega y cierra sesion" classname="auth.spec.js" time="6.853">
+</testcase>
+</testsuite>
+</testsuites>
