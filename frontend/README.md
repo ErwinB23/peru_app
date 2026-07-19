@@ -1,16 +1,26 @@
-# React + Vite
+# Frontend — PERU APP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz web turístico-educativa para explorar y administrar información territorial, turística y gastronómica del Perú. Consume la API REST de PERU APP y protege las rutas de usuario y administración desde la interfaz.
 
-Currently, two official plugins are available:
+## Tecnologías
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 y Vite.
+- JavaScript, HTML y CSS propio.
+- React Router, Axios, Leaflet y Lucide React.
+- No utiliza Tailwind CSS.
 
-## React Compiler
+## Configuración y comandos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+La URL de la API se configura con `VITE_API_URL`; no se deben versionar valores privados.
 
-## Expanding the ESLint configuration
+```powershell
+cd frontend
+npm ci
+npm run dev
+npm run lint
+npm run build
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Despliegue
+
+El frontend se despliega en Vercel. [`vercel.json`](./vercel.json) configura la reescritura SPA para que las rutas internas de React se recarguen sin responder 404.

@@ -50,7 +50,7 @@ PERU APP permite:
 4. Explorar departamentos del Perú.
 5. Explorar provincias asociadas a departamentos.
 6. Explorar distritos asociados a provincias.
-7. Explorar ciudades asociadas a departamentos.
+7. Explorar ciudades asociadas a distritos, dentro de la jerarquía territorial de provincias y departamentos.
 8. Visualizar lugares turísticos.
 9. Visualizar comidas típicas.
 10. Consultar detalle completo de lugares turísticos.
@@ -289,13 +289,13 @@ El sistema debe permitir consultar distritos asociados a provincias.
 
 ### RF-010. Exploración de ciudades
 
-El sistema debe permitir consultar ciudades asociadas a departamentos.
+El sistema debe permitir consultar ciudades asociadas a distritos. La provincia y el departamento se obtienen mediante la jerarquía territorial.
 
 **Criterios de aceptación:**
 
 - El usuario debe poder acceder al módulo de ciudades.
 - El sistema debe mostrar ciudades registradas.
-- Las ciudades deben estar asociadas a un departamento.
+- Las ciudades deben estar asociadas a un distrito existente; su provincia y departamento se derivan de la jerarquía territorial.
 
 ---
 
@@ -395,7 +395,7 @@ El sistema debe permitir al administrador gestionar ciudades.
 **Criterios de aceptación:**
 
 - El administrador debe poder crear, editar y eliminar ciudades.
-- Cada ciudad debe asociarse a un departamento.
+- Cada ciudad debe asociarse a un distrito existente; su provincia y departamento se derivan de la jerarquía territorial.
 - Los datos deben visualizarse correctamente en el módulo correspondiente.
 
 ---

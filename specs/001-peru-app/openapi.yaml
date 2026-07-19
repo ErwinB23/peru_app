@@ -2,14 +2,14 @@ openapi: 3.0.3
 info:
   title: PERU APP API REST
   version: 2.0.0
-  description: Contrato sincronizado con las 70 operaciones HTTP reales del backend al cierre SDD pre-despliegue.
+  description: Contrato sincronizado con las 70 operaciones HTTP reales del backend para la versión desplegada y validada funcionalmente.
     Todas las funciones de negocio, salvo registro e inicio de sesión, requieren JWT. GET /health es una excepción
     técnica pública.
 servers:
 - url: http://localhost:5000/api
   description: Desarrollo local
-- url: https://YOUR-RENDER-SERVICE.onrender.com/api
-  description: Producción; reemplazar al desplegar
+- url: https://peru-app-backend.onrender.com/api
+  description: Producción validada
 tags:
 - name: Health
   description: Estado técnico mínimo del servicio.

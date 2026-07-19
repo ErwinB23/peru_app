@@ -140,7 +140,7 @@ Las carpetas `backend/uploads/**` se conservan vacías mediante archivos `.gitke
 ### Backend
 
 ```powershell
-cd C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\backend
+cd backend
 Copy-Item .env.example .env
 npm ci
 npm run db:config:check
@@ -175,7 +175,7 @@ CLOUDINARY_FOLDER=peru-app/production
 ### Frontend
 
 ```powershell
-cd C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\frontend
+cd frontend
 Copy-Item .env.example .env
 npm ci
 npm run dev

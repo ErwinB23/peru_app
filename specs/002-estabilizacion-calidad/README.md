@@ -36,8 +36,6 @@ La evidencia técnica de Jest, cobertura, OpenAPI, lint y build está archivada.
 ## Validación recomendada
 
 ```powershell
-cd C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL
-
 git branch --show-current
 
 cd backend
