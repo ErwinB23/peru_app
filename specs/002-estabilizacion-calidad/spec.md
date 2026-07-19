@@ -7,7 +7,7 @@
 - **Estado:** implementada, desplegada y validada funcionalmente
 - **Fecha de cierre:** 18 de julio de 2026
 - **Especificación base:** `specs/001-peru-app/spec.md`
-- **Constitución:** `.specify/memory/constitution.md` v1.4.0
+- **Constitución:** `.specify/memory/constitution.md` v1.6.0
 - **Versión candidata:** 1.0.0
 
 ## 2. Propósito

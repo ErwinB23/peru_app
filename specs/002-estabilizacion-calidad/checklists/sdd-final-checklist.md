@@ -2,7 +2,7 @@
 
 ## Artefactos
 
-- [x] Constitución v1.4.0.
+- [x] Constitución v1.6.0.
 - [x] `spec.md`.
 - [x] `plan.md`.
 - [x] `tasks.md`.

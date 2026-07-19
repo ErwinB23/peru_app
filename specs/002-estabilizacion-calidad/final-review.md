@@ -10,7 +10,7 @@ La fuente de verdad SDD está consolidada; el contrato API refleja el código; l
 
 | Área | Estado | Observación |
 |---|---|---|
-| Constitución | Conforme | v1.4.0. |
+| Constitución | Conforme | v1.6.0. |
 | Especificaciones | Conforme | SPEC-001 funcional y SPEC-002 de estabilización/despliegue. |
 | Plan y tareas | Conforme | Estados finales actualizados. |
 | Arquitectura | Conforme | React/Vite/CSS, Express, AWS RDS y Cloudinary. |
@@ -53,6 +53,12 @@ La fuente de verdad SDD está consolidada; el contrato API refleja el código; l
 6. Newman no fue repetido contra producción para evitar cuentas QA temporales.
 
 Los riesgos están documentados, no invalidan las funciones probadas y cuentan con medidas de control o mejoras propuestas.
+
+## Pendientes futuros de automatización y gobierno
+
+1. Decidir si se elimina la referencia histórica a `003-despliegue-cloud` del workflow de calidad.
+2. Integrar la sincronización OpenAPI y los flujos E2E en CI.
+3. Completar evidencia verificable de respaldo y restauración de SQL Server, sin versionar datos sensibles.
 
 ## Condiciones de entrega
 

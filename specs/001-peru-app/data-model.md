@@ -52,7 +52,7 @@ El sistema maneja información sobre:
 | E-002 | Departamentos | Almacena departamentos del Perú. |
 | E-003 | Provincias | Almacena provincias asociadas a departamentos. |
 | E-004 | Distritos | Almacena distritos asociados a provincias. |
-| E-005 | Ciudades | Almacena ciudades asociadas a departamentos. |
+| E-005 | Ciudades | Almacena ciudades asociadas a distritos; provincia y departamento se obtienen por la jerarquía territorial. |
 | E-006 | LugaresTuristicos | Almacena lugares turísticos asociados a departamentos. |
 | E-007 | ComidasTipicas | Almacena comidas típicas asociadas a departamentos. |
 | E-008 | LugaresTuristicosProvincias | Almacena lugares turísticos asociados a provincias. |
@@ -123,7 +123,7 @@ Almacena la información general de los departamentos del Perú.
 #### Reglas
 
 - Un departamento puede tener muchas provincias.
-- Un departamento puede tener muchas ciudades.
+- Un departamento puede tener muchas ciudades de forma indirecta, mediante sus provincias y distritos.
 - Un departamento puede tener muchos lugares turísticos.
 - Un departamento puede tener muchas comidas típicas.
 - La introducción turística puede ser editada desde el panel administrador.
@@ -206,14 +206,14 @@ Almacena distritos asociados a una provincia.
 
 #### Descripción
 
-Almacena ciudades asociadas a departamentos.
+Almacena ciudades asociadas directamente a distritos. La provincia y el departamento se obtienen mediante la jerarquía territorial.
 
 #### Campos principales
 
 | Campo | Tipo sugerido | Descripción | Restricción |
 |---|---|---|---|
 | id | INT | Identificador único de la ciudad. | PK, Identity |
-| departamento_id | INT | Departamento al que pertenece. | FK |
+| distrito_id | INT | Distrito al que pertenece. | FK |
 | nombre | VARCHAR(120) | Nombre de la ciudad. | NOT NULL |
 | actividad_principal | VARCHAR(180) | Actividad principal de la ciudad. | NULL |
 | atractivo_turistico | VARCHAR(180) | Atractivo turístico destacado. | NULL |
@@ -224,7 +224,8 @@ Almacena ciudades asociadas a departamentos.
 
 #### Reglas
 
-- Una ciudad pertenece a un departamento.
+- Una ciudad pertenece a un distrito.
+- La provincia y el departamento de la ciudad se obtienen a través del distrito y su provincia.
 - Una ciudad puede tener lugares turísticos y comidas típicas asociadas.
 
 #### Requerimientos relacionados
@@ -503,7 +504,7 @@ Almacena comidas típicas asociadas a ciudades.
 |---|---|---|
 | Departamentos → Provincias | 1 a N | Un departamento tiene muchas provincias. |
 | Provincias → Distritos | 1 a N | Una provincia tiene muchos distritos. |
-| Departamentos → Ciudades | 1 a N | Un departamento tiene muchas ciudades. |
+| Distritos → Ciudades | 1 a N | Un distrito tiene muchas ciudades. La provincia y el departamento se derivan de la jerarquía territorial. |
 
 ### 6.2. Relaciones turísticas y gastronómicas por departamento
 
@@ -545,12 +546,12 @@ Departamentos
   ├── Provincias
   │     ├── Distritos
   │     │     ├── LugaresTuristicosDistritos
-  │     │     └── ComidasTipicasDistritos
+  │     │     ├── ComidasTipicasDistritos
+  │     │     └── Ciudades
+  │     │           ├── LugaresTuristicosCiudades
+  │     │           └── ComidasTipicasCiudades
   │     ├── LugaresTuristicosProvincias
   │     └── ComidasTipicasProvincias
-  ├── Ciudades
-  │     ├── LugaresTuristicosCiudades
-  │     └── ComidasTipicasCiudades
   ├── LugaresTuristicos
   └── ComidasTipicas
 ```
@@ -577,7 +578,7 @@ Un distrito debe estar asociado a una provincia existente.
 
 ### RI-005. Integridad de ciudad
 
-Una ciudad debe estar asociada a un departamento existente.
+Una ciudad debe estar asociada a un distrito existente. La provincia y el departamento se determinan mediante la jerarquía territorial.
 
 ### RI-006. Integridad turística departamental
 
