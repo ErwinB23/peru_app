@@ -1,8 +1,8 @@
 ﻿# Constitución del Proyecto PERU APP
 
-**Versión:** 1.4.0  
+**Versión:** 1.5.0  
 **Fecha de actualización:** 18 de julio de 2026  
-**Cambio principal:** Se formaliza Cloudinary como almacenamiento persistente de imágenes, la línea base de datos limpia y la puerta documental previa a Azure SQL.  
+**Cambio principal:** Se actualiza la arquitectura de producción a Vercel, Render, AWS RDS for SQL Server y Cloudinary; se formaliza la evolución incremental de especificaciones y el uso supervisado de OpenAI Codex CLI con GitHub Spec Kit.  
 
 ## 1. Nombre del proyecto
 
@@ -57,13 +57,14 @@ El sistema debe implementar autenticación, protección de rutas y control de ac
 
 ### 3.8.1. Autenticación obligatoria para el acceso al sistema
 
-El acceso a PERU APP requiere una sesión autenticada. Las únicas operaciones funcionales públicas permitidas son el registro y el inicio de sesión. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública, siempre que devuelva únicamente el estado general del servicio y no exponga datos de negocio, credenciales, conteos, servidor, base de datos ni detalles internos.
+El acceso a las funciones operativas de PERU APP requiere una sesión autenticada. Se permiten como contenido público la página de presentación, el registro, el inicio de sesión y páginas informativas estáticas que no consulten ni expongan datos protegidos. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública, siempre que devuelva únicamente el estado general del servicio y no exponga datos de negocio, credenciales, conteos, servidor, base de datos ni detalles internos.
 
 La protección visual del frontend no sustituye la protección del backend. Cada endpoint protegido debe validar el token, comprobar que el usuario aún existe en la base de datos y utilizar el rol vigente almacenado en SQL Server. Un usuario eliminado, un token expirado o un administrador cuyo rol haya cambiado no debe conservar acceso mediante información antigua contenida en el token.
 
 Política de acceso oficial:
 
-- Público funcional: `POST /api/auth/register` y `POST /api/auth/login`.
+- Público informativo: portada, registro, inicio de sesión y páginas estáticas sin datos protegidos.
+- Público funcional de API: `POST /api/auth/register` y `POST /api/auth/login`.
 - Público técnico: `GET /api/health`, exclusivamente con una respuesta mínima y no sensible.
 - Usuario autenticado: consultas territoriales, turísticas y gastronómicas, perfil y cierre de sesión.
 - Administrador autenticado: gestión de usuarios y operaciones de creación, actualización y eliminación de contenido.
@@ -111,11 +112,37 @@ La Constitución, `spec.md`, `plan.md`, `tasks.md`, OpenAPI, rutas, pruebas y ma
 
 Las imágenes cargadas por los administradores deben almacenarse en un servicio persistente externo cuando la aplicación se despliegue. Cloudinary es el proveedor oficial de producción. SQL Server almacena la URL HTTPS y el backend conserva el control de carga, validación, reemplazo y eliminación. El modo local de `backend/uploads` se admite únicamente para desarrollo o contingencia y no constituye almacenamiento permanente en Render.
 
+### 3.19. Evolución incremental de especificaciones
+
+Las carpetas existentes dentro de `specs/` representan incrementos históricos y técnicos del sistema y no deben borrarse ni reescribirse de forma indiscriminada. `001-peru-app` conserva la línea base funcional y `002-estabilizacion-calidad` conserva la estabilización, las pruebas, la seguridad y el despliegue. Cada nueva funcionalidad o cambio relevante debe crear una especificación propia con numeración correlativa, por ejemplo `003-nombre-funcionalidad`.
+
+Solo se actualizan los artefactos históricos cuando se corrige un error documental o cuando un cambio transversal modifica explícitamente una decisión global. Los documentos globales, como la Constitución, el README, OpenAPI, el modelo de datos o la matriz de trazabilidad, deben actualizarse únicamente cuando el cambio realmente los afecte.
+
+### 3.20. Desarrollo asistido por agentes bajo supervisión humana
+
+OpenAI Codex CLI es el agente de programación integrado con GitHub Spec Kit. El agente puede leer el repositorio, generar artefactos SDD, modificar código y ejecutar validaciones dentro del sandbox, pero toda decisión final permanece bajo supervisión humana.
+
+Codex no debe realizar `git commit`, `git push`, merge, despliegues, cambios en AWS RDS, eliminaciones en Cloudinary ni operaciones destructivas sin autorización explícita. Tampoco debe leer, mostrar o versionar archivos `.env`, credenciales, tokens, contraseñas o secretos.
+
+### 3.21. Flujo obligatorio para nuevas funcionalidades
+
+Toda nueva funcionalidad relevante debe seguir, como mínimo, el flujo:
+
+1. `speckit-specify`: definir qué se construirá y por qué.
+2. `speckit-clarify`: resolver ambigüedades cuando existan.
+3. `speckit-plan`: establecer arquitectura, componentes afectados y estrategia técnica.
+4. `speckit-tasks`: generar tareas ejecutables y trazables.
+5. `speckit-analyze`: comprobar coherencia antes de implementar.
+6. `speckit-implement`: ejecutar las tareas autorizadas.
+7. `speckit-converge`: verificar brechas entre especificación, plan, tareas, código y pruebas.
+
+La generación directa de código sin especificación previa solo se permite para correcciones triviales y claramente delimitadas, y aun así debe registrarse la justificación del cambio.
+
 ## 4. Tecnologías oficiales del proyecto
 
 Las tecnologías definidas para PERU APP son:
 
-- Frontend: React, Vite, JavaScript, HTML5 y CSS3.
+- Frontend: React, Vite, JavaScript, HTML5 y CSS3 con hojas de estilo propias; Tailwind CSS no forma parte del proyecto.
 - Backend: Node.js y Express.js.
 - Base de datos: SQL Server.
 - API: REST con respuestas JSON.
@@ -124,10 +151,11 @@ Las tecnologías definidas para PERU APP son:
 - Iconos: Lucide React.
 - Control de versiones: Git y GitHub.
 - Documentación SDD: GitHub Spec Kit.
+- Agente de programación: OpenAI Codex CLI integrado mediante habilidades de Spec Kit.
 - Editor de desarrollo: Visual Studio Code.
 - Gestor de paquetes: npm.
 - Almacenamiento de imágenes en producción: Cloudinary.
-- Despliegue objetivo: Vercel, Render y Azure SQL.
+- Despliegue de producción: frontend en Vercel, backend en Render, base de datos SQL Server en AWS RDS e imágenes en Cloudinary.
 
 ## 5. Módulos principales del sistema
 
@@ -168,14 +196,16 @@ El sistema debe cumplir las siguientes reglas de calidad:
 
 El SDD del proyecto debe incluir como mínimo los siguientes artefactos:
 
-- `constitution.md`: principios y reglas del proyecto.
-- `spec.md`: especificación funcional del sistema.
-- `plan.md`: plan técnico de implementación.
-- `tasks.md`: tareas del desarrollo.
-- `data-model.md`: modelo de datos.
-- `openapi.yaml`: contrato de API REST.
-- `traceability-matrix.md`: matriz de trazabilidad.
-- `README-SDD.md`: resumen general del SDD.
+- `.specify/memory/constitution.md`: principios y reglas globales del proyecto.
+- `AGENTS.md`: instrucciones operativas permanentes para Codex.
+- `specs/00X-nombre-funcionalidad/spec.md`: especificación funcional del incremento.
+- `plan.md`: plan técnico de implementación del incremento.
+- `tasks.md`: tareas ejecutables y trazables.
+- `research.md`, `data-model.md`, `contracts/` y `quickstart.md`: artefactos complementarios cuando el alcance los requiera.
+- `openapi.yaml`: contrato de API REST cuando se agreguen o modifiquen endpoints.
+- `traceability-matrix.md`: relación entre requisito, diseño, código, prueba y evidencia.
+- `README.md` o `README-SDD.md`: resumen general y estado vigente del SDD.
+- Evidencias de pruebas y despliegue sin secretos ni información personal.
 
 ## 8. Criterios de aceptación de la documentación
 
@@ -202,7 +232,7 @@ El sistema depende de la información registrada por el administrador. Las rutas
 
 Esta constitución guía el desarrollo, documentación, validación y mantenimiento de PERU APP. Cualquier especificación, plan, tarea, modelo de datos, contrato API o prueba funcional debe respetar los principios definidos en este documento.
 
-## 10. Puerta de cierre SDD y despliegue
+## 11. Puerta de cierre SDD y despliegue
 
 El cierre documental de una especificación exige, como mínimo:
 
@@ -215,17 +245,28 @@ El cierre documental de una especificación exige, como mínimo:
 
 El estado **Aprobado para despliegue** no equivale a **Aceptado en producción**. La aceptación final requiere evidencias del frontend, backend, base de datos e imágenes funcionando desde sus URLs públicas.
 
-## 11. Política de métricas y evidencia
+## 12. Política de métricas y evidencia
 
 - Los porcentajes de cobertura deben indicar el conjunto real de archivos medidos.
 - Las pruebas unitarias, de integración, API y E2E deben contabilizarse por separado.
 - Los reportes generados pueden permanecer fuera de Git; el resumen verificable debe copiarse a `docs/estabilizacion/evidencias`.
 - Toda cifra incorporada al SDD debe provenir de una ejecución o de una validación interna identificada como tal.
 
-## 12. Gobierno y control de cambios
+## 13. Gobierno y control de cambios
 
 - La Constitución utiliza versionado semántico.
 - Cambios incompatibles en principios obligatorios incrementan la versión mayor.
 - Nuevas puertas de calidad incrementan la versión menor.
 - Correcciones editoriales incrementan la versión de parche.
 - Antes de fusionar la rama de estabilización se ejecutará `scripts/block6-sdd-closure.ps1 -RunQualityChecks`.
+
+
+## 14. Política de ramas y entrega asistida
+
+- `main` representa la versión estable y presentable.
+- `002-estabilizacion-calidad` es la rama base de integración y mantenimiento validado.
+- Cada nueva funcionalidad debe desarrollarse en una rama propia creada desde la base vigente.
+- La integración debe realizarse mediante Pull Request después de revisar el diff, aprobar pruebas y comprobar la trazabilidad SDD.
+- Los cambios del agente permanecen locales hasta que una persona autorice el commit y el push.
+- La creación o modificación de cuentas QA en producción no es obligatoria y no debe ejecutarse automáticamente.
+- Ningún ZIP de entrega debe contener `.git`, `node_modules`, `.env`, credenciales locales, cobertura generada, builds temporales ni respaldos privados.
