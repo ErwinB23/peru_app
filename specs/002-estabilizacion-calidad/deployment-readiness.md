@@ -1,56 +1,50 @@
-﻿# Preparación de Despliegue — PERU APP
+# Despliegue y Preparación Operativa — PERU APP
 
-## Arquitectura objetivo
+## Arquitectura desplegada
 
 | Componente | Plataforma | Estado |
 |---|---|---|
-| Frontend React/Vite/CSS | Vercel Hobby | Pendiente |
-| Backend Node/Express | Render Web Service | Pendiente |
-| SQL Server | Azure SQL Database | Pendiente |
-| Imágenes | Cloudinary | Implementado y validado localmente |
-| Repositorio/CI | GitHub + Actions | Implementado; confirmar ejecución verde |
+| Frontend React/Vite/CSS | Vercel | Desplegado y validado |
+| Backend Node/Express | Render Web Service | Desplegado y operativo |
+| SQL Server | AWS RDS for SQL Server Express | Migrado y conectado |
+| Imágenes | Cloudinary | Activo en producción |
+| Repositorio | GitHub | Conectado a despliegues |
+| Rama | `002-estabilizacion-calidad` | Rama usada para estabilización y producción |
 
-## Estado previo a Azure
+## URLs
 
-- SDD cerrado localmente.
-- OpenAPI 70/70.
-- 388 pruebas backend aprobadas.
-- Newman y Playwright sin fallos locales.
-- Auditoría npm en 0.
-- Multimedia optimizada.
-- Cloudinary integrado.
-- Base local limpia y preparada.
-- `backend/uploads` sin imágenes reales.
+- Frontend: `https://peru-app-frontend.vercel.app`
+- Backend: `https://peru-app-backend.onrender.com`
+- API base: `https://peru-app-backend.onrender.com/api`
+- Health: `https://peru-app-backend.onrender.com/api/health`
 
-## Ajuste obligatorio antes de Azure
+## Configuración de Render
 
-El código actual debe permitir configurar:
+- Root Directory: `backend`.
+- Build Command: `npm install`.
+- Start Command: `npm start`.
+- Variables privadas administradas en Render.
+- Conectividad de salida autorizada en el grupo de seguridad de AWS RDS.
 
-```env
-DB_ENCRYPT=true
-DB_TRUST_SERVER_CERTIFICATE=false
-```
-
-Ese soporte debe añadirse y probarse antes de conectar Azure SQL. No se debe documentar como implementado mientras `database.js` mantenga valores fijos locales.
-
-## Variables previstas para Render
+Variables esperadas, sin valores reales:
 
 ```env
 NODE_ENV=production
-PORT=10000
+PORT=<asignado-por-render>
 REQUEST_BODY_LIMIT=1mb
 
-DB_SERVER=<servidor>.database.windows.net
+DB_SERVER=<endpoint-rds>
 DB_DATABASE=PeruDepartamentosDB
-DB_USER=<usuario>
+DB_USER=<usuario-aplicacion>
 DB_PASSWORD=<secreto>
 DB_PORT=1433
+DB_INSTANCE=
 DB_ENCRYPT=true
-DB_TRUST_SERVER_CERTIFICATE=false
+DB_TRUST_SERVER_CERTIFICATE=true
 
 JWT_SECRET=<secreto-largo>
 JWT_EXPIRE=1d
-FRONTEND_URLS=https://<frontend>.vercel.app
+FRONTEND_URLS=https://peru-app-frontend.vercel.app
 
 IMAGE_STORAGE=cloudinary
 CLOUDINARY_CLOUD_NAME=<valor>
@@ -59,43 +53,57 @@ CLOUDINARY_API_SECRET=<secreto>
 CLOUDINARY_FOLDER=peru-app/production
 ```
 
-## Variable prevista para Vercel
+## Configuración de Vercel
+
+- Root Directory: `frontend`.
+- Framework preset: Vite.
+- Rama de producción: `002-estabilizacion-calidad`.
+- Variable:
 
 ```env
-VITE_API_URL=https://<backend>.onrender.com/api
+VITE_API_URL=https://peru-app-backend.onrender.com/api
 ```
 
-## Orden de despliegue
+La reescritura SPA se define en `frontend/vercel.json` para que las rutas React carguen `index.html` al abrirse directamente o presionar `F5`.
 
-1. Adaptar configuración SQL.
-2. Crear respaldo/BACPAC.
-3. Crear Azure SQL.
-4. Importar estructura y datos limpios.
-5. Probar el backend local contra Azure.
-6. Desplegar Render.
-7. Probar `/api/health`.
-8. Desplegar Vercel.
-9. Ajustar CORS definitivo.
-10. Ejecutar pruebas públicas.
-11. Archivar evidencias.
+## Configuración de AWS RDS
 
-## Pruebas de humo
+- Motor SQL Server Express.
+- Base `PeruDepartamentosDB`.
+- Puerto 1433.
+- Acceso limitado por grupo de seguridad.
+- No se utiliza `0.0.0.0/0`.
+- Se autoriza la IP local vigente y los rangos de salida necesarios de Render.
 
-- Health 200.
-- Login usuario y admin.
-- Consulta territorial.
-- Usuario normal administrando: 403.
-- CRUD admin representativo.
-- Duplicado: 409.
-- Carga, reemplazo y borrado en Cloudinary.
-- Logout y token inválido: 401.
-- Navegación desde otro dispositivo.
+## Validaciones completadas
+
+| Validación | Resultado |
+|---|---|
+| Health del backend | Operativo durante la validación final |
+| Conexión Render → AWS RDS | Aprobada |
+| Frontend → API Render | Aprobada |
+| CORS | Aprobado con dominio definitivo |
+| Login administrativo | Aprobado |
+| Lectura de datos e imágenes | Aprobada |
+| CRUD temporal | Aprobado |
+| Carga y eliminación de imagen | Aprobada |
+| Restricción de usuario no admin | Aprobada |
+| Logout y ruta protegida | Aprobados |
+| Recarga SPA | Aprobada |
+
+## Decisión sobre pruebas QA
+
+No se crearán nuevas cuentas QA en producción. Newman queda como herramienta disponible y evidencia histórica, pero no como puerta final de despliegue. La aceptación se apoya en Jest/Supertest, Playwright local archivado y prueba funcional manual.
 
 ## Rollback
 
-- Conservar base local.
-- Conservar BACPAC.
-- Mantener rama pre-despliegue.
-- Revertir commit de Render.
-- Restaurar variables anteriores.
-- Mantener carpeta Cloudinary de pruebas separada de producción.
+1. Identificar el último commit estable.
+2. Revertir o restaurar ese commit en `002-estabilizacion-calidad`.
+3. Confirmar el redeploy automático de Render y Vercel.
+4. Restaurar variables anteriores cuando el problema sea de configuración.
+5. Restaurar la base desde backup si existe corrupción o pérdida.
+6. Verificar `/api/health`, login y CRUD después del rollback.
+
+## Estado final
+
+La infraestructura está lista para entrega académica. El único pendiente documental es adjuntar las capturas finales sin exponer secretos.

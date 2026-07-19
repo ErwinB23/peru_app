@@ -1,29 +1,60 @@
-﻿# PERU APP
+# PERU APP
 
 Plataforma web turístico-educativa para consultar y administrar información territorial, turística y gastronómica del Perú. El proyecto fue desarrollado mediante **Spec-Driven Development (SDD)** con **GitHub Spec Kit**.
 
 ## Estado del proyecto
 
-| Área | Estado |
+**Versión de cierre:** 1.0.0 candidata a entrega académica  
+**Rama de estabilización y producción:** `002-estabilizacion-calidad`  
+**Fecha de actualización:** 18 de julio de 2026
+
+| Área | Estado verificado |
 |---|---|
-| Aplicación local | Funcional |
+| Frontend React + Vite + CSS propio | Desplegado en Vercel y validado manualmente |
+| Backend Node.js + Express | Desplegado en Render y operativo |
+| Base de datos SQL Server | Migrada a AWS RDS y conectada |
+| Imágenes | Cloudinary activo en producción |
 | Autenticación JWT y roles | Implementados y probados |
 | Validaciones e integridad | Implementadas y probadas |
-| OpenAPI | 70 operaciones sincronizadas |
-| Pruebas backend | 15 suites y 388 casos aprobados |
-| Newman | 11 solicitudes, 17 aserciones y 0 fallos |
-| Playwright | 4 flujos y 0 fallos |
-| Cobertura | S89.98 · B87.48 · F96.18 · L89.85 |
-| Auditoría npm | 0 vulnerabilidades en backend y frontend |
-| Optimización multimedia | Completada |
-| Cloudinary | Integrado y validado localmente |
-| Base local | Estructura conservada, datos reiniciados para producción |
-| Azure SQL | Pendiente |
-| Render | Pendiente |
-| Vercel | Pendiente |
-| Aceptación pública | Pendiente |
+| OpenAPI | 70 de 70 operaciones sincronizadas |
+| Pruebas backend | 15 suites y 388 pruebas aprobadas |
+| Cobertura | S 89.98 % · B 87.48 % · F 96.18 % · L 89.85 % |
+| ESLint y build Vite | Aprobados |
+| Auditoría npm | 0 vulnerabilidades reportadas en la evidencia de cierre |
+| Rutas SPA de Vercel | Configuradas mediante `frontend/vercel.json` |
+| Validación funcional en producción | Aprobada con cuentas existentes autorizadas |
+| SDD | Actualizado con arquitectura, pruebas, despliegue y trazabilidad reales |
 
-El estado correcto es **listo para iniciar la infraestructura cloud**, no “aceptado en producción”.
+El sistema está **implementado, desplegado y validado funcionalmente en producción**. Para la entrega académica solo debe completarse el anexo visual con capturas que no expongan secretos.
+
+## URLs de producción
+
+- Frontend: `https://peru-app-frontend.vercel.app`
+- Backend: `https://peru-app-backend.onrender.com`
+- API base: `https://peru-app-backend.onrender.com/api`
+- Health: `https://peru-app-backend.onrender.com/api/health`
+
+## Arquitectura de producción
+
+```text
+Usuario / navegador
+        |
+        | HTTPS
+        v
+React 19 + Vite + CSS propio
+Vercel
+        |
+        | HTTPS / JSON / JWT
+        v
+Node.js + Express
+Render
+        |
+        +------------------------+
+        |                        |
+        v                        v
+AWS RDS                    Cloudinary
+SQL Server                 Imágenes
+```
 
 ## Stack tecnológico real
 
@@ -33,7 +64,7 @@ El estado correcto es **listo para iniciar la infraestructura cloud**, no “ace
 - Vite.
 - JavaScript.
 - HTML5.
-- **CSS propio**.
+- **CSS propio**; el proyecto no utiliza Tailwind CSS.
 - Axios.
 - React Router.
 - Leaflet y OpenStreetMap.
@@ -49,38 +80,19 @@ El estado correcto es **listo para iniciar la infraestructura cloud**, no “ace
 - Multer para recepción y validación de imágenes.
 - Cloudinary para almacenamiento persistente de imágenes.
 
-### Calidad y documentación
+### Infraestructura y calidad
 
-- Jest.
-- Supertest.
-- Postman/Newman.
-- Playwright.
+- Vercel.
+- Render.
+- AWS RDS for SQL Server Express.
+- GitHub.
+- Jest y Supertest.
+- Postman/Newman como recurso de pruebas API.
+- Playwright como recurso E2E.
 - ESLint.
 - GitHub Actions.
+- OpenAPI 3.0.3.
 - GitHub Spec Kit.
-- OpenAPI.
-
-> El proyecto no utiliza Tailwind CSS.
-
-## Arquitectura
-
-```text
-React + Vite + CSS propio
-          |
-          | HTTPS / JSON / JWT
-          v
-Node.js + Express
-          |
-          +--> SQL Server local / Azure SQL pendiente
-          |
-          +--> Cloudinary
-```
-
-El backend conserva un modo local de imágenes para desarrollo, pero la producción utiliza:
-
-```env
-IMAGE_STORAGE=cloudinary
-```
 
 ## Módulos
 
@@ -114,54 +126,56 @@ PERU_APP_FINAL/
 └── README.md
 ```
 
-Las carpetas `backend/uploads/**` se conservan vacías mediante archivos `.gitkeep`. Las imágenes reales no se versionan.
+Las carpetas `backend/uploads/**` se conservan vacías mediante archivos `.gitkeep`. Las imágenes de producción se almacenan en Cloudinary y sus URL HTTPS se guardan en SQL Server.
 
-## Requisitos locales
+## Configuración local
 
-- Node.js `>=20.19.0`; entorno verificado con Node.js 24 LTS.
+### Requisitos
+
+- Node.js `>=20.19.0`.
 - npm.
-- SQL Server.
-- SQL Server Management Studio.
-- Cuenta de Cloudinary para probar almacenamiento remoto.
+- Acceso autorizado a SQL Server local o AWS RDS.
+- Variables privadas configuradas en archivos `.env` no versionados.
 
-## Configuración del backend
+### Backend
 
 ```powershell
-cd backend
+cd C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\backend
 Copy-Item .env.example .env
 npm ci
+npm run db:config:check
 npm run dev
 ```
 
-Variables principales:
+Variables principales, sin valores secretos:
 
 ```env
 PORT=5000
 NODE_ENV=development
 FRONTEND_URLS=http://localhost:5173
 
-DB_SERVER=localhost
+DB_SERVER=<servidor>
 DB_DATABASE=PeruDepartamentosDB
-DB_USER=sa
-DB_PASSWORD=TU_PASSWORD
+DB_USER=<usuario>
+DB_PASSWORD=<secreto>
 DB_PORT=1433
+DB_ENCRYPT=true
+DB_TRUST_SERVER_CERTIFICATE=true
 
-JWT_SECRET=CLAVE_LARGA_Y_SEGURA
+JWT_SECRET=<secreto-largo>
 JWT_EXPIRE=1d
 
 IMAGE_STORAGE=cloudinary
-CLOUDINARY_CLOUD_NAME=TU_CLOUD_NAME
-CLOUDINARY_API_KEY=TU_API_KEY
-CLOUDINARY_API_SECRET=TU_API_SECRET
-CLOUDINARY_FOLDER=peru-app/pruebas
+CLOUDINARY_CLOUD_NAME=<valor>
+CLOUDINARY_API_KEY=<valor>
+CLOUDINARY_API_SECRET=<secreto>
+CLOUDINARY_FOLDER=peru-app/production
 ```
 
-Nunca se debe colocar `CLOUDINARY_API_SECRET` en el frontend ni subir `.env` a GitHub.
-
-## Configuración del frontend
+### Frontend
 
 ```powershell
-cd frontend
+cd C:\Users\ACER\OneDrive\Desktop\PERU_APP_FINAL\frontend
 Copy-Item .env.example .env
 npm ci
 npm run dev
@@ -173,21 +187,29 @@ Variable local:
 VITE_API_URL=http://localhost:5000/api
 ```
 
-URLs locales:
+Variable de producción en Vercel:
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:5000`
-- Health: `http://localhost:5000/api/health`
+```env
+VITE_API_URL=https://peru-app-backend.onrender.com/api
+```
 
-## Calidad
+## Validación técnica
 
 Backend:
 
 ```powershell
 cd backend
+npm test
 npm run test:coverage
-npm audit --omit=dev
 ```
+
+Resultado de referencia archivado:
+
+- 15 suites aprobadas.
+- 388 pruebas aprobadas.
+- 363 pruebas unitarias.
+- 25 pruebas de integración HTTP con persistencia simulada.
+- Cobertura S 89.98 %, B 87.48 %, F 96.18 %, L 89.85 %.
 
 Frontend:
 
@@ -195,57 +217,61 @@ Frontend:
 cd frontend
 npm run lint
 npm run build
-npm audit --omit=dev
 ```
 
-Cierre documental posterior a Cloudinary:
+OpenAPI:
 
 ```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\scripts\block12-post-cloudinary-sdd.ps1 -RunQualityChecks -OpenReports
+node scripts/check-openapi-sync.mjs
 ```
 
-## Evidencias principales
+Resultado esperado: `Rutas reales: 70`, `Operaciones OpenAPI: 70` y sincronización `70/70`.
 
-```text
-docs/evidencias/pruebas-finales/
-docs/estabilizacion/evidencias/bloque-6/
-docs/estabilizacion/evidencias/bloque-9/
-docs/estabilizacion/evidencias/bloque-11/
-```
+## Criterio sobre Newman y cuentas QA
 
-## Datos de producción
+La colección Postman/Newman se conserva como artefacto de pruebas. La última ejecución incluida en la copia auditada no se considera evidencia final porque las cuentas QA temporales habían sido eliminadas. Para evitar crear usuarios temporales en producción, la aceptación final se realizó mediante:
 
-La base local conserva su estructura, restricciones e índices. Los registros de prueba fueron retirados y los campos `IDENTITY` se reiniciaron para comenzar desde ID 1. El procedimiento versionado se encuentra en:
+1. las pruebas Jest/Supertest aprobadas;
+2. el reporte Playwright local archivado;
+3. una validación funcional manual en producción con cuentas existentes autorizadas.
 
-```text
-database/maintenance/012-limpiar-datos-y-reiniciar-identities.sql
-```
+No se deben publicar credenciales reales ni volver a ejecutar `npm run qa:seed` contra producción.
 
-La base de Azure se preparará a partir de esta estructura limpia, conservando al menos un administrador definitivo.
+## Validación funcional de producción
 
-## Despliegue objetivo
+Se comprobó manualmente:
 
-```text
-Vercel
-  -> Render
-      -> Azure SQL
-      -> Cloudinary
-```
+- apertura del frontend;
+- login administrativo;
+- carga de datos e imágenes desde AWS RDS y Cloudinary;
+- recarga con `F5` en rutas internas;
+- creación, edición y eliminación de un registro temporal;
+- control de acceso administrativo;
+- cierre de sesión y protección de rutas;
+- ausencia de errores CORS durante el flujo validado.
 
-Antes de Azure SQL se debe adaptar la configuración de conexión para usar cifrado y certificado según variables de entorno. Actualmente esa adecuación pertenece al siguiente bloque de despliegue.
+El registro SDD se encuentra en `specs/002-estabilizacion-calidad/production-validation.md`.
 
-## Seguridad del repositorio
+## Documentación SDD
 
-No versionar:
+- Especificación funcional base: `specs/001-peru-app/`.
+- Estabilización, calidad, seguridad y despliegue: `specs/002-estabilizacion-calidad/`.
+- Matriz de trazabilidad: `specs/002-estabilizacion-calidad/traceability-matrix.md`.
+- Revisión final: `specs/002-estabilizacion-calidad/final-review.md`.
+- Índice de evidencias: `specs/002-estabilizacion-calidad/evidence-index.md`.
+
+## Seguridad del repositorio y de la entrega
+
+No versionar ni incluir en el ZIP entregable:
 
 - `.env`.
 - Credenciales QA locales.
+- `.git`.
 - `node_modules`.
 - `dist` o `.vite`.
+- Coberturas y reportes regenerables, salvo resúmenes académicos necesarios.
 - Imágenes reales de `backend/uploads`.
-- Reportes regenerables.
-- ZIP, BAK o respaldos.
+- ZIP, BAK, scripts con datos personales o respaldos privados.
 
 ## Autor
 

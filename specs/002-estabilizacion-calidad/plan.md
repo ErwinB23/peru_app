@@ -1,32 +1,38 @@
-﻿# Plan Técnico de Cierre y Despliegue — PERU APP
+# Plan Técnico de Cierre y Despliegue — PERU APP
 
 ## 1. Identificación
 
 - **Código:** PLAN-002
 - **Especificación:** SPEC-002
-- **Estado:** cierre local post-Cloudinary
+- **Rama:** `002-estabilizacion-calidad`
+- **Estado:** ejecutado y cerrado técnicamente
 - **Fecha:** 18 de julio de 2026
 
-## 2. Estrategia
+## 2. Estrategia ejecutada
 
-La estabilización se ejecutó en incrementos verificables. Cada bloque actualizó código, pruebas y artefactos SDD. La aplicación conserva su arquitectura cliente-servidor y añade almacenamiento remoto, seguridad de dependencias y una línea base de datos limpia.
+La estabilización se realizó por incrementos verificables. Cada bloque actualizó código, pruebas y artefactos SDD. Durante la ejecución se seleccionó AWS RDS como base de datos administrada definitiva, conservando el motor SQL Server y el modelo relacional.
 
-## 3. Arquitectura vigente
+## 3. Arquitectura definitiva
 
 ```text
-React + Vite + CSS propio
-        |
-        | HTTPS / JSON / JWT
-        v
-Node.js + Express
-        |
-        +--> SQL Server local
-        |       \--> Azure SQL pendiente
-        |
-        +--> Cloudinary
+Usuario
+  |
+  v
+Vercel: React + Vite + CSS propio
+  |
+  v
+Render: Node.js + Express
+  |
+  +--> AWS RDS: SQL Server Express
+  |
+  +--> Cloudinary: imágenes
 ```
 
-El backend mantiene `IMAGE_STORAGE=local` únicamente para desarrollo y `IMAGE_STORAGE=cloudinary` para producción.
+- El frontend usa `VITE_API_URL=https://peru-app-backend.onrender.com/api`.
+- El backend usa CORS por lista de orígenes configurados.
+- La base se conecta por endpoint y puerto, sin instancia nombrada.
+- Producción usa `IMAGE_STORAGE=cloudinary`.
+- `frontend/vercel.json` reescribe las rutas SPA hacia `index.html`.
 
 ## 4. Bloques ejecutados
 
@@ -36,89 +42,107 @@ El backend mantiene `IMAGE_STORAGE=local` únicamente para desarrollo y `IMAGE_S
 | 2 | JWT, rol vigente, rutas protegidas, CORS, Helmet y health. |
 | 3 | Validación central y errores HTTP uniformes. |
 | 4 | Integridad SQL y ciclo de imágenes. |
-| 5 | Jest/Supertest, Newman, Playwright y CI. |
+| 5 | Jest/Supertest, Postman/Newman, Playwright y CI. |
 | 5.1 | Cobertura estratégica de componentes críticos. |
 | 5.2 | Cobertura ampliada de módulos funcionales. |
 | 6 | OpenAPI 70/70 y puerta de cierre SDD. |
 | 7 | Limpieza de estructura del repositorio. |
 | 8 | Optimización multimedia. |
-| 9 | Actualización segura de dependencias y auditoría 0. |
-| 10 | Preparación del repositorio para almacenamiento cloud. |
-| 11 | Integración y validación local de Cloudinary. |
-| 12 | Cierre documental posterior a Cloudinary y base limpia. |
+| 9 | Actualización segura de dependencias y auditoría. |
+| 10 | Preparación de almacenamiento y despliegue cloud. |
+| 11 | Integración de Cloudinary. |
+| 12 | Cierre documental previo al despliegue. |
+| 13 | Migración a AWS RDS. |
+| 14 | Despliegue del backend en Render. |
+| 15 | Despliegue del frontend en Vercel. |
+| 16 | CORS definitivo, reescritura SPA y validación funcional. |
+| 17 | Actualización final del SDD. |
 
-## 5. Puertas de calidad superadas
+## 5. Puertas de calidad
 
 ### QG-01 — Coherencia SDD
 
-Constitución, especificaciones, plan, tareas, contrato, casos y trazabilidad describen el comportamiento vigente.
+SPEC-001 mantiene el comportamiento funcional y SPEC-002 registra estabilización, seguridad, calidad y despliegue real.
 
 ### QG-02 — Backend
 
-- 15 suites.
-- 388 pruebas: 363 unitarias y 25 de integración.
+- 15 suites aprobadas.
+- 388 pruebas aprobadas.
+- 363 unitarias y 25 de integración HTTP con persistencia simulada.
 - Cobertura S89.98/B87.48/F96.18/L89.85.
 
 ### QG-03 — Frontend
 
 - ESLint aprobado.
 - Build Vite aprobado.
-- 4 pruebas Playwright sin fallos.
+- Reporte Playwright local archivado: 4 flujos, 0 fallos.
+- Rutas SPA validadas en Vercel con recarga directa.
 
 ### QG-04 — API
 
-- 70 operaciones sincronizadas.
-- 11 solicitudes Newman.
-- 17 aserciones y 0 fallos.
+- 70 rutas reales.
+- 70 operaciones OpenAPI.
+- Health público disponible.
+- Contrato de errores diferenciado.
 
 ### QG-05 — Dependencias
 
-- Backend producción: 0 vulnerabilidades.
-- Backend completo: 0 vulnerabilidades.
-- Frontend producción: 0 vulnerabilidades.
-- Frontend completo: 0 vulnerabilidades.
+- Locks reproducibles.
+- Auditorías sin vulnerabilidades reportadas en la evidencia de cierre.
 
-### QG-06 — Imágenes
+### QG-06 — Datos e imágenes
 
-- Firma, MIME y tamaño validados.
-- Cloudinary integrado.
+- AWS RDS conectado.
+- Cloudinary activo en producción.
 - URL HTTPS persistida en SQL Server.
-- Estructura local vacía mediante `.gitkeep`.
+- Creación, edición y eliminación temporal comprobadas.
 
-## 6. Siguiente ruta de despliegue
+### QG-07 — Producción
 
-1. Adaptar conexión SQL para cifrado configurable.
-2. Exportar la base limpia.
-3. Crear/importar Azure SQL.
-4. Probar backend local contra Azure.
-5. Configurar carpeta Cloudinary `peru-app/production`.
-6. Desplegar backend en Render.
-7. Desplegar frontend en Vercel.
-8. Configurar CORS definitivo.
-9. Ejecutar Newman y Playwright contra URLs públicas.
-10. Archivar capturas, logs y URLs.
-11. Marcar aceptación final.
+- Vercel, Render, AWS RDS y Cloudinary integrados.
+- CORS configurado con el dominio definitivo.
+- Login, consulta, CRUD, roles, logout y recarga SPA aprobados manualmente.
+
+## 6. Secuencia de despliegue ejecutada
+
+1. Limpieza y respaldo de la base local.
+2. Creación de AWS RDS for SQL Server Express.
+3. Migración de estructura y datos necesarios.
+4. Parametrización de cifrado, certificado, endpoint y puerto.
+5. Autorización de conectividad desde el equipo local y Render.
+6. Configuración de Cloudinary para producción.
+7. Despliegue del backend en Render.
+8. Validación de `/api/health`.
+9. Despliegue del frontend en Vercel.
+10. Configuración de `VITE_API_URL`.
+11. Configuración de CORS definitivo.
+12. Configuración de la rama de producción.
+13. Adición de reescritura SPA mediante `frontend/vercel.json`.
+14. Validación funcional manual.
+15. Actualización del SDD.
 
 ## 7. Estrategia de rollback
 
-- Conservar respaldo local y BACPAC previo a Azure.
-- Mantener la rama de estabilización.
-- Mantener modo local de imágenes como contingencia de desarrollo.
-- Revertir Render al último commit estable si falla health.
-- Restaurar variables previas de Vercel si la API no responde.
-- No eliminar la base local hasta validar Azure.
+- Conservar respaldos SQL privados fuera de Git.
+- Mantener un commit estable en `002-estabilizacion-calidad`.
+- Revertir el commit defectuoso y volver a desplegar Render/Vercel.
+- Restaurar variables de entorno anteriores desde el proveedor.
+- Restaurar una copia de AWS RDS según la política de respaldo configurada.
+- Mantener el modo local de imágenes solo como contingencia de desarrollo.
+- No eliminar recursos Cloudinary hasta confirmar la transacción SQL.
 
-## 8. Riesgo técnico pendiente inmediato
+## 8. Riesgos residuales aceptados
 
-La configuración actual de SQL Server usa cifrado local fijo. Antes de Azure se debe implementar soporte de variables como:
-
-```env
-DB_ENCRYPT=true
-DB_TRUST_SERVER_CERTIFICATE=false
-```
-
-La documentación no considera esa capacidad implementada hasta modificar y probar `backend/src/config/database.js`.
+| Riesgo | Tratamiento |
+|---|---|
+| Arranque en frío de Render | Health y reintento controlado; documentado como limitación de plataforma. |
+| JWT en `localStorage` | Mantener protección XSS; migración a cookie HttpOnly queda como mejora futura. |
+| `DB_TRUST_SERVER_CERTIFICATE=true` | Configuración funcional actual; revisar endurecimiento TLS en una versión posterior. |
+| Bundle principal grande | No bloquea entrega; aplicar lazy loading como mejora de rendimiento. |
+| Transacciones parciales | Priorizar operaciones múltiples críticas en una versión posterior. |
+| Sin staging dedicado | Pruebas destructivas no se ejecutan contra producción; usar datos temporales controlados. |
+| Newman final omitido | No crear cuentas QA en producción; sustentar aceptación con Jest/Supertest y prueba manual. |
 
 ## 9. Criterio de finalización
 
-El plan finaliza cuando Azure SQL, Render, Vercel y Cloudinary funcionan mediante HTTPS, y las pruebas públicas validan health, login, roles, CRUD, imágenes y cierre de sesión.
+El plan se considera finalizado porque Vercel, Render, AWS RDS y Cloudinary funcionan de forma integrada; las pruebas técnicas principales están aprobadas; la validación funcional de producción fue completada; y el SDD refleja el estado real del sistema.

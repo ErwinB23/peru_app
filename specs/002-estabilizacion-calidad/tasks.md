@@ -1,10 +1,10 @@
-﻿# Tareas de Estabilización y Cierre — TASKS-002
+# Tareas de Estabilización, Despliegue y Cierre — TASKS-002
 
 ## Leyenda
 
-- `[x]` completada y validada localmente.
-- `[~]` implementada, pero pendiente de validación pública o evidencia externa.
-- `[ ]` pendiente.
+- `[x]` completada.
+- `[~]` realizada, pero falta adjuntar una evidencia visual o verificación externa no bloqueante.
+- `[ ]` pendiente o mejora futura.
 
 ## A. Línea base y configuración
 
@@ -22,8 +22,8 @@
 - [x] **T-EST-014** Validar sesión frontend mediante perfil.
 - [x] **T-EST-015** Limpiar sesión y redirigir ante 401.
 - [x] **T-EST-016** Aplicar Helmet, CORS y límites.
-- [x] **T-EST-017** Aplicar rate limit.
-- [x] **T-EST-018** Eliminar debug y crear health mínimo.
+- [x] **T-EST-017** Aplicar rate limiting.
+- [x] **T-EST-018** Eliminar endpoints de depuración y crear health mínimo.
 
 ## C. Validación y errores
 
@@ -37,12 +37,12 @@
 ## D. Base de datos e imágenes
 
 - [x] **T-EST-030** Crear auditoría y migración SQL de integridad.
-- [~] **T-EST-031** Conservar evidencia visual SSMS de migraciones.
+- [~] **T-EST-031** Incorporar capturas SSMS/RDS sin datos sensibles al anexo final.
 - [x] **T-EST-032** Validar firma JPEG/PNG/WEBP y límite.
 - [x] **T-EST-033** Limpiar recurso nuevo cuando falla la operación.
 - [x] **T-EST-034** Retirar imagen anterior después de actualizar.
 - [x] **T-EST-035** Retirar imagen asociada después de eliminar.
-- [ ] **T-EST-036** Añadir transacciones donde exista una operación SQL múltiple crítica.
+- [ ] **T-EST-036** Añadir transacciones a toda operación SQL múltiple crítica; mejora futura.
 - [x] **T-EST-037** Implementar almacenamiento dual y Cloudinary para producción.
 - [x] **T-EST-038** Limpiar registros locales y reiniciar identidades.
 - [x] **T-EST-039** Dejar `uploads` sin imágenes y conservar `.gitkeep`.
@@ -55,14 +55,14 @@
 - [x] **T-EST-043** Cubrir usuarios, lugares, comidas e imágenes.
 - [x] **T-EST-044** Medir todos los controladores principales.
 - [x] **T-EST-045** Establecer umbrales S80/B70/F85/L80.
-- [x] **T-EST-046** Validar 15 suites y 388 casos.
-- [x] **T-EST-047** Archivar reporte Jest.
+- [x] **T-EST-046** Validar 15 suites y 388 pruebas.
+- [x] **T-EST-047** Archivar reporte Jest y cobertura.
 - [x] **T-EST-048** Crear colección Postman/Newman.
-- [x] **T-EST-049** Archivar reporte Newman: 11 solicitudes y 0 fallos.
+- [x] **T-EST-049** Documentar que el último Newman no es evidencia final porque las cuentas QA fueron eliminadas.
 - [x] **T-EST-050** Crear flujos Playwright.
-- [x] **T-EST-051** Archivar reporte Playwright: 4 flujos y 0 fallos.
+- [x] **T-EST-051** Archivar reporte Playwright local: 4 flujos y 0 fallos.
 - [x] **T-EST-052** Crear workflow GitHub Actions.
-- [~] **T-EST-053** Confirmar workflow verde en GitHub después del push final.
+- [~] **T-EST-053** Adjuntar captura del workflow verde si el docente la solicita.
 
 ## F. Cierre SDD
 
@@ -71,22 +71,33 @@
 - [x] **T-EST-062** Consolidar diseño y delta de datos.
 - [x] **T-EST-063** Consolidar casos y métricas.
 - [x] **T-EST-064** Consolidar trazabilidad.
-- [x] **T-EST-065** Crear revisión final y checklist.
-- [x] **T-EST-066** Crear puerta automática Bloque 6.
+- [x] **T-EST-065** Crear revisión final y checklists.
+- [x] **T-EST-066** Crear puerta automática de calidad.
 - [x] **T-EST-067** Ejecutar puerta local y archivar evidencia.
 - [x] **T-EST-068** Optimizar imágenes y video.
-- [x] **T-EST-069** Validar lint y build con multimedia optimizada.
-- [x] **T-EST-070** Corregir dependencias y cerrar auditoría sin `--force`.
-- [x] **T-EST-071** Integrar Cloudinary y validar carga local.
+- [x] **T-EST-069** Validar lint y build.
+- [x] **T-EST-070** Corregir dependencias y cerrar auditoría.
+- [x] **T-EST-071** Integrar Cloudinary.
 - [x] **T-EST-079** Cerrar documentación post-Cloudinary.
 - [x] **T-EST-080** Sincronizar README, SPEC-001 y SPEC-002 con el stack real.
+- [x] **T-EST-081** Actualizar SDD después del despliegue real.
 
 ## G. Infraestructura y producción
 
-- [ ] **T-EST-072** Adaptar cifrado y conectar Azure SQL.
-- [ ] **T-EST-073** Desplegar backend en Render.
-- [ ] **T-EST-074** Desplegar frontend en Vercel.
-- [ ] **T-EST-075** Configurar CORS y variables definitivas.
-- [ ] **T-EST-076** Ejecutar Newman y Playwright contra producción.
-- [ ] **T-EST-077** Registrar URLs, capturas y logs.
-- [ ] **T-EST-078** Marcar aceptación final de producción.
+- [x] **T-EST-072** Parametrizar conexión SQL y migrar a AWS RDS.
+- [x] **T-EST-073** Desplegar backend en Render.
+- [x] **T-EST-074** Desplegar frontend en Vercel.
+- [x] **T-EST-075** Configurar CORS y variables definitivas.
+- [x] **T-EST-076** Configurar reescritura SPA en Vercel y validar recarga de rutas.
+- [x] **T-EST-077** Ejecutar prueba funcional manual con cuentas existentes, sin crear usuarios QA.
+- [x] **T-EST-078** Validar login, consulta, CRUD, imágenes, roles y logout en producción.
+- [x] **T-EST-082** Registrar URLs públicas y arquitectura definitiva en el SDD.
+- [~] **T-EST-083** Incorporar al anexo las capturas finales enumeradas en `evidence-index.md`.
+
+## H. Mejoras futuras no bloqueantes
+
+- [ ] **T-EST-090** Migrar sesión a cookie HttpOnly si se redefine la autenticación.
+- [ ] **T-EST-091** Implementar lazy loading por rutas para reducir el bundle inicial.
+- [ ] **T-EST-092** Crear ambiente staging independiente.
+- [ ] **T-EST-093** Automatizar migraciones y restauraciones de base de datos.
+- [ ] **T-EST-094** Ampliar transacciones en operaciones compuestas.
