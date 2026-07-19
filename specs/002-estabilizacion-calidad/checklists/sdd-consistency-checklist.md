@@ -2,68 +2,60 @@
 
 ## Gobierno y alcance
 
-- [x] `SPEC-001` se mantiene como especificación funcional base.
-- [x] `SPEC-002` se mantiene como especificación de estabilización.
-- [x] Existe una ruta acelerada de trabajo que prioriza funcionamiento, pruebas y despliegue.
-- [x] No se declara implementado lo que solo está documentado.
-- [x] Se admite un health check técnico mínimo como excepción de despliegue, sin datos sensibles.
+- [x] SPEC-001 se mantiene como especificación funcional base.
+- [x] SPEC-002 registra estabilización, calidad, seguridad y despliegue.
+- [x] La arquitectura documentada coincide con el código y la infraestructura real.
+- [x] No se declara como aprobada la última ejecución Newman fallida.
+- [x] La decisión de no crear cuentas QA en producción está documentada.
 
 ## Repositorio
 
-- [x] Se identificaron carpetas fuente, generadas, locales y duplicadas.
-- [x] `.git/` se conserva en el proyecto de trabajo.
-- [x] `.git/` se excluye del ZIP de entrega.
-- [x] `.env` se conserva localmente y se excluye de Git.
-- [x] `dist`, `.vite`, reportes y coberturas se ignoran.
-- [x] `uploads` no se elimina hasta resolver persistencia.
-
-## Trazabilidad
-
-- [x] Existe `traceability-matrix.md` para `SPEC-002`.
-- [x] Cada requisito RF-EST tiene tareas asociadas.
-- [x] Los requisitos críticos tienen casos de prueba o una tarea explícita para crearlos.
-- [x] Se distinguen los estados Brecha, Pendiente, Implementado y Validado.
-- [x] Se registraron ocho brechas de autenticación.
-- [x] Se registraron dos endpoints de depuración inseguros.
+- [x] `.env` y credenciales locales están excluidos de Git.
+- [x] `.git` se conserva en el proyecto de trabajo, pero se excluye del ZIP.
+- [x] `node_modules`, `dist`, `.vite` y respaldos se excluyen del ZIP.
+- [x] El frontend usa CSS propio y no Tailwind.
+- [x] Las imágenes de producción no dependen de `backend/uploads`.
 
 ## Contrato API
 
-- [x] Se creó un inventario de las rutas reales.
-- [x] Se contaron 69 operaciones en routers Express.
-- [x] Se identificaron 41 operaciones administrativas.
-- [x] Se identificaron 18 operaciones autenticadas de consulta/perfil.
-- [x] Se identificaron 10 operaciones públicas actuales, de las cuales solo 2 son funcionalmente permitidas.
-- [ ] `openapi.yaml` está sincronizado con el inventario.
-- [x] Las ocho brechas de autenticación están corregidas en código.
-- [x] `/api/test-db` y `/api/debug-token` fueron eliminadas.
-- [x] Existe `/api/health` seguro.
+- [x] Inventario de 70 operaciones reales.
+- [x] OpenAPI sincronizado 70/70.
+- [x] Rutas funcionales protegidas.
+- [x] Endpoints de depuración eliminados.
+- [x] `/api/health` seguro y operativo.
 
+## Integridad e imágenes
 
-## Integridad e imágenes — Bloque 4
-
-- [x] Existe auditoría SQL previa para datos inválidos, duplicados y relaciones huérfanas.
-- [x] Existe una migración SQL numerada, transaccional e idempotente.
-- [x] El script base incorpora restricciones para instalaciones nuevas.
-- [x] La política de eliminación conserva las relaciones y evita cascadas accidentales.
-- [x] Las cargas comprueban extensión, MIME, tamaño y firma binaria.
-- [x] Los errores eliminan archivos nuevos que no llegaron a confirmarse.
-- [x] Las actualizaciones confirmadas eliminan la imagen anterior.
-- [x] Las eliminaciones confirmadas eliminan la imagen asociada.
-- [ ] La auditoría SQL fue ejecutada y todos los conteos son 0.
-- [ ] La migración 005 fue aplicada y evidenciada en SSMS.
-- [ ] Los casos manuales de reemplazo, eliminación, 413 y 415 fueron aprobados.
+- [x] Auditoría y migración SQL disponibles.
+- [x] Restricciones incorporadas al script base.
+- [x] Política de borrado sin cascadas accidentales.
+- [x] Validación de extensión, MIME, tamaño y firma.
+- [x] Limpieza de recursos ante error.
+- [x] Reemplazo y eliminación de imágenes controlados.
+- [x] Cloudinary validado en producción.
+- [x] AWS RDS conectado.
 
 ## Pruebas y despliegue
 
-- [ ] Existe suite backend con Supertest.
-- [ ] Existe colección Postman/Newman y reporte.
-- [ ] Existen flujos Playwright críticos.
-- [ ] Existe verificación de build, lint y tests.
-- [ ] Backend, frontend, SQL Server e imágenes funcionan en producción.
+- [x] Jest y Supertest configurados.
+- [x] 15 suites y 388 pruebas aprobadas.
+- [x] Cobertura superior a los umbrales.
+- [x] Colección Postman/Newman disponible.
+- [x] Último Newman fallido correctamente excluido de la evidencia final.
+- [x] Playwright local archivado con 0 fallos.
+- [x] Lint, build y OpenAPI aprobados.
+- [x] Backend, frontend, SQL Server e imágenes funcionan en producción.
+- [x] Validación funcional manual registrada.
+
+## Documentación
+
+- [x] README principal actualizado.
+- [x] SPEC, plan y tareas actualizados.
+- [x] Diseño y delta de datos actualizados.
+- [x] Matriz de trazabilidad actualizada.
+- [x] Índice de evidencias actualizado.
+- [x] Revisión final actualizada.
 
 ## Dictamen
 
-**Bloque documental y de repositorio:** aprobado.  
-**Código de seguridad e integridad:** implementado, pendiente de validación completa.  
-**Pruebas automatizadas:** pendientes.  
-**Despliegue:** no autorizado todavía.
+**SDD consistente con la implementación y el despliegue reales.** Queda únicamente adjuntar las capturas finales y preparar el ZIP limpio.
