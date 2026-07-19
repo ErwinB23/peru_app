@@ -18,7 +18,7 @@ Durante la Fase 0 no se cambia la lógica del frontend, backend ni base de datos
 |---|---|---|
 | Copia ZIP del código fuente | Completado | `phase0-backups/PERU_APP_PRE_ESTABILIZACION_20260714-173307.zip` |
 | Hash SHA-256 del ZIP | Completado | `5ADA56EC7C020CCD4EFF0AB47FA8CC74B0F1B3BF63E04857B240666B07ADC15A` |
-| Respaldo `.bak` de SQL Server | Pendiente de evidencia | Ejecutar `database/maintenance/000-backup-before-stabilization.sql` |
+| Respaldo `.bak` de SQL Server | Pendiente de evidencia | El script de respaldo fue excluido intencionalmente del repositorio público por contener datos sensibles; no existe un archivo público versionado para esta operación. |
 | Verificación `RESTORE VERIFYONLY` | Pendiente de evidencia | Conservar la salida de SSMS |
 | Rama `002-estabilizacion-calidad` | Completado | Verificada en el repositorio |
 | Estado Git registrado | Completado | `docs/estabilizacion/evidencias/fase-0/20260714-173307/git-status.txt` |
@@ -83,7 +83,7 @@ No registrar contraseñas, secretos JWT ni tokens completos en las evidencias.
 
 La Fase 0 se considerará completamente aprobada cuando:
 
-1. Exista un respaldo `.bak` verificable.
+1. Exista un respaldo `.bak` verificable, conservado fuera del repositorio público por contener datos sensibles.
 2. `RESTORE VERIFYONLY` termine correctamente.
 3. Se documenten registro, login inválido y perfil con/sin token.
 4. Las evidencias automáticas continúen aprobadas.

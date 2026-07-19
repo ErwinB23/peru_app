@@ -1,8 +1,8 @@
 ﻿# Constitución del Proyecto PERU APP
 
-**Versión:** 1.5.0  
+**Versión:** 1.6.0
 **Fecha de actualización:** 18 de julio de 2026  
-**Cambio principal:** Se actualiza la arquitectura de producción a Vercel, Render, AWS RDS for SQL Server y Cloudinary; se formaliza la evolución incremental de especificaciones y el uso supervisado de OpenAI Codex CLI con GitHub Spec Kit.  
+**Cambio principal:** Se formaliza la política pública mínima y no sensible de `GET /api/health`, manteniendo la arquitectura oficial en Vercel, Render, AWS RDS for SQL Server y Cloudinary.
 
 ## 1. Nombre del proyecto
 
@@ -57,7 +57,9 @@ El sistema debe implementar autenticación, protección de rutas y control de ac
 
 ### 3.8.1. Autenticación obligatoria para el acceso al sistema
 
-El acceso a las funciones operativas de PERU APP requiere una sesión autenticada. Se permiten como contenido público la página de presentación, el registro, el inicio de sesión y páginas informativas estáticas que no consulten ni expongan datos protegidos. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública, siempre que devuelva únicamente el estado general del servicio y no exponga datos de negocio, credenciales, conteos, servidor, base de datos ni detalles internos.
+El acceso a las funciones operativas de PERU APP requiere una sesión autenticada. Se permiten como contenido público la página de presentación, el registro, el inicio de sesión y páginas informativas estáticas que no consulten ni expongan datos protegidos. Toda consulta territorial, turística, gastronómica, de perfil o de administración debe exigir un token JWT válido. Para el despliegue puede existir `GET /api/health` como excepción técnica pública con información mínima y no sensible: `status`, `service`, el estado genérico de `database` (por ejemplo, `connected` o `unavailable`), `imageStorage` con el proveedor activo y `timestamp`.
+
+El health check no debe exponer credenciales, hostnames o endpoints internos, usuarios de base de datos, contraseñas o secretos, nombres de tablas, conteos de registros, cadenas de conexión, stack traces, consultas SQL ni información personal.
 
 La protección visual del frontend no sustituye la protección del backend. Cada endpoint protegido debe validar el token, comprobar que el usuario aún existe en la base de datos y utilizar el rol vigente almacenado en SQL Server. Un usuario eliminado, un token expirado o un administrador cuyo rol haya cambiado no debe conservar acceso mediante información antigua contenida en el token.
 
@@ -65,7 +67,7 @@ Política de acceso oficial:
 
 - Público informativo: portada, registro, inicio de sesión y páginas estáticas sin datos protegidos.
 - Público funcional de API: `POST /api/auth/register` y `POST /api/auth/login`.
-- Público técnico: `GET /api/health`, exclusivamente con una respuesta mínima y no sensible.
+- Público técnico: `GET /api/health`, exclusivamente con los campos técnicos mínimos y no sensibles autorizados por esta Constitución.
 - Usuario autenticado: consultas territoriales, turísticas y gastronómicas, perfil y cierre de sesión.
 - Administrador autenticado: gestión de usuarios y operaciones de creación, actualización y eliminación de contenido.
 
