@@ -8,6 +8,6 @@
 - [x] Trazabilidad funcional disponible.
 - [x] Especificación complementaria de calidad `002-estabilizacion-calidad`.
 - [x] Pruebas de módulos principales implementadas.
-- [ ] Despliegue público y aceptación final.
+- [x] Despliegue público y aceptación final.
 
 La revisión detallada de calidad se encuentra en `specs/002-estabilizacion-calidad/final-review.md`.

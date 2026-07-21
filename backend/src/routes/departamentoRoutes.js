@@ -9,6 +9,7 @@ import {
   getDepartamentoById,
   createDepartamento,
   updateDepartamento,
+  updateDepartamentoIntroduccion,
   deleteDepartamento
 } from '../controllers/departamentoController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
@@ -16,6 +17,7 @@ import { isAdmin } from '../middlewares/roleMiddleware.js';
 import { ensureResourceExists, ensureUniqueName } from '../middlewares/dataIntegrityMiddleware.js';
 import {
   validateDepartamentoBody,
+  validateDepartamentoIntroduccionBody,
   validateIdParam
 } from '../validators/validationMiddleware.js';
 
@@ -49,6 +51,15 @@ router.put(
   validateDepartamentoBody,
   uniqueDepartamento,
   updateDepartamento
+);
+router.patch(
+  '/:id/introduccion',
+  verifyToken,
+  isAdmin,
+  validateIdParam,
+  departamentoExists,
+  validateDepartamentoIntroduccionBody,
+  updateDepartamentoIntroduccion
 );
 router.delete('/:id', verifyToken, isAdmin, validateIdParam, departamentoExists, deleteDepartamento);
 

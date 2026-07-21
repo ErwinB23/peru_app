@@ -24,6 +24,13 @@ export const updateDepartamento = async (id, departamentoData) => {
     return response.data;
 };
 
+export const updateDepartamentoIntroduccion = async (id, introduccion) => {
+    const response = await api.patch(`/departamentos/${id}/introduccion`, {
+        introduccion
+    });
+    return response.data;
+};
+
 // Eliminar departamento
 export const deleteDepartamento = async (id) => {
     const response = await api.delete(`/departamentos/${id}`);

@@ -1111,6 +1111,47 @@ paths:
           $ref: '#/components/responses/UnsupportedMediaType'
         '500':
           $ref: '#/components/responses/ServerError'
+  /departamentos/{id}/introduccion:
+    patch:
+      tags:
+      - Departamentos
+      summary: Actualizar únicamente la presentación de un departamento
+      operationId: patch_api_departamentos_id_introduccion
+      security:
+      - bearerAuth: []
+      parameters:
+      - $ref: '#/components/parameters/IdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+              - introduccion
+              properties:
+                introduccion:
+                  type: string
+                  nullable: true
+                  description: Texto informativo; vacío o null retira la presentación.
+      responses:
+        '200':
+          description: Presentación actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/ServerError'
   /distritos:
     get:
       tags:

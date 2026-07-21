@@ -1,6 +1,7 @@
 import { describe, expect, jest, test } from '@jest/globals';
 import {
   validateDepartamentoBody,
+  validateDepartamentoIntroduccionBody,
   validateIdParam,
   validateRegisterBody
 } from '../../src/validators/validationMiddleware.js';
@@ -99,6 +100,41 @@ describe('validacion centralizada', () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body.code).toBe('VALIDATION_ERROR');
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  test('normaliza la introduccion y conserva saltos de linea internos', async () => {
+    const req = createRequest({ body: { introduccion: '  Primer párrafo\n\nSegundo párrafo  ' } });
+    const { next } = await run(validateDepartamentoIntroduccionBody, req);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(req.body).toEqual({ introduccion: 'Primer párrafo\n\nSegundo párrafo' });
+  });
+
+  test.each([{ introduccion: '' }, { introduccion: '   ' }, { introduccion: null }])(
+    'normaliza la retirada explicita %# como null',
+    async (body) => {
+      const req = createRequest({ body });
+      const { next } = await run(validateDepartamentoIntroduccionBody, req);
+
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(req.body.introduccion).toBeNull();
+    }
+  );
+
+  test.each([
+    [{}, 'introduccion'],
+    [{ introduccion: 123 }, 'introduccion'],
+    [{ introduccion: 'QA', nombre: 'No permitido' }, 'nombre']
+  ])('rechaza el cuerpo estricto %#', async (body, field) => {
+    const req = createRequest({ body });
+    const { res, next } = await run(validateDepartamentoIntroduccionBody, req);
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.code).toBe('VALIDATION_ERROR');
+    expect(res.body.details).toEqual(
+      expect.arrayContaining([expect.objectContaining({ field })])
+    );
     expect(next).not.toHaveBeenCalled();
   });
 });

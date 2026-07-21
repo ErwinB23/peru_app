@@ -100,6 +100,28 @@ export const updateDepartamento = async (req, res) => {
       return handleControllerError(error, req, res, 'Error al actualizar departamento');
     }
 };
+
+export const updateDepartamentoIntroduccion = async (req, res) => {
+    try {
+        const id = Number(req.params.id);
+        const updatedDepartamento = await departamentoModel.updateDepartamentoIntroduccion(
+            id,
+            req.body.introduccion
+        );
+
+        res.json({
+            message: 'Presentación del departamento actualizada correctamente',
+            departamento: updatedDepartamento
+        });
+    } catch (error) {
+        return handleControllerError(
+            error,
+            req,
+            res,
+            'Error al actualizar la presentación del departamento'
+        );
+    }
+};
 // ELIMINAR DEPARTAMENTO (solo admin)
 export const deleteDepartamento = async (req, res) => {
     try {
