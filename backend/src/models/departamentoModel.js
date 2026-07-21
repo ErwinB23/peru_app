@@ -119,6 +119,21 @@ export const updateDepartamento = async (id, data) => {
     return result.recordset[0];
 };
 
+export const updateDepartamentoIntroduccion = async (id, introduccion) => {
+    const pool = await getConnection();
+    const result = await pool
+        .request()
+        .input('id', sql.Int, id)
+        .input('introduccion', sql.VarChar(sql.MAX), introduccion)
+        .query(`
+            UPDATE Departamentos
+            SET introduccion = @introduccion
+            OUTPUT INSERTED.*
+            WHERE id = @id`);
+
+    return result.recordset[0];
+};
+
 // Eliminar departamento
 export const deleteDepartamento = async (id) => {
     const pool = await getConnection();

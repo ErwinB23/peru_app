@@ -1,0 +1,131 @@
+openapi: 3.0.3
+info:
+  title: PERU APP - Actualización de presentación departamental
+  version: 1.0.0
+paths:
+  /api/departamentos/{id}/introduccion:
+    patch:
+      summary: Actualizar únicamente la presentación de un departamento
+      operationId: updateDepartamentoIntroduccion
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - introduccion
+              properties:
+                introduccion:
+                  type: string
+                  nullable: true
+                  description: Texto informativo opcional; vacío o null retira la presentación.
+            examples:
+              actualizar:
+                value:
+                  introduccion: Ayacucho es una región reconocida por su riqueza cultural, historia y tradiciones.
+              retirar:
+                value:
+                  introduccion: null
+      responses:
+        '200':
+          description: Presentación actualizada correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message, departamento]
+                properties:
+                  message:
+                    type: string
+                  departamento:
+                    $ref: '#/components/schemas/Departamento'
+        '400':
+          description: Identificador o cuerpo inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Sesión ausente o inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: El usuario vigente no es administrador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Departamento inexistente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Error interno sin exposición de detalles sensibles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Departamento:
+      type: object
+      required: [id, nombre, capital, region_natural, area_km2, poblacion_aprox]
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        capital:
+          type: string
+        region_natural:
+          type: string
+        area_km2:
+          type: number
+        poblacion_aprox:
+          type: integer
+        descripcion:
+          type: string
+          nullable: true
+        introduccion:
+          type: string
+          nullable: true
+        imagen_fondo:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string

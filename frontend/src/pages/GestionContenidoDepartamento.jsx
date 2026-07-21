@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppHeader from '../components/AppHeader';
-import { getDepartamentoById, updateDepartamento } from '../services/departamentoService';
+import {
+    getDepartamentoById,
+    updateDepartamentoIntroduccion
+} from '../services/departamentoService';
 import {
     getLugaresByDepartamentoId,
     createLugarTuristico,
@@ -119,13 +122,15 @@ const GestionContenidoDepartamento = () => {
             setError('');
             setMessage('');
 
-            const payload = new FormData();
-            payload.append('introduccion', introForm);
+            const result = await updateDepartamentoIntroduccion(id, introForm);
+            const updatedDepartamento = result?.departamento;
 
-            await updateDepartamento(id, payload);
+            if (updatedDepartamento) {
+                setDepartamento(updatedDepartamento);
+                setIntroForm(updatedDepartamento.introduccion || '');
+            }
 
             setMessage('Presentación del departamento actualizada correctamente');
-            await cargarContenido();
         } catch (err) {
             setError(err.response?.data?.error || 'Error al guardar la presentación del departamento');
         } finally {

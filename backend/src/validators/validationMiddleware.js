@@ -266,6 +266,49 @@ export const validateDepartamentoBody = validateSchema({
   imagen_fondo: optionalText(255)
 }, 'body');
 
+export const validateDepartamentoIntroduccionBody = async (req, res, next) => {
+  const body = req.body || {};
+  const fields = Object.keys(body);
+  const errors = [];
+
+  if (!Object.prototype.hasOwnProperty.call(body, 'introduccion')) {
+    errors.push(detail('introduccion', 'El campo es obligatorio'));
+  }
+
+  for (const field of fields) {
+    if (field !== 'introduccion') {
+      errors.push(detail(field, 'El campo no está permitido'));
+    }
+  }
+
+  if (
+    Object.prototype.hasOwnProperty.call(body, 'introduccion') &&
+    body.introduccion !== null &&
+    typeof body.introduccion !== 'string'
+  ) {
+    errors.push(detail('introduccion', 'Debe ser un texto o null'));
+  }
+
+  if (errors.length > 0) {
+    const validationError = new AppError(
+      'Datos inválidos',
+      400,
+      'VALIDATION_ERROR',
+      errors
+    );
+    return res.status(400).json(errorPayload(validationError));
+  }
+
+  const normalized = body.introduccion === null
+    ? null
+    : body.introduccion.trim();
+
+  req.body = {
+    introduccion: normalized === '' ? null : normalized
+  };
+  return next();
+};
+
 export const validateProvinciaBody = validateSchema({
   nombre: name(120),
   capital: textRule({ required: true, minLength: 2, maxLength: 120 }),

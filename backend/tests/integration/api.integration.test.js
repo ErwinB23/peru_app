@@ -24,7 +24,16 @@ const users = [
   }
 ];
 
-const createdDepartments = [];
+const createdDepartments = [{
+  id: 10,
+  nombre: 'Departamento Integración',
+  capital: 'Capital Integración',
+  region_natural: 'Sierra',
+  area_km2: 100,
+  poblacion_aprox: 1000,
+  introduccion: 'Presentación anterior',
+  imagen_fondo: '/uploads/departamentos/integracion.webp'
+}];
 
 jest.unstable_mockModule('../../src/models/userModel.js', () => ({
   findUserByEmail: jest.fn(async (email) => users.find((user) => user.email === email)),
@@ -54,6 +63,12 @@ jest.unstable_mockModule('../../src/models/departamentoModel.js', () => ({
     return created;
   }),
   updateDepartamento: jest.fn(async (id, data) => ({ id: Number(id), ...data })),
+  updateDepartamentoIntroduccion: jest.fn(async (id, introduccion) => {
+    const departamento = createdDepartments.find((item) => item.id === Number(id));
+    if (!departamento) return undefined;
+    departamento.introduccion = introduccion;
+    return { ...departamento };
+  }),
   deleteDepartamento: jest.fn(async (id) => {
     const index = createdDepartments.findIndex((item) => item.id === Number(id));
     return index >= 0 ? createdDepartments.splice(index, 1)[0] : undefined;
@@ -199,5 +214,100 @@ describe('API de autenticacion y autorizacion', () => {
 
     expect(response.status).toBe(401);
     expect(response.body.error).toMatch(/expirado/i);
+  });
+
+  test('administrador actualiza solamente la introduccion', async () => {
+    const before = { ...createdDepartments[0] };
+    const startedAt = performance.now();
+    const response = await request(app)
+      .patch('/api/departamentos/10/introduccion')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ introduccion: 'Nueva presentación integrada' });
+    const elapsedMs = performance.now() - startedAt;
+
+    expect(response.status).toBe(200);
+    expect(elapsedMs).toBeLessThan(2000);
+    expect(response.body.departamento.introduccion).toBe('Nueva presentación integrada');
+    expect(response.body.departamento).toEqual(expect.objectContaining({
+      nombre: before.nombre,
+      capital: before.capital,
+      region_natural: before.region_natural,
+      area_km2: before.area_km2,
+      poblacion_aprox: before.poblacion_aprox,
+      imagen_fondo: before.imagen_fondo
+    }));
+  });
+
+  test('administrador retira la introduccion con texto vacio', async () => {
+    const response = await request(app)
+      .patch('/api/departamentos/10/introduccion')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ introduccion: '   ' });
+
+    expect(response.status).toBe(200);
+    expect(response.body.departamento.introduccion).toBeNull();
+  });
+
+  test.each([
+    [{}, 'introduccion'],
+    [{ introduccion: 10 }, 'introduccion'],
+    [{ introduccion: 'QA', nombre: 'No permitido' }, 'nombre']
+  ])('rechaza cuerpo parcial invalido %#', async (body, field) => {
+    const response = await request(app)
+      .patch('/api/departamentos/10/introduccion')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send(body);
+
+    expect(response.status).toBe(400);
+    expect(response.body.code).toBe('VALIDATION_ERROR');
+    expect(response.body.details).toEqual(
+      expect.arrayContaining([expect.objectContaining({ field })])
+    );
+  });
+
+  test('rechaza actualizacion de introduccion sin token', async () => {
+    const response = await request(app)
+      .patch('/api/departamentos/10/introduccion')
+      .send({ introduccion: 'No autorizada' });
+    expect(response.status).toBe(401);
+  });
+
+  test('rechaza actualizacion de introduccion para usuario normal', async () => {
+    const response = await request(app)
+      .patch('/api/departamentos/10/introduccion')
+      .set('Authorization', `Bearer ${userToken}`)
+      .send({ introduccion: 'No autorizada' });
+    expect(response.status).toBe(403);
+  });
+
+  test('devuelve 404 para departamento inexistente', async () => {
+    const response = await request(app)
+      .patch('/api/departamentos/999999/introduccion')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ introduccion: 'No existe' });
+    expect(response.status).toBe(404);
+  });
+
+  test('PUT completo conserva su contrato valido', async () => {
+    const response = await request(app)
+      .put('/api/departamentos/10')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        nombre: 'Departamento Actualizado',
+        capital: 'Capital Actualizada',
+        region_natural: 'Costa',
+        area_km2: 200,
+        poblacion_aprox: 2000
+      });
+    expect(response.status).toBe(200);
+  });
+
+  test('PUT completo sigue rechazando campos obligatorios ausentes', async () => {
+    const response = await request(app)
+      .put('/api/departamentos/10')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ introduccion: 'Carga incompleta' });
+    expect(response.status).toBe(400);
+    expect(response.body.code).toBe('VALIDATION_ERROR');
   });
 });

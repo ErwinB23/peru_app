@@ -6,6 +6,7 @@ const departamentoModel = {
   getDepartamentoById: jest.fn(),
   createDepartamento: jest.fn(),
   updateDepartamento: jest.fn(),
+  updateDepartamentoIntroduccion: jest.fn(),
   deleteDepartamento: jest.fn()
 };
 
@@ -22,6 +23,7 @@ const {
   getDepartamentoById,
   createDepartamento,
   updateDepartamento,
+  updateDepartamentoIntroduccion,
   deleteDepartamento
 } = await import('../../src/controllers/departamentoController.js');
 
@@ -323,6 +325,52 @@ describe('departamentoController.updateDepartamento', () => {
     expect(res.statusCode).toBe(500);
     expect(res.body.error).toBe('Error al actualizar departamento');
     expect(imageLifecycle.cleanupReplacedImages).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+});
+
+describe('departamentoController.updateDepartamentoIntroduccion', () => {
+  test('actualiza solamente la introduccion y devuelve el departamento', async () => {
+    const updated = { ...departamentoBase, introduccion: 'Nueva presentación' };
+    departamentoModel.updateDepartamentoIntroduccion.mockResolvedValue(updated);
+    const req = createRequest({
+      params: { id: '10' },
+      body: { introduccion: 'Nueva presentación' }
+    });
+    const res = createResponse();
+
+    await updateDepartamentoIntroduccion(req, res);
+
+    expect(departamentoModel.updateDepartamentoIntroduccion).toHaveBeenCalledWith(
+      10,
+      'Nueva presentación'
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.body.departamento).toEqual(updated);
+  });
+
+  test('permite retirar la introduccion con null', async () => {
+    const updated = { ...departamentoBase, introduccion: null };
+    departamentoModel.updateDepartamentoIntroduccion.mockResolvedValue(updated);
+    const req = createRequest({ params: { id: '10' }, body: { introduccion: null } });
+    const res = createResponse();
+
+    await updateDepartamentoIntroduccion(req, res);
+
+    expect(departamentoModel.updateDepartamentoIntroduccion).toHaveBeenCalledWith(10, null);
+    expect(res.body.departamento.introduccion).toBeNull();
+  });
+
+  test('normaliza un error inesperado', async () => {
+    departamentoModel.updateDepartamentoIntroduccion.mockRejectedValue(new Error('database down'));
+    const req = createRequest({ params: { id: '10' }, body: { introduccion: 'QA' } });
+    const res = createResponse();
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await updateDepartamentoIntroduccion(req, res);
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.error).toBe('Error al actualizar la presentación del departamento');
     consoleSpy.mockRestore();
   });
 });
